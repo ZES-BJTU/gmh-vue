@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Signin from '@/components/Signin'
 import Home from '@/components/Home'
+import ResetPWD from '@/components/ResetPWD'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home
-    }
+    },
+    {
+      path: '/resetpwd',
+      name: 'ResetPWD',
+      component: ResetPWD
+    },
   ]
 })

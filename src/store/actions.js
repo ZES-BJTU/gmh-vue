@@ -1,4 +1,4 @@
-import * as types from './mutation-types'
+import axios from 'axios'
 
 const test1 = ({commit}, info) => {
   console.log(info);

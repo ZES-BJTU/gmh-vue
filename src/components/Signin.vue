@@ -7,15 +7,15 @@
             <div class="signin-logo">
               <img src="../assets/images/logo-blue-2.png">
             </div>
-            <el-form label-width="0px" :model="signinForm">
-              <el-form-item>
+            <el-form label-width="0px" :model="signinForm" ref="signinForm" :rules="rules">
+              <el-form-item prop="account">
                 <el-input class="signin-input" v-model.trim="signinForm.account" placeholder="EMAIL"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item prop="password">
                 <el-input class="signin-input" type="password" v-model.trim="signinForm.password" placeholder="PASSWORD"></el-input>
               </el-form-item>
               <el-row type="flex" justify="center">
-                <el-button class="signin-btn" @click="onSubmit">GO</el-button>
+                <el-button class="signin-btn" @click="onSubmit('signinForm')">GO</el-button>
               </el-row>
               <el-row type="flex" justify="center">
                 <div class="signin-link">
@@ -46,18 +46,32 @@ export default {
       signinForm: {
         account: "",
         password: ""
+      },
+      rules: {
+        account: [
+          { required: true, message: '邮箱不能为空', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' }
+        ]
       }
     };
   },
   methods: {
-    onSubmit() {
-      // this.$store.dispatch('delete',{
-      //   'id': 2
-      // })
-      this.$store.dispatch('signin',{
-        'account': this.signinForm.account,
-        'password': this.signinForm.password
-      })
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$store.dispatch("signin", {
+            account: this.signinForm.account,
+            password: this.signinForm.password,
+            $router: this.$router
+          });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
       // this.$router.push({ path: '/home' });
     }
   }

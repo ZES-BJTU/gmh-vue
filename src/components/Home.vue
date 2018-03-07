@@ -4,8 +4,8 @@
       <el-header>
         <el-menu class="el-menu-demo" mode="horizontal">
           <el-menu-item index="1">光美焕</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">张三</template>
+          <el-submenu index="2" class="account-item">
+            <template slot="title">{{name}}</template>
             <el-menu-item index="2-1">修改密码</el-menu-item>
             <el-menu-item index="2-3">退出登录</el-menu-item>
           </el-submenu>
@@ -66,16 +66,21 @@ export default {
     return {
       activeIndex: "1"
     };
+  },
+  computed: {
+    name: function(){
+      return this.getNameSession();
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.account-item{
+  float: right;
+}
 .home-container {
   margin-top: 1px;
-}
-.home-aside{
-  border-right: solid 1px #e6e6e6;
 }
 </style>

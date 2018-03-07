@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const state = {
   account: '',
+  name: '',
   token: '',
   status,
 }
@@ -28,6 +29,7 @@ const actions = {
     // })
     commit('signin', {
       account: '893074711@qq.com',
+      name: '章琦',
       token: '12345678',
       status: true
     });
@@ -48,6 +50,7 @@ const mutations = {
   signin (state, payload) {
     // 变更状态
     state.account = payload.account;
+    state.name = payload.name;
     state.token = payload.token;
     state.status = payload.status;
   }

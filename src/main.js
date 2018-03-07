@@ -7,9 +7,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import Utils from './lib/utils.js'
 
 Vue.use(Vuex)
 Vue.use(ElementUI)
+Vue.use(Utils)
 
 Vue.config.productionTip = false
 

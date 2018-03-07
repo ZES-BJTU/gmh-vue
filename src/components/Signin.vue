@@ -39,6 +39,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.baseURL = 'http://localhost:8080';
+
 export default {
   name: "Signin",
   data() {
@@ -62,17 +66,31 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$store.dispatch("signin", {
-            account: this.signinForm.account,
-            password: this.signinForm.password,
-            $router: this.$router
-          });
+          // this.$store.dispatch("signin", {
+          //   account: this.signinForm.account,
+          //   password: this.signinForm.password,
+          //   $router: this.$router
+          // });
+          this.setAccountSession('893074711@qq.com','章琦','123456789');
+          this.$router.push({ path: '/home' });
+          // axios({
+          //   method: 'post',
+          //   url: '/user/login',
+          //   data: {
+          //     'account': this.signinForm.account,
+          //     'password': this.signinForm.password
+          //   }
+          // }).then(function(res){
+          //   this.$router.push({ path: '/home' });
+          // })
+          // .catch(function(err){
+          //   console.log(err)
+          // })
         } else {
           console.log('error submit!!');
           return false;
         }
       });
-      // this.$router.push({ path: '/home' });
     }
   }
 };

@@ -15,11 +15,30 @@ Vue.use(Utils)
 
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  // 如果是去登录或注册，那就先把账户信息移除
+  if (to.path === '/') {
+    sessionStorage.removeItem("account");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("token");
+    next();
+  }else if (to.path === 'resetpwd') {
+    next();
+  }else{
+    let token = sessionStorage.getItem('token');
+    if(!token){
+      next({path: '/'});
+    }else{
+      next();
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

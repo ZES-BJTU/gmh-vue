@@ -7,9 +7,9 @@
             <div class="signin-logo">
               <img src="../assets/images/logo-blue-2.png">
             </div>
-            <el-form label-width="0px" :model="signinForm" ref="signinForm" :rules="rules">
+            <el-form label-width="0px" :model="signinForm" ref="signinForm" :rules="rules" @keyup.enter.native="onSubmit('signinForm')" v-loading="loading">
               <el-form-item prop="account">
-                <el-input class="signin-input" v-model.trim="signinForm.account" placeholder="EMAIL"></el-input>
+                <el-input class="signin-input" v-model.trim="signinForm.account" placeholder="EMAIL" :autofocus="true"></el-input>
               </el-form-item>
               <el-form-item prop="password">
                 <el-input class="signin-input" type="password" v-model.trim="signinForm.password" placeholder="PASSWORD"></el-input>
@@ -20,7 +20,7 @@
               <el-row type="flex" justify="center">
                 <div class="signin-link">
                   忘记密码了？点此
-                  <router-link :to="{ path: '/resetPWD' }" class="forget-pwd ">重置密码</router-link>
+                  <router-link :to="{ path: '/resetpwd' }" class="forget-pwd ">重置密码</router-link>
                 </div>
               </el-row>
             </el-form>
@@ -59,7 +59,8 @@ export default {
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      loading: false
     };
   },
   methods: {
@@ -71,23 +72,30 @@ export default {
           //   password: this.signinForm.password,
           //   $router: this.$router
           // });
-          this.setAccountSession('893074711@qq.com','章琦','123456789');
-          this.$router.push({ path: '/home' });
-          // axios({
-          //   method: 'post',
-          //   url: '/user/login',
-          //   data: {
-          //     'account': this.signinForm.account,
-          //     'password': this.signinForm.password
-          //   }
-          // }).then(function(res){
-          //   this.$router.push({ path: '/home' });
-          // })
-          // .catch(function(err){
-          //   console.log(err)
-          // })
+          this.loading = true;
+          axios({
+            method: 'post',
+            url: '/users/login',
+            data: {
+              'account': this.signinForm.account,
+              'password': this.signinForm.password
+            }
+          }).then( res => {
+            this.loading = false;
+            if( res.data.code != 0){
+              this.$message.error(res.data.message);
+            }else{
+              this.loading = false;
+              const data = res.data.data;
+              this.setAccountSession(data.account,data.name,data.token);
+              this.$router.push({ path: '/home' });
+            }
+          })
+          .catch(function(err){
+            this.loading = false;
+            this.$message.error(err);
+          })
         } else {
-          console.log('error submit!!');
           return false;
         }
       });

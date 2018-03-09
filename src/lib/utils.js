@@ -34,5 +34,10 @@ export default {
     Vue.prototype.getTokenSession = function () {
       return sessionStorage.getItem('token');
     }
+    Vue.prototype.clearAccountSession = function () {
+      sessionStorage.removeItem("account");
+      sessionStorage.removeItem("name");
+      sessionStorage.removeItem("token");
+    }
   }
 }

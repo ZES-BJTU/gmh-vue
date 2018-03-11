@@ -8,7 +8,7 @@
         <side-menu></side-menu>
         <el-container>
           <el-main>
-
+            <router-view></router-view>
           </el-main>
           <el-footer>Footer</el-footer>
         </el-container>
@@ -45,13 +45,13 @@ export default {
   margin-top: 1px;
 }
 .el-main{
-  height: 600px;
-  background-color: gray;
+  height: 500px;
+  // background-color: gray;
 }
 .el-footer{
-  background-color: red;
+  // background-color: red;
   position: fixed;
-  bottom: 10px;
+  bottom: 0px;
   width: calc(100% - 200px);
   text-align: center;
   line-height: 60px;

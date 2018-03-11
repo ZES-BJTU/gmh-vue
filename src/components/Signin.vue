@@ -17,13 +17,13 @@
               <el-row type="flex" justify="center">
                 <el-button class="signin-btn" @click="onSubmit('signinForm')">GO</el-button>
               </el-row>
-              <el-row type="flex" justify="center">
-                <div class="signin-link">
-                  忘记密码了？点此
-                  <router-link :to="{ path: '/resetpwd' }" class="forget-pwd ">重置密码</router-link>
-                </div>
-              </el-row>
             </el-form>
+            <el-row type="flex" justify="center">
+              <div class="signin-link">
+                忘记密码了？点此
+                <router-link :to="{ path: '/resetpwd' }" class="forget-pwd ">重置密码</router-link>
+              </div>
+            </el-row>
           </el-col>
         </el-row>
       </el-main>
@@ -107,7 +107,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .main-container {
-  margin-top: 220px;
+  margin-top: 160px;
 }
 .signin-logo {
   text-align: center;

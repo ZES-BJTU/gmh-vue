@@ -1,12 +1,14 @@
 <template>
     <div class="HomeHeader">
         <el-menu class="el-menu-demo" mode="horizontal">
-            <el-menu-item index="1">光美焕</el-menu-item>
-            <el-submenu index="2" class="account-item">
-                <template slot="title">{{name}}</template>
-                <el-menu-item index="2-1">修改密码</el-menu-item>
-                <el-menu-item index="2-3" @click="signout">退出登录</el-menu-item>
-            </el-submenu>
+          <el-menu-item index="1">
+            <router-link to="/home">光美焕</router-link>
+          </el-menu-item>
+          <el-submenu index="2" class="account-item">
+              <template slot="title">{{name}}</template>
+              <el-menu-item index="2-1">修改密码</el-menu-item>
+              <el-menu-item index="2-3" @click="signout">退出登录</el-menu-item>
+          </el-submenu>
         </el-menu>
     </div>
 </template>
@@ -24,8 +26,8 @@ export default {
   },
   methods: {
     signout: function() {
-        this.clearAccountSession();
-        this.$router.push({ path: '/Signin' });
+      this.clearAccountSession();
+      this.$router.push({ path: "/Signin" });
     }
   }
 };

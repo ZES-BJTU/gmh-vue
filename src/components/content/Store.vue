@@ -1,13 +1,16 @@
 <template>
   <div class="Store">
-    <el-form :inline="true" :model="storeSearch" class="demo-form-inline">
+    <el-form :inline="true" :model="storeSearch" class="demo-form-inline search-form">
       <el-form-item>
         <el-input v-model="storeSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchStore">查询</el-button>
+        <el-button type="primary" @click="searchStore" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
+    <div class="operate-box">
+      <el-button type="primary" icon="el-icon-plus">新建</el-button>
+    </div>
     <el-table :data="tableData" fixed style="width: 100%">
       <el-table-column prop="date" label="日期" width="180">
       </el-table-column>

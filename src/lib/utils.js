@@ -20,21 +20,31 @@ export default {
     })
 
     // 4. 添加实例方法
-    Vue.prototype.setAccountSession = function (account, name, token) {
+    Vue.prototype.setAccountSession = function (role, account, name, token) {
+      sessionStorage.setItem("role", role);
       sessionStorage.setItem("account", account);
       sessionStorage.setItem("name", name);
       sessionStorage.setItem("token", token);
     }
+
+    Vue.prototype.getRoleSession = function () {
+      return sessionStorage.getItem('role');
+    }
+
     Vue.prototype.getAccountSession = function () {
       return sessionStorage.getItem('account');
     }
+
     Vue.prototype.getNameSession = function () {
       return sessionStorage.getItem('name');
     }
+
     Vue.prototype.getTokenSession = function () {
       return sessionStorage.getItem('token');
     }
+    
     Vue.prototype.clearAccountSession = function () {
+      sessionStorage.removeItem("role");
       sessionStorage.removeItem("account");
       sessionStorage.removeItem("name");
       sessionStorage.removeItem("token");

@@ -5,6 +5,9 @@ import Home from '@/components/Home'
 import ResetPWD from '@/components/ResetPWD'
 import Store from '@/components/content/Store'
 import StoreOwner from '@/components/content/StoreOwner'
+import Chart from '@/components/content/Chart'
+import Appointment from '@/components/content/Appointment'
+import Time from '@/components/content/Time'
 
 Vue.use(Router)
 
@@ -14,7 +17,10 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      children: [
+      children: [{
+          path: 'chart',
+          component: Chart
+        },
         {
           path: 'store',
           component: Store
@@ -23,8 +29,12 @@ export default new Router({
           path: 'storeowner',
           component: StoreOwner
         },
+        {
+          path: 'appointment',
+          component: Appointment
+        },
       ]
-    },{
+    }, {
       path: '/signin',
       name: 'Signin',
       component: Signin
@@ -33,6 +43,11 @@ export default new Router({
       path: '/resetpwd',
       name: 'ResetPWD',
       component: ResetPWD
+    },
+    {
+      path: '/time',
+      name: 'Time',
+      component: Time
     },
   ]
 })

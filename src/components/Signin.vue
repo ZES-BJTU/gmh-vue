@@ -87,8 +87,16 @@ export default {
             }else{
               this.loading = false;
               const data = res.data.data;
-              this.setAccountSession(data.account,data.name,data.token);
-              this.$router.push({ path: '/' });
+              this.setAccountSession(data.role,data.account,data.name,data.token);
+              if(data.role==='管理员'){
+                  this.$router.push({ path: '/store' });
+              }else if (data.role==='店长'){
+                  this.$router.push({ path: '/chart' });
+              }else if (data.role==='前台'){
+                  this.$router.push({ path: '/appointment' });
+              }else if (data.role==='操作员'){
+                  this.$router.push({ path: '/time' });
+              }
             }
           })
           .catch(function(err){

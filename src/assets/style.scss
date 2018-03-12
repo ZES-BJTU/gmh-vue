@@ -26,4 +26,17 @@ a{
 .el-pagination{
     margin-top:20px;
 }
+.search-form{
+    float: left;
+}
+.operate-box{
+    float: right;
+}
+.search-btn{
+    background-color: #7bcad9;
+    border-color: #7bcad9;
+    &:hover{
+        background-color: #49bfd6;
+    }
+}
 

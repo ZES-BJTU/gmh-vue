@@ -12,11 +12,6 @@ export default new Router({
   mode: 'history',
   routes: [{
       path: '/',
-      name: 'Signin',
-      component: Signin
-    },
-    {
-      path: '/home',
       name: 'Home',
       component: Home,
       children: [
@@ -29,6 +24,10 @@ export default new Router({
           component: StoreOwner
         },
       ]
+    },{
+      path: '/signin',
+      name: 'Signin',
+      component: Signin
     },
     {
       path: '/resetpwd',

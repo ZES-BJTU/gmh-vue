@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
   // 如果是去登录或注册，那就先把账户信息移除
-  if (to.path === '/') {
+  if (to.path === '/signin') {
     sessionStorage.removeItem("account");
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("token");
@@ -27,7 +27,7 @@ router.beforeEach((to, from, next) => {
   }else{
     let token = sessionStorage.getItem('token');
     if(!token){
-      next({path: '/'});
+      next({path: '/signin'});
     }else{
       next();
     }

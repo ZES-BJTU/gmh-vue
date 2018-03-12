@@ -21,7 +21,7 @@
             <el-row type="flex" justify="center">
               <div class="signin-link">
                 忘记密码了？点此
-                <router-link :to="{ path: '/resetpwd' }" class="forget-pwd ">重置密码</router-link>
+                <router-link to="/resetpwd" class="forget-pwd ">重置密码</router-link>
               </div>
             </el-row>
           </el-col>
@@ -88,7 +88,7 @@ export default {
               this.loading = false;
               const data = res.data.data;
               this.setAccountSession(data.account,data.name,data.token);
-              this.$router.push({ path: '/home' });
+              this.$router.push({ path: '/' });
             }
           })
           .catch(function(err){

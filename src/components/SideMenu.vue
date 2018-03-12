@@ -4,13 +4,13 @@
             <el-row>
                 <el-col :span="24">
                     <el-menu>
-                        <router-link to="/home/store">
+                        <router-link to="/store">
                             <el-menu-item index="1" disabled>
                                 <i class="el-icon-document"></i>
                                 <span slot="title">店铺管理</span>
                             </el-menu-item>
                         </router-link>
-                        <router-link to="/home/storeowner">
+                        <router-link to="/storeowner">
                             <el-menu-item index="2" disabled>
                                 <i class="el-icon-document"></i>
                                 <span slot="title">店铺负责人管理</span>

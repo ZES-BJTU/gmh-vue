@@ -42,6 +42,7 @@
 import axios from 'axios'
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.timeout =  10;
 
 export default {
   name: "Signin",
@@ -64,7 +65,7 @@ export default {
     };
   },
   methods: {
-    onSubmit(formName) {
+    onSubmit: function(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // this.$store.dispatch("signin", {
@@ -98,10 +99,9 @@ export default {
                   this.$router.push({ path: '/time' });
               }
             }
-          })
-          .catch(function(err){
+          }).catch( error => {
             this.loading = false;
-            this.$message.error(err);
+            this.$message.error(error.message);
           })
         } else {
           return false;

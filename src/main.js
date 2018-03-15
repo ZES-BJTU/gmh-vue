@@ -8,6 +8,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 import Utils from './lib/utils.js'
+import axiosPlugin from "./lib/axios"; 
+Vue.use(axiosPlugin);
 
 Vue.use(Vuex)
 Vue.use(ElementUI)

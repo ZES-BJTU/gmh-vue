@@ -40,8 +40,8 @@
 
 <script>
 import axios from 'axios'
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = 'http://localhost:8080';
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
+// axios.defaults.baseURL = 'http://localhost:8080';
 
 export default {
   name: "Signin",
@@ -73,7 +73,7 @@ export default {
           //   $router: this.$router
           // });
           this.loading = true;
-          axios({
+          this.$http({
             method: 'post',
             url: '/users/login',
             data: {

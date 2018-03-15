@@ -39,4 +39,19 @@ a{
         background-color: #49bfd6;
     }
 }
-
+.page-title-row{
+    .page-title-back{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .page-title{
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 2em;
+        margin-left: 10px;
+    }
+}
+//新建页的form
+.new-form{
+    margin-top:30px;
+}

@@ -4,6 +4,7 @@ import Signin from '@/components/Signin'
 import Home from '@/components/Home'
 import ResetPWD from '@/components/ResetPWD'
 import Store from '@/components/content/Store'
+import StoreNew from '@/components/content/StoreNew'
 import StoreOwner from '@/components/content/StoreOwner'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
@@ -26,6 +27,10 @@ export default new Router({
           component: Store
         },
         {
+          path: 'store/new',
+          component: StoreNew
+        },
+        {
           path: 'storeowner',
           component: StoreOwner
         },
@@ -33,7 +38,8 @@ export default new Router({
           path: 'appointment',
           component: Appointment
         },
-      ]
+      ],
+      meta: { requiresSignin: true }
     }, {
       path: '/signin',
       name: 'Signin',
@@ -47,7 +53,8 @@ export default new Router({
     {
       path: '/time',
       name: 'Time',
-      component: Time
+      component: Time,
+      meta: { requiresSignin: true }
     },
   ]
 })

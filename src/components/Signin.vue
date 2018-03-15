@@ -40,9 +40,8 @@
 
 <script>
 import axios from 'axios'
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.timeout =  10;
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
+// axios.defaults.baseURL = 'http://localhost:8080';
 
 export default {
   name: "Signin",
@@ -74,7 +73,7 @@ export default {
           //   $router: this.$router
           // });
           this.loading = true;
-          axios({
+          this.$http({
             method: 'post',
             url: '/users/login',
             data: {
@@ -83,9 +82,7 @@ export default {
             }
           }).then( res => {
             this.loading = false;
-            if( res.data.code != 0){
-              this.$message.error(res.data.message);
-            }else{
+            if( res.data.code === 0){
               this.loading = false;
               const data = res.data.data;
               this.setAccountSession(data.role,data.account,data.name,data.token);
@@ -101,7 +98,6 @@ export default {
             }
           }).catch( error => {
             this.loading = false;
-            this.$message.error(error.message);
           })
         } else {
           return false;

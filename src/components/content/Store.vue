@@ -9,7 +9,9 @@
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <el-button type="primary" icon="el-icon-plus">新建</el-button>
+      <router-link to="/store/new">
+        <el-button type="primary" icon="el-icon-plus">新建</el-button>
+      </router-link>
     </div>
     <el-table :data="tableData" fixed style="width: 100%">
       <el-table-column prop="date" label="日期" width="180">

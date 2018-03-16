@@ -57,12 +57,13 @@ export default {
     onSubmit: function(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // this.$store.dispatch("signin", {
-          //   account: this.signinForm.account,
-          //   password: this.signinForm.password,
-          //   $router: this.$router
-          // });
           this.loading = true;
+          this.$store.dispatch("addStore", this.newStoreform).then( res => {
+            console.log(res);
+          }).catch( err => {
+            console.log(err);
+          });
+          this.loading = false;
         } else {
           return false;
         }

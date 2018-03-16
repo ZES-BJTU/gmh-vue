@@ -1,5 +1,7 @@
 import axios from "axios";
-import { Message } from "element-ui";
+import {
+  Message
+} from "element-ui";
 import router from "../router";
 
 var CancelToken = axios.CancelToken;
@@ -11,7 +13,9 @@ const Axios = axios.create({
   responseType: "json",
   cancelToken: source.token,
   withCredentials: true,
-  headers: {"Content-Type": "application/json"}
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
 
@@ -20,9 +24,9 @@ Axios.interceptors.request.use(
     // 在发送请求之前做某件事
     console.log(config);
     // 若是有做鉴权token , 就给头部带上token
-    if(config.url.match('login')){
+    if (config.url.match('login')) {
       return config;
-    }else{
+    } else {
       if (sessionStorage.getItem('token')) {
         config.headers.common['x-token'] = sessionStorage.getItem('token');
       } else {
@@ -34,7 +38,7 @@ Axios.interceptors.request.use(
         });
         source.cancel('未登录');
       }
-      return config;     
+      return config;
     }
   },
   error => {
@@ -94,9 +98,54 @@ Axios.interceptors.response.use(
   }
 );
 
+const httpServer = {
+
+  post: function (url, params) {
+    return new Promise((resolve, reject) => {
+      Axios.post(url, params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
+  get: function (url, params) {
+    return new Promise((resolve, reject) => {
+      Axios.get(url, params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
+  put: function (url, params) {
+    return new Promise((resolve, reject) => {
+      Axios.put(url, params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
+  del: function (url, params) {
+    return new Promise((resolve, reject) => {
+      Axios.delete(url, params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
+}
+
+
 // 对axios的实例重新封装成一个plugin ,方便 Vue.use(xxxx)
-export default {
-  install: function (Vue, Option) {
-    Object.defineProperty(Vue.prototype, "$http", {value: Axios});
-  }
-};
+export default httpServer;

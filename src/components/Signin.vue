@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import httpServer from '@/lib/axios'
 
 export default {
   name: "Signin",
@@ -71,18 +71,14 @@ export default {
           //   $router: this.$router
           // });
           this.loading = true;
-          this.$http({
-            method: 'post',
-            url: '/users/login',
-            data: {
-              'account': this.signinForm.account,
-              'password': this.signinForm.password
-            }
+          httpServer.post('/users/login',{
+            'account': this.signinForm.account,
+            'password': this.signinForm.password
           }).then( res => {
             this.loading = false;
-            if( res.data.code === 0){
+            if( res.code === 0){
               this.loading = false;
-              const data = res.data.data;
+              const data = res.data;
               this.setAccountSession(data.role,data.account,data.name,data.token);
               if(data.role==='管理员'){
                   this.$router.push({ path: '/store' });

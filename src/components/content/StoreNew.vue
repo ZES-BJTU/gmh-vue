@@ -10,16 +10,16 @@
       <el-col :xs="24" :sm="12" :md="8">
         <el-form class="new-form" :model="newStoreform" :rules="rules" ref="newStoreform" label-width="80px" @keyup.enter.native="onSubmit('newStoreform')" v-loading="loading">
           <el-form-item label="店铺名称" prop="name">
-            <el-input v-model="newStoreform.name" :autofocus="true"></el-input>
+            <el-input v-model.trim="newStoreform.name" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="店铺地址" prop="address">
-            <el-input v-model="newStoreform.address"></el-input>
+            <el-input v-model.trim="newStoreform.address"></el-input>
           </el-form-item>
           <el-form-item label="店铺电话">
-            <el-input v-model="newStoreform.phone"></el-input>
+            <el-input v-model.trim="newStoreform.phone"></el-input>
           </el-form-item>
           <el-form-item label="店铺备注">
-            <el-input v-model="newStoreform.remark"></el-input>
+            <el-input v-model.trim="newStoreform.remark"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary"  @click="onSubmit('newStoreform')">新建</el-button>
@@ -52,14 +52,19 @@ export default {
       loading: false
     };
   },
-  computed: {},
   methods: {
     onSubmit: function(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$store.dispatch("addStore", this.newStoreform).then( res => {
-            console.log(res);
+            this.loading = false;
+            if( res.code === 0){
+              this.$message.success('添加成功');
+              setTimeout(() => {
+                this.$router.push({ path: '/store' });
+              },2000)
+            }
           }).catch( err => {
             console.log(err);
           });

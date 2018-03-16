@@ -1,11 +1,12 @@
 <template>
   <div class="Store">
-    <el-form :inline="true" :model="storeSearch" class="demo-form-inline search-form">
+    <el-form :inline="true" :model="storeSearch" ref="storeSearch" class="demo-form-inline search-form" @keyup.enter.native="searchStore('search')">
       <el-form-item>
-        <el-input v-model="storeSearch.content" placeholder=""></el-input>
+        <el-input style="display:none;"></el-input>
+        <el-input v-model.trim="storeSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchStore" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchStore('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
@@ -13,16 +14,16 @@
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
-    <el-table :data="tableData" fixed style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180">
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180">
-      </el-table-column>
-      <el-table-column prop="address" label="地址">
-      </el-table-column>
+    <el-table :data="tableData" size="small" style="width: 100%">
+      <el-table-column prop="id" label="ID" width="180" v-if="false"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="address" label="地址" width="180"></el-table-column>
+      <el-table-column prop="phone" label="电话"></el-table-column>
+      <el-table-column prop="remark" label="备注"></el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="1000">
-    </el-pagination>
+    <el-pagination layout="total, prev, pager, next" 
+      :page-size="pageSize" :total="totalCount"
+       @current-change="chagePage"></el-pagination>
   </div>
 </template>
 
@@ -32,40 +33,47 @@ export default {
   data() {
     return {
       storeSearch: {
-        content: ""
+        content: "",
+        oldContent: "",//储存最近一次搜索的内容
+        pageNum: 1,
+        pageSize: 10,
+        type: ""
       },
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
+      
     };
   },
-  computed: {},
+  computed: {
+    pageNum: function(){
+      return this.$store.state.store.pageNum;
+    },
+    pageSize: function(){
+      return this.$store.state.store.pageSize;
+    },
+    totalCount: function(){
+      return this.$store.state.store.totalCount;
+    },
+    totalPages: function(){
+      return this.$store.state.store.totalPages;
+    },
+    tableData: function(){
+      return this.$store.state.store.stores;
+    }
+  },
   methods: {
-    // signout: function() {
-    //     this.clearAccountSession();
-    //     this.$router.push({ path: '/Signin' });
-    // }
-    searchStore: () => {
-      alert(1);
+    chagePage(val){
+      this.storeSearch.pageNum = val;
+      this.searchStore('page');
+    },
+    searchStore(type) {
+      if(type === 'search'){
+        this.storeSearch.oldContent = this.storeSearch.content;
+      }
+      this.storeSearch.type = type;
+      this.$store.dispatch("loadStore", this.storeSearch).then( res => {
+        this.$message.success('查询成功');
+      }).catch( err => {
+        console.log(err);
+      });
     }
   }
 };

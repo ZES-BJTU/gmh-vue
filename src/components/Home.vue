@@ -45,7 +45,7 @@ export default {
   margin-top: 1px;
 }
 .el-main{
-  height: 500px;
+  height: 600px;
   // background-color: gray;
 }
 .el-footer{

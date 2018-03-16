@@ -21,8 +21,6 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
   config => {
-    // 在发送请求之前做某件事
-    console.log(config);
     // 若是有做鉴权token , 就给头部带上token
     if (config.url.match('login')) {
       return config;
@@ -113,7 +111,9 @@ const httpServer = {
   },
   get: function (url, params) {
     return new Promise((resolve, reject) => {
-      Axios.get(url, params)
+      Axios.get(url, {
+          params: params
+        })
         .then(response => {
           resolve(response.data);
         })

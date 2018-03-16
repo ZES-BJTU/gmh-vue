@@ -77,7 +77,6 @@ export default {
           }).then( res => {
             this.loading = false;
             if( res.code === 0){
-              this.loading = false;
               const data = res.data;
               this.setAccountSession(data.role,data.account,data.name,data.token);
               if(data.role==='管理员'){

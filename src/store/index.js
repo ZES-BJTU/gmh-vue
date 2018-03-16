@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import account from './modules/account'
+import store from './modules/store'
 import * as actions from './actions'
 import mutations from './mutations'
 
@@ -15,5 +16,6 @@ export default new Vuex.Store({
   mutations: mutations,
   modules: {
     account,
+    store
   }
 })

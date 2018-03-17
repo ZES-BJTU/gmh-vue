@@ -92,14 +92,48 @@ export default {
       this.$router.push({ path: '/store/' + row.id});
     },
     handleDelete(index, row){
-      this.loading = true;
-      this.$store.dispatch("delStore", row.id).then( res => {
-        this.loading = false;
-        this.$message.success('删除成功');
-      }).catch( err => {
-        this.loading = false;
-        console.log(err);
+      const h = this.$createElement;
+      this.$msgbox({
+        title: '提示',
+        message: h('p', null, [
+          h('span', null, '此操作将会永久删除该记录！ ')
+        ]),
+        showCancelButton: true,
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true;
+            instance.confirmButtonText = '删除中...';
+            this.$store.dispatch("delStore", row.id).then( res => {
+              done();
+              instance.confirmButtonLoading = false;
+              this.searchStore('search');
+            }).catch( err => {
+              console.log(err);
+            });
+          } else {
+            done();
+          }
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消删除'
+        });
       });
+      // this.$confirm('此操作将永久删除记录, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   this.$store.dispatch("delStore", row.id).then( res => {
+      //     this.searchStore('search');
+      //   }).catch( err => {
+      //     console.log(err);
+      //   });
+      // })
     },
   },
   beforeMount: function () {

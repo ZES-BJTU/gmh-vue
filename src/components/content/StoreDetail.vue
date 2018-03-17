@@ -59,10 +59,10 @@ export default {
         if (valid) {
           this.loading = true;
           this.$store.dispatch("modStore", this.modStoreform).then( res => {
-            this.loading = false;
             if( res.code === 0){
               this.$message.success('修改成功');
               setTimeout(() => {
+                this.loading = false;
                 this.$router.push({ path: '/store' });
               },2000)
             }

@@ -53,16 +53,34 @@ Axios.interceptors.request.use(
 //返回状态判断(添加响应拦截器)
 Axios.interceptors.response.use(
   res => {
-    //对响应数据做些事
-    if (res.data.code != 0) {
-      Message({
-        //  饿了么的消息弹窗组件,类似toast
-        showClose: true,
-        message: res.data.message,
-        type: "error"
-      });
-      return Promise.reject(res.data.message);
-    }
+    console.log(res);
+    switch( res.status ){
+      case 201:
+        Message({
+          showClose: true,
+          message: '新建成功',
+          type: "success"
+        });
+        break;
+      case 204:
+        Message({
+          showClose: true,
+          message: '删除成功',
+          type: "success"
+        });
+        break;
+      default:
+        if (res.data.code != 0) {
+          Message({
+            //  饿了么的消息弹窗组件,类似toast
+            showClose: true,
+            message: res.data.message,
+            type: "error"
+          });
+          return Promise.reject(res.data.message);
+        }
+    } 
+
     return res;
   },
   error => {
@@ -124,9 +142,7 @@ const httpServer = {
   },
   put: function (url, params) {
     return new Promise((resolve, reject) => {
-      Axios.put(url, {
-        params: params
-      })
+      Axios.put(url, params)
         .then(response => {
           resolve(response.data);
         })

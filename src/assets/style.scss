@@ -36,10 +36,13 @@ a{
     float: right;
 }
 .search-btn{
-    background-color: #7bcad9;
-    border-color: #7bcad9;
+    &,&:focus{
+        background-color: #7bcad9;
+        border-color: #7bcad9;
+    }
     &:hover{
         background-color: #49bfd6;
+        border-color: #49bfd6;
     }
 }
 .page-title-row{

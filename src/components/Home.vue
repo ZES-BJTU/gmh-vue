@@ -10,7 +10,7 @@
           <el-main>
             <router-view></router-view>
           </el-main>
-          <el-footer>Footer</el-footer>
+          <!-- <el-footer>Footer</el-footer> -->
         </el-container>
       </el-container>
     </el-container>
@@ -45,8 +45,8 @@ export default {
   margin-top: 1px;
 }
 .el-main{
-  height: 600px;
-  // background-color: gray;
+  width: calc(100% - 200px);
+  margin-left: 200px;
 }
 .el-footer{
   // background-color: red;

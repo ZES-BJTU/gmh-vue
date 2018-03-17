@@ -9,7 +9,11 @@ const state = {
 }
 
 // getters
-const getters = {}
+const getters = {
+  getStoreById: (state) => (id) => {
+    return state.stores.find(store => store.id === Number.parseInt(id)) 
+  }
+}
 
 // actions
 const actions = {
@@ -43,13 +47,23 @@ const actions = {
       })
     });
   },
-
-  delete({commit,state}, info) {
-    console.log(info);
-    axios({
-      method: 'delete',
-      url: '/user/delete/' + info.id
-    })
+  modStore({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/stores/' + info.id,info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
+  delStore({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.del('/stores/' + info,info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
   },
 }
 

@@ -1,28 +1,28 @@
 <template>
-  <div class="StoreNew">
+  <div class="StoreDetail">
     <el-row class="page-title-row">
       <router-link to="/store" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
-      <span class="page-title">新建店铺</span>
+      <span class="page-title">编辑店铺</span>
     </el-row>
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="newStoreform" ref="newStoreform" label-width="80px" :rules="rules" @keyup.enter.native="onSubmit('newStoreform')" v-loading="loading">
+        <el-form class="new-form" :model="modStoreform" :rules="rules" ref="modStoreform" label-width="80px" @keyup.enter.native="onSubmit('newStoreform')" v-loading="loading">
           <el-form-item label="店铺名称" prop="name">
-            <el-input v-model.trim="newStoreform.name" :autofocus="true"></el-input>
+            <el-input v-model.trim="modStoreform.name" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="店铺地址" prop="address">
-            <el-input v-model.trim="newStoreform.address"></el-input>
+            <el-input v-model.trim="modStoreform.address"></el-input>
           </el-form-item>
           <el-form-item label="店铺电话">
-            <el-input v-model.trim="newStoreform.phone"></el-input>
+            <el-input v-model.trim="modStoreform.phone"></el-input>
           </el-form-item>
           <el-form-item label="店铺备注">
-            <el-input v-model.trim="newStoreform.remark"></el-input>
+            <el-input v-model.trim="modStoreform.remark"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary"  @click="onSubmit('newStoreform')">提交</el-button>
+            <el-button type="primary"  @click="onSubmit('modStoreform')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -31,16 +31,16 @@
 </template>
 
 <script>
-import httpServer from '@/lib/axios'
 export default {
-  name: "StoreNew",
+  name: "StoreDetail",
   data() {
     return {
-      newStoreform: {
-        name: "",
-        address: "",
-        phone: "",
-        remark: ""
+      modStoreform: {
+        id: 0,
+        name: '',
+        addreee: '',
+        phone: '',
+        remark: ''
       },
       rules: {
         name: [
@@ -58,10 +58,10 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$store.dispatch("addStore", this.newStoreform).then( res => {
+          this.$store.dispatch("modStore", this.modStoreform).then( res => {
             this.loading = false;
             if( res.code === 0){
-              this.$message.success('添加成功');
+              this.$message.success('修改成功');
               setTimeout(() => {
                 this.$router.push({ path: '/store' });
               },2000)
@@ -74,6 +74,15 @@ export default {
           return false;
         }
       });
+    }
+  },
+  beforeMount: function () {
+    if(this.$store.state.store.stores.length === 0){
+      //如果vuex中没有数据，则返回列表页
+      this.$router.push({ path: '/store' });
+    }else{
+      //从vuex中查询该id
+      this.modStoreform = this.$store.getters.getStoreById(this.$route.params.id);
     }
   }
 };

@@ -35,6 +35,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.HomeHeader{
+  position: fixed;
+  z-index: 999;
+  width: calc(100% - 40px);
+}
 .account-item {
   float: right;
 }

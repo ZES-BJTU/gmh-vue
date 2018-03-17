@@ -14,12 +14,23 @@
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
-    <el-table :data="tableData" size="small" style="width: 100%">
-      <el-table-column prop="id" label="ID" width="180" v-if="false"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="address" label="地址" width="180"></el-table-column>
+    <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
+      <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
+      <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column prop="address" label="地址"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
+      <el-table-column label="操作" width="150px;" fixed="right">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
@@ -39,7 +50,7 @@ export default {
         pageSize: 10,
         type: ""
       },
-      
+      loading: false
     };
   },
   computed: {
@@ -60,21 +71,39 @@ export default {
     }
   },
   methods: {
-    chagePage(val){
-      this.storeSearch.pageNum = val;
-      this.searchStore('page');
-    },
     searchStore(type) {
+      this.loading = true;
       if(type === 'search'){
         this.storeSearch.oldContent = this.storeSearch.content;
       }
       this.storeSearch.type = type;
       this.$store.dispatch("loadStore", this.storeSearch).then( res => {
+        this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
         console.log(err);
       });
-    }
+    },
+    chagePage(val){
+      this.storeSearch.pageNum = val;
+      this.searchStore('page');
+    },
+    handleEdit(index, row){
+      this.$router.push({ path: '/store/' + row.id});
+    },
+    handleDelete(index, row){
+      this.loading = true;
+      this.$store.dispatch("delStore", row.id).then( res => {
+        this.loading = false;
+        this.$message.success('删除成功');
+      }).catch( err => {
+        this.loading = false;
+        console.log(err);
+      });
+    },
+  },
+  beforeMount: function () {
+    this.searchStore('search');
   }
 };
 </script>

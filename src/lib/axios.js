@@ -124,7 +124,9 @@ const httpServer = {
   },
   put: function (url, params) {
     return new Promise((resolve, reject) => {
-      Axios.put(url, params)
+      Axios.put(url, {
+        params: params
+      })
         .then(response => {
           resolve(response.data);
         })

@@ -5,31 +5,31 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  stores: []
+  principals: []
 }
 
 // getters
 const getters = {
-  getStoreById: (state) => (id) => {
-    return state.stores.find(store => store.id === Number.parseInt(id)) 
+  getPrincipalById: (state) => (id) => {
+    return state.principals.find(principal => principal.id === Number.parseInt(id)) 
   }
 }
 
 // actions
 const actions = {
-  loadStore({commit}, info) {
+  loadPrincipal({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/stores',{
+      httpServer.get('/users',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {
-        commit('loadStore', {
+        commit('loadPrincipal', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
-          stores: res.data.data
+          principals: res.data.data
         });
         resolve(res);
       })
@@ -38,27 +38,27 @@ const actions = {
       })
     });
   },
-  addStore({commit}, info) {
+  addPrincipal({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.post('/stores',info).then( res => {
+      httpServer.post('/users',info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  modStore({commit}, info) {
+  modPrincipal({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/stores/' + info.id,info).then( res => {
+      httpServer.put('/users/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  delStore({commit}, info) {
+  delPrincipal({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.del('/stores/' + info,info).then( res => {
+      httpServer.del('/users/' + info,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -69,12 +69,12 @@ const actions = {
 
 // mutations
 const mutations = {
-  loadStore(state, payload){
+  loadPrincipal(state, payload){
     state.pageNum = payload.pageNum
     state.pageSize = payload.pageSize
     state.totalCount = payload.totalCount
     state.totalPages = payload.totalPages
-    state.stores = payload.stores
+    state.principals = payload.principals
   }
 }
 

@@ -6,7 +6,7 @@ import ResetPWD from '@/components/ResetPWD'
 import Store from '@/components/content/Store'
 import StoreNew from '@/components/content/StoreNew'
 import StoreDetail from '@/components/content/StoreDetail'
-import StoreOwner from '@/components/content/StoreOwner'
+import Principal from '@/components/content/Principal'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Time from '@/components/content/Time'
@@ -34,8 +34,8 @@ export default new Router({
         { path: 'store/:id', 
           component: StoreDetail },
         {
-          path: 'storeowner',
-          component: StoreOwner
+          path: 'principal',
+          component: Principal
         },
         {
           path: 'appointment',

@@ -10,7 +10,7 @@
                                 <span slot="title">店铺管理</span>
                             </el-menu-item>
                         </router-link>
-                        <router-link to="/storeowner" v-if="role==='管理员'">
+                        <router-link to="/principal" v-if="role==='管理员'">
                             <el-menu-item index="2" disabled>
                                 <i class="el-icon-document"></i>
                                 <span slot="title">店铺负责人管理</span>

@@ -56,14 +56,6 @@ export default {
       }else if( route.match('appointment') ) {// 前台首页
         return "4";
       }
-      // console.log(route);
-      // if (this.role === "管理员") {
-      //   return "1";
-      // } else if (this.role === "店长") {
-      //   return "3";
-      // } else if (this.role === "前台") {
-      //   return "4";
-      // }
 
     }
   }

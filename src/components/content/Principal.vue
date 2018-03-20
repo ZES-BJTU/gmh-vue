@@ -1,6 +1,6 @@
 <template>
   <div class="Principal">
-    <el-form :inline="true" :model="principalSearch" ref="principalSearch" class="demo-form-inline search-form" @keyup.enter.native="searchStore('search')">
+    <el-form :inline="true" :model="principalSearch" ref="principalSearch" class="demo-form-inline search-form" @keyup.enter.native="searchPrincipal('search')">
       <el-form-item>
         <el-input style="display:none;"></el-input>
         <el-input v-model.trim="principalSearch.content" placeholder=""></el-input>
@@ -10,15 +10,17 @@
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/store/new">
+      <router-link to="/principal/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
-    <!-- <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
+    <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
-      <el-table-column prop="phone" label="电话"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
+      <el-table-column prop="mobile" label="手机"></el-table-column>
+      <el-table-column prop="gender" label="性别"></el-table-column>
+      <el-table-column prop="storeName" label="店铺名称"></el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
@@ -34,7 +36,7 @@
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
-       @current-change="chagePage"></el-pagination> -->
+       @current-change="chagePage"></el-pagination>
   </div>
 </template>
 
@@ -55,21 +57,21 @@ export default {
     };
   },
   computed: {
-    // pageNum: function(){
-    //   return this.$store.state.principals.pageNum;
-    // },
-    // pageSize: function(){
-    //   return this.$store.state.principals.pageSize;
-    // },
-    // totalCount: function(){
-    //   return this.$store.state.principals.totalCount;
-    // },
-    // totalPages: function(){
-    //   return this.$store.state.principals.totalPages;
-    // },
-    // tableData: function(){
-    //   return this.$store.state.principal.principals;
-    // }
+    pageNum: function(){
+      return this.$store.state.principal.pageNum;
+    },
+    pageSize: function(){
+      return this.$store.state.principal.pageSize;
+    },
+    totalCount: function(){
+      return this.$store.state.principal.totalCount;
+    },
+    totalPages: function(){
+      return this.$store.state.principal.totalPages;
+    },
+    tableData: function(){
+      return this.$store.state.principal.principals;
+    }
   },
   methods: {
     searchPrincipal(type) {
@@ -90,7 +92,7 @@ export default {
       this.searchPrincipal('page');
     },
     handleEdit(index, row){
-    //   this.$router.push({ path: '/store/' + row.id});
+      this.$router.push({ path: '/principal/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;

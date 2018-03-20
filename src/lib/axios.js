@@ -53,7 +53,7 @@ Axios.interceptors.request.use(
 //返回状态判断(添加响应拦截器)
 Axios.interceptors.response.use(
   res => {
-    console.log(res);
+    // console.log(res);
     switch( res.status ){
       case 201:
         Message({

@@ -8,21 +8,21 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="newStoreform" ref="newStoreform" label-width="80px" :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newStoreform')" v-loading="loading">
+        <el-form class="new-form" :model="newStoreForm" ref="newStoreForm" label-width="80px" :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newStoreForm')" v-loading="loading">
           <el-form-item label="店铺名称" prop="name">
-            <el-input v-model.trim="newStoreform.name" :autofocus="true"></el-input>
+            <el-input v-model.trim="newStoreForm.name" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="店铺地址" prop="address">
-            <el-input v-model.trim="newStoreform.address"></el-input>
+            <el-input v-model.trim="newStoreForm.address"></el-input>
           </el-form-item>
           <el-form-item label="店铺电话">
-            <el-input v-model.trim="newStoreform.phone"></el-input>
+            <el-input v-model.trim="newStoreForm.phone"></el-input>
           </el-form-item>
           <el-form-item label="店铺备注">
-            <el-input v-model.trim="newStoreform.remark"></el-input>
+            <el-input v-model.trim="newStoreForm.remark"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary"  @click="onSubmit('newStoreform')">提交</el-button>
+            <el-button type="primary"  @click="onSubmit('newStoreForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -36,7 +36,7 @@ export default {
   name: "StoreNew",
   data() {
     return {
-      newStoreform: {
+      newStoreForm: {
         name: "",
         address: "",
         phone: "",
@@ -51,7 +51,7 @@ export default {
         ]
       },
       loading: false,
-      enterFlag: true
+      enterFlag: true//true代表允许回车，false代表不允许回车，避免重复提交
     };
   },
   methods: {
@@ -60,7 +60,7 @@ export default {
         if (valid) {
           this.loading = true;
           this.enterFlag = false;
-          this.$store.dispatch("addStore", this.newStoreform).then( res => {
+          this.$store.dispatch("addStore", this.newStoreForm).then( res => {
             if( res.code === 0){
               this.$message.success('添加成功');
               setTimeout(() => {

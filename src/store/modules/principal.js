@@ -22,7 +22,8 @@ const actions = {
       httpServer.get('/users',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
-        'pageSize': info.pageSize
+        'pageSize': info.pageSize,
+        'role': info.role
       }).then( res => {
         commit('loadPrincipal', {
           pageNum: res.data.pageNum,

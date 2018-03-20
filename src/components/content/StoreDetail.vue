@@ -8,21 +8,21 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="modStoreform" :rules="rules" ref="modStoreform" label-width="80px" @keyup.enter.native="onSubmit('newStoreform')" v-loading="loading">
+        <el-form class="new-form" :model="modStoreForm" :rules="rules" ref="modStoreForm" label-width="80px" @keyup.enter.native="onSubmit('modStoreForm')" v-loading="loading">
           <el-form-item label="店铺名称" prop="name">
-            <el-input v-model.trim="modStoreform.name" :autofocus="true"></el-input>
+            <el-input v-model.trim="modStoreForm.name" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="店铺地址" prop="address">
-            <el-input v-model.trim="modStoreform.address"></el-input>
+            <el-input v-model.trim="modStoreForm.address"></el-input>
           </el-form-item>
           <el-form-item label="店铺电话">
-            <el-input v-model.trim="modStoreform.phone"></el-input>
+            <el-input v-model.trim="modStoreForm.phone"></el-input>
           </el-form-item>
           <el-form-item label="店铺备注">
-            <el-input v-model.trim="modStoreform.remark"></el-input>
+            <el-input v-model.trim="modStoreForm.remark"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary"  @click="onSubmit('modStoreform')">提交</el-button>
+            <el-button type="primary"  @click="onSubmit('modStoreForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -35,7 +35,7 @@ export default {
   name: "StoreDetail",
   data() {
     return {
-      modStoreform: {
+      modStoreForm: {
         id: 0,
         name: '',
         addreee: '',
@@ -58,7 +58,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$store.dispatch("modStore", this.modStoreform).then( res => {
+          this.$store.dispatch("modStore", this.modStoreForm).then( res => {
             if( res.code === 0){
               this.$message.success('修改成功');
               setTimeout(() => {
@@ -82,7 +82,7 @@ export default {
       this.$router.push({ path: '/store' });
     }else{
       //从vuex中查询该id
-      this.modStoreform = this.$store.getters.getStoreById(this.$route.params.id);
+      this.modStoreForm = this.$store.getters.getStoreById(this.$route.params.id);
     }
   }
 };

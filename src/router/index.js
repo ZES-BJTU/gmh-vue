@@ -7,6 +7,8 @@ import Store from '@/components/content/Store'
 import StoreNew from '@/components/content/StoreNew'
 import StoreDetail from '@/components/content/StoreDetail'
 import Principal from '@/components/content/Principal'
+import PrincipalNew from '@/components/content/PrincipalNew'
+import PrincipalDetail from '@/components/content/PrincipalDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Time from '@/components/content/Time'
@@ -36,6 +38,14 @@ export default new Router({
         {
           path: 'principal',
           component: Principal
+        },
+        {
+          path: 'principal/new',
+          component: PrincipalNew
+        },
+        {
+          path: 'principal/:id',
+          component: PrincipalDetail
         },
         {
           path: 'appointment',

@@ -5,7 +5,8 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  stores: []
+  stores: [],
+  storesAll: []
 }
 
 // getters
@@ -35,6 +36,18 @@ const actions = {
       })
       .catch( err => {
         reject(err);
+      })
+    });
+  },
+  loadStoreAll({commit}, info) {//获取全部店铺
+    return new Promise((resolve, reject) => {
+      httpServer.get('/stores/all').then( res => {
+        commit('loadStoreAll', {
+          storesAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
       })
     });
   },
@@ -75,6 +88,9 @@ const mutations = {
     state.totalCount = payload.totalCount
     state.totalPages = payload.totalPages
     state.stores = payload.stores
+  },
+  loadStoreAll(state, payload){
+    state.storesAll = payload.storesAll
   }
 }
 

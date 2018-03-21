@@ -1,12 +1,12 @@
 <template>
-    <div class="Appointment">   
-        预约
+    <div class="Schedule">   
+        日程
     </div>
 </template>
 
 <script>
 export default {
-  name: "Appointment",
+  name: "Schedule",
   data() {
     return {};
   },

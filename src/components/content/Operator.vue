@@ -1,16 +1,16 @@
 <template>
-  <div class="Principal">
-    <el-form :inline="true" :model="principalSearch" ref="principalSearch" class="demo-form-inline search-form" @keyup.enter.native="searchPrincipal('search')">
+  <div class="Operator">
+    <el-form :inline="true" :model="operatorSearch" ref="operatorSearch" class="demo-form-inline search-form" @keyup.enter.native="searchOperator('search')">
       <el-form-item>
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="principalSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="operatorSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchPrincipal('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchOperator('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/principal/new">
+      <router-link to="/operator/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
@@ -20,7 +20,6 @@
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="mobile" label="手机"></el-table-column>
       <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="storeName" label="店铺名称"></el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
@@ -42,15 +41,15 @@
 
 <script>
 export default {
-  name: "Principal",
+  name: "Operator",
   data() {
     return {
-      principalSearch: {
+      operatorSearch: {
         content: "",
         oldContent: "",//储存最近一次搜索的内容
         pageNum: 1,
         pageSize: 10,
-        role: 2,//1.管理员 2.店长 3.前台 4.操作员
+        role: 4,//1.管理员 2.店长 3.前台 4.操作员
         type: ""
       },
       loading: false
@@ -74,13 +73,13 @@ export default {
     }
   },
   methods: {
-    searchPrincipal(type) {
+    searchOperator(type) {
       this.loading = true;
       if(type === 'search'){
-        this.principalSearch.oldContent = this.principalSearch.content;
+        this.operatorSearch.oldContent = this.operatorSearch.content;
       }
-      this.principalSearch.type = type;
-      this.$store.dispatch("loadUser", this.principalSearch).then( res => {
+      this.operatorSearch.type = type;
+      this.$store.dispatch("loadUser", this.operatorSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -88,11 +87,11 @@ export default {
       });
     },
     chagePage(val){
-      this.principalSearch.pageNum = val;
-      this.searchPrincipal('page');
+      this.operatorSearch.pageNum = val;
+      this.searchOperator('page');
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/principal/' + row.id});
+      this.$router.push({ path: '/operator/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;
@@ -112,7 +111,7 @@ export default {
             this.$store.dispatch("delUser", row.id).then( res => {
               done();
               instance.confirmButtonLoading = false;
-              this.searchPrincipal('search');
+              this.searchOperator('search');
             }).catch( err => {
               console.log(err);
             });
@@ -129,7 +128,7 @@ export default {
     },
   },
   beforeMount: function () {
-    this.searchPrincipal('search');
+    this.searchOperator('search');
   }
 };
 </script>

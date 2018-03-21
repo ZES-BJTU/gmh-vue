@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import httpServer from "@/lib/axios";
 export default {
   name: "PrincipalNew",
   data() {
@@ -102,7 +101,7 @@ export default {
           this.loading = true;
           this.enterFlag = false;
           this.$store
-            .dispatch("addPrincipal", this.newPrincipalForm)
+            .dispatch("addUser", this.newPrincipalForm)
             .then(res => {
               if (res.code === 0) {
                 this.$message.success("添加成功");

@@ -5,19 +5,19 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  principals: []
+  users: []
 }
 
 // getters
 const getters = {
-  getPrincipalById: (state) => (id) => {
-    return state.principals.find(principal => principal.id === Number.parseInt(id)) 
+  getUserById: (state) => (id) => {
+    return state.users.find(user => user.id === Number.parseInt(id)) 
   }
 }
 
 // actions
 const actions = {
-  loadPrincipal({commit}, info) {
+  loadUser({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.get('/users',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
@@ -25,12 +25,12 @@ const actions = {
         'pageSize': info.pageSize,
         'role': info.role
       }).then( res => {
-        commit('loadPrincipal', {
+        commit('loadUser', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
-          principals: res.data.data
+          users: res.data.data
         });
         resolve(res);
       })
@@ -39,7 +39,7 @@ const actions = {
       })
     });
   },
-  addPrincipal({commit}, info) {
+  addUser({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.post('/users',info).then( res => {
         resolve(res);
@@ -48,7 +48,7 @@ const actions = {
       })
     });
   },
-  modPrincipal({commit}, info) {
+  modUser({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/users/' + info.id,info).then( res => {
         resolve(res);
@@ -57,7 +57,7 @@ const actions = {
       })
     });
   },
-  delPrincipal({commit}, info) {
+  delUser({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.del('/users/' + info,info).then( res => {
         resolve(res);
@@ -70,12 +70,12 @@ const actions = {
 
 // mutations
 const mutations = {
-  loadPrincipal(state, payload){
+  loadUser(state, payload){
     state.pageNum = payload.pageNum
     state.pageSize = payload.pageSize
     state.totalCount = payload.totalCount
     state.totalPages = payload.totalPages
-    state.principals = payload.principals
+    state.users = payload.users
   }
 }
 

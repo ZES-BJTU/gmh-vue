@@ -100,7 +100,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$store.dispatch("modPrincipal", this.modPrincipalForm).then( res => {
+          this.$store.dispatch("modUser", this.modPrincipalForm).then( res => {
             if( res.code === 0){
               this.$message.success('修改成功');
               setTimeout(() => {
@@ -127,20 +127,20 @@ export default {
     }
   },
   beforeMount: function () {
-    if(this.$store.state.principal.principals.length === 0){
+    if(this.$store.state.user.users.length === 0){
       //如果vuex中没有数据，则返回列表页
       this.$router.push({ path: '/principal' });
     }else{
       this.loadStoreAll();
       //从vuex中查询该id
-      const principal = this.$store.getters.getPrincipalById(this.$route.params.id);
-      this.modPrincipalForm.id = principal.id;
-      this.modPrincipalForm.name = principal.name;
-      this.modPrincipalForm.email = principal.email;
-      this.modPrincipalForm.mobile = Number.parseInt(principal.mobile);
-      this.modPrincipalForm.gender = ( principal.gender === '男' ? 1 : 0);
-      this.modPrincipalForm.storeId = principal.storeId;
-      this.modPrincipalForm.remark = principal.remark;
+      const user = this.$store.getters.getUserById(this.$route.params.id);
+      this.modPrincipalForm.id = user.id;
+      this.modPrincipalForm.name = user.name;
+      this.modPrincipalForm.email = user.email;
+      this.modPrincipalForm.mobile = Number.parseInt(user.mobile);
+      this.modPrincipalForm.gender = ( user.gender === '男' ? 1 : 0);
+      this.modPrincipalForm.storeId = user.storeId;
+      this.modPrincipalForm.remark = user.remark;
     }
   }
 };

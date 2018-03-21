@@ -78,7 +78,7 @@ export default {
             this.loading = false;
             if( res.code === 0){
               const data = res.data;
-              this.setAccountSession(data.role,data.account,data.name,data.token);
+              this.setAccountSession(data.role,data.account,data.name + '-' + data.storeName,data.token);
               if(data.role==='管理员'){
                   this.$router.push({ path: '/store' });
               }else if (data.role==='店长'){

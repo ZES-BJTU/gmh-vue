@@ -40,6 +40,12 @@
                                 <span slot="title">预约管理</span>
                             </el-menu-item>
                         </router-link>
+                        <router-link to="/stocktype" v-if="role==='前台'">
+                            <el-menu-item index="7" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">库存分类管理</span>
+                            </el-menu-item>
+                        </router-link>
                     </el-menu>
                 </el-col>
             </el-row>
@@ -72,6 +78,8 @@ export default {
         return "5";
       }else if( route.match('appointment') ) {// 前台-预约管理管理
         return "6";
+      }else if( route.match('stocktype') ) {// 前台-库存分类管理
+        return "7";
       }
 
     }

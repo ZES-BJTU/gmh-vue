@@ -2,6 +2,7 @@
   <div class="Reception">
     <el-form :inline="true" :model="receptionSearch" ref="receptionSearch" class="demo-form-inline search-form" @keyup.enter.native="searchReception('search')">
       <el-form-item>
+        <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
         <el-input v-model.trim="receptionSearch.content" placeholder=""></el-input>
       </el-form-item>

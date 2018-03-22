@@ -2,6 +2,7 @@
   <div class="Operator">
     <el-form :inline="true" :model="operatorSearch" ref="operatorSearch" class="demo-form-inline search-form" @keyup.enter.native="searchOperator('search')">
       <el-form-item>
+        <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
         <el-input v-model.trim="operatorSearch.content" placeholder=""></el-input>
       </el-form-item>

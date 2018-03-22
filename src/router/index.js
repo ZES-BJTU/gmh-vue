@@ -15,6 +15,9 @@ import ReceptionDetail from '@/components/content/ReceptionDetail'
 import Operator from '@/components/content/Operator'
 import OperatorNew from '@/components/content/OperatorNew'
 import OperatorDetail from '@/components/content/OperatorDetail'
+import StockType from '@/components/content/StockType'
+import StockTypeNew from '@/components/content/StockTypeNew'
+import StockTypeDetail from '@/components/content/StockTypeDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -78,6 +81,18 @@ export default new Router({
         { // 修改操作员
           path: 'operator/:id',
           component: OperatorDetail
+        },
+        { // 操作员
+          path: 'stocktype',
+          component: StockType
+        },
+        { // 新建操作员
+          path: 'stocktype/new',
+          component: StockTypeNew
+        },
+        { // 修改操作员
+          path: 'stocktype/:id',
+          component: StockTypeDetail
         },
         { // 预约
           path: 'appointment',

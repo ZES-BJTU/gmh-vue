@@ -48,9 +48,9 @@ export default {
       operatorSearch: {
         content: "",
         oldContent: "",//储存最近一次搜索的内容
-        pageNum: 1,
-        pageSize: 10,
-        role: 4,//1.管理员 2.店长 3.前台 4.操作员
+        pageNum: '1',
+        pageSize: '10',
+        role: '4',//1.管理员 2.店长 3.前台 4.操作员
         type: ""
       },
       loading: false

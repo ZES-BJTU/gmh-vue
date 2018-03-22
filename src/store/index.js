@@ -5,6 +5,7 @@ import account from './modules/account'
 import user from './modules/user'
 import store from './modules/store'
 import stockType from './modules/stockType'
+import stock from './modules/stock'
 import * as actions from './actions'
 import mutations from './mutations'
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     account,
     store,
     user,
-    stockType
+    stockType,
+    stock
   }
 })

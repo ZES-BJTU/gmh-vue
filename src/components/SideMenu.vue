@@ -46,6 +46,12 @@
                                 <span slot="title">库存分类管理</span>
                             </el-menu-item>
                         </router-link>
+                        <router-link to="/stock" v-if="role==='前台'">
+                            <el-menu-item index="8" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">库存管理</span>
+                            </el-menu-item>
+                        </router-link>
                     </el-menu>
                 </el-col>
             </el-row>
@@ -65,6 +71,7 @@ export default {
       return this.getRoleSession();
     },
     activeMenu: function() {
+      console.log(this.$route);
       const route = this.$route.fullPath;
       if( route.match('store') ) {// 管理员-店铺管理
         return "1";
@@ -80,6 +87,8 @@ export default {
         return "6";
       }else if( route.match('stocktype') ) {// 前台-库存分类管理
         return "7";
+      }else if( route.match('stock') ) {// 前台-库存管理
+        return "8";
       }
 
     }

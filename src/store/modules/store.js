@@ -12,7 +12,7 @@ const state = {
 // getters
 const getters = {
   getStoreById: (state) => (id) => {
-    return state.stores.find(store => store.id === Number.parseInt(id)) 
+    return state.stores.find(store => store.id === Number.parseInt(id));
   }
 }
 
@@ -83,14 +83,14 @@ const actions = {
 // mutations
 const mutations = {
   loadStore(state, payload){
-    state.pageNum = payload.pageNum
-    state.pageSize = payload.pageSize
-    state.totalCount = payload.totalCount
-    state.totalPages = payload.totalPages
-    state.stores = payload.stores
+    state.pageNum = payload.pageNum;
+    state.pageSize = payload.pageSize;
+    state.totalCount = payload.totalCount;
+    state.totalPages = payload.totalPages;
+    state.stores = payload.stores;
   },
   loadStoreAll(state, payload){
-    state.storesAll = payload.storesAll
+    state.storesAll = payload.storesAll;
   }
 }
 

@@ -18,6 +18,9 @@ import OperatorDetail from '@/components/content/OperatorDetail'
 import StockType from '@/components/content/StockType'
 import StockTypeNew from '@/components/content/StockTypeNew'
 import StockTypeDetail from '@/components/content/StockTypeDetail'
+import Stock from '@/components/content/Stock'
+import StockNew from '@/components/content/StockNew'
+import StockDetail from '@/components/content/StockDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -82,17 +85,29 @@ export default new Router({
           path: 'operator/:id',
           component: OperatorDetail
         },
-        { // 操作员
+        { // 库存分类
           path: 'stocktype',
           component: StockType
         },
-        { // 新建操作员
+        { // 新建库存分类
           path: 'stocktype/new',
           component: StockTypeNew
         },
-        { // 修改操作员
+        { // 修改库存分类
           path: 'stocktype/:id',
           component: StockTypeDetail
+        },
+        { // 库存
+          path: 'stock',
+          component: Stock
+        },
+        { // 新建库存
+          path: 'stock/new',
+          component: StockNew
+        },
+        { // 修改库存
+          path: 'stock/:id',
+          component: StockDetail
         },
         { // 预约
           path: 'appointment',

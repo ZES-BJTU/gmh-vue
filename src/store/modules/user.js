@@ -71,11 +71,11 @@ const actions = {
 // mutations
 const mutations = {
   loadUser(state, payload){
-    state.pageNum = payload.pageNum
-    state.pageSize = payload.pageSize
-    state.totalCount = payload.totalCount
-    state.totalPages = payload.totalPages
-    state.users = payload.users
+    state.pageNum = payload.pageNum;
+    state.pageSize = payload.pageSize;
+    state.totalCount = payload.totalCount;
+    state.totalPages = payload.totalPages;
+    state.users = payload.users;
   }
 }
 

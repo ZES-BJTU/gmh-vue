@@ -29,8 +29,8 @@ export default {
   data() {
     return {
       modStockTypeForm: {
-        id: 0,
-        name: "",
+        id: '',
+        name: '',
       },
       rules: {
         name: [

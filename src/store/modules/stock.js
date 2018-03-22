@@ -5,32 +5,31 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  stockTypes: [],
-  stockTypesAll: []
+  stocks: [],
 }
 
 // getters
 const getters = {
-  getStockTypeById: (state) => (id) => {
-    return state.stockTypes.find(stockType => stockType.id === Number.parseInt(id)) 
+  getStockById: (state) => (id) => {
+    return state.stocks.find(stock => stock.id === Number.parseInt(id)) 
   }
 }
 
 // actions
 const actions = {
-  loadStockType({commit}, info) {
+  loadStock({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/stocks/types',{
+      httpServer.get('/stocks',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {
-        commit('loadStockType', {
+        commit('loadStock', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
-          stockTypes: res.data.data
+          stocks: res.data.data
         });
         resolve(res);
       })
@@ -39,39 +38,27 @@ const actions = {
       })
     });
   },
-  loadStockTypeAll({commit}, info) {
+  addStock({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/stocks/types/all').then( res => {
-        commit('loadStockTypeAll', {
-          stockTypesAll: res.data
-        });
+      httpServer.post('/stocks',info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  addStockType({commit}, info) {
+  modStock({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.post('/stocks/types',info).then( res => {
+      httpServer.put('/stocks/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  modStockType({commit}, info) {
+  delStock({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/stocks/types/' + info.id,info).then( res => {
-        resolve(res);
-      }).catch( error => {
-        reject(error);
-      })
-    });
-  },
-  delStockType({commit}, info) {
-    return new Promise((resolve, reject) => {
-      httpServer.del('/stocks/types/' + info,info).then( res => {
+      httpServer.del('/stocks/' + info,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -82,16 +69,13 @@ const actions = {
 
 // mutations
 const mutations = {
-  loadStockType(state, payload){
+  loadStock(state, payload){
     state.pageNum = payload.pageNum;
     state.pageSize = payload.pageSize;
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
-    state.stockTypes = payload.stockTypes;
+    state.stocks = payload.stocks;
   },
-  loadStockTypeAll(state, payload){
-    state.stockTypesAll = payload.stockTypesAll;
-  }
 }
 
 export default {

@@ -42,13 +42,13 @@ export default {
   data() {
     return {
       modReceptionForm: {
-        id: 0,
-        role: "3", //1.管理员 2.店长 3.前台 4.操作员
-        name: "",
-        email: "",
-        mobile: 0,
-        gender: "",
-        remark: ""
+        id: '',
+        role: '3', //1.管理员 2.店长 3.前台 4.操作员
+        name: '',
+        email: '',
+        mobile: '',
+        gender: '',
+        remark: ''
       },
       genders: [
         {

@@ -46,6 +46,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
+          this.enterFlag = false;
           this.$store.dispatch("modStockType", this.modStockTypeForm).then( res => {
             if( res.code === 0){
               this.$message.success('修改成功');

@@ -85,6 +85,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
+          this.enterFlag = false;
           this.$store.dispatch("modUser", this.modReceptionForm).then( res => {
             if( res.code === 0){
               this.$message.success('修改成功');

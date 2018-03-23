@@ -3,7 +3,7 @@
     <el-row class="page-title-row">
       <router-link to="/stock" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
-      <span class="page-title">新建库存分类</span>
+      <span class="page-title">新建库存</span>
     </el-row>
 
     <el-row type="flex" justify="start">
@@ -49,10 +49,12 @@ export default {
           { required: true, message: "名称不能为空", trigger: "blur" }
         ],
         code: [
-          { type: 'integer', required: true, message: "编码不能为空", trigger: "blur" }
+          { required: true, message: "编码不能为空", trigger: "blur" },
+          { type: 'number', message: "编码必须是数字", trigger: "blur" }
         ],
         stockTypeId: [
-          { type: 'integer', required: true, message: "库存分类不能为空", trigger: "blur" }
+          { required: true, message: "库存分类不能为空", trigger: "blur" },
+          { type: 'number', message: "库存分类必须是数字", trigger: "blur" }
         ],
         unitName: [
           { required: true, message: "计量单位名称不能为空", trigger: "blur" }
@@ -73,9 +75,7 @@ export default {
         if (valid) {
           this.loading = true;
           this.enterFlag = false;
-          this.$store
-            .dispatch("addStock", this.newStockForm)
-            .then(res => {
+          this.$store.dispatch("addStock", this.newStockForm).then(res => {
               if (res.code === 0) {
                 this.$message.success("添加成功");
                 setTimeout(() => {

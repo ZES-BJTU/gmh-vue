@@ -49,7 +49,7 @@ export default {
     return {
       modPrincipalForm: {
         id: '',
-        role: '', //1.管理员 2.店长 3.前台 4.操作员
+        role: '2', //1.管理员 2.店长 3.前台 4.操作员
         name: '',
         email: '',
         mobile: '',
@@ -100,6 +100,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
+          this.enterFlag = false;
           this.$store.dispatch("modUser", this.modPrincipalForm).then( res => {
             if( res.code === 0){
               this.$message.success('修改成功');

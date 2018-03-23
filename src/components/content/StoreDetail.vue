@@ -8,7 +8,7 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="modStoreForm" :rules="rules" ref="modStoreForm" label-width="80px" @keyup.enter.native="onSubmit('modStoreForm')" v-loading="loading">
+        <el-form class="new-form" :model="modStoreForm" :rules="rules" ref="modStoreForm" label-width="80px" @keyup.enter.native="enterFlag && onSubmit('modStoreForm')" v-loading="loading">
           <el-form-item label="店铺名称" prop="name">
             <el-input v-model.trim="modStoreForm.name" :autofocus="true"></el-input>
           </el-form-item>
@@ -50,7 +50,8 @@ export default {
           { required: true, message: "店铺地址不能为空", trigger: "blur" }
         ]
       },
-      loading: false
+      loading: false,
+      enterFlag: true
     };
   },
   methods: {
@@ -58,6 +59,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
+          this.enterFlag = false;
           this.$store.dispatch("modStore", this.modStoreForm).then( res => {
             if( res.code === 0){
               this.$message.success('修改成功');

@@ -17,12 +17,15 @@
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
-      <el-table-column prop="code" label="编码"></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="stockTypeName" label="库存分类"></el-table-column>
-      <el-table-column prop="unitName" label="计量单位"></el-table-column>
-      <el-table-column label="操作" width="150px;" fixed="right">
+      <el-table-column prop="code" label="编码" width="200"></el-table-column>
+      <el-table-column prop="name" label="名称" width="200"></el-table-column>
+      <el-table-column prop="stockTypeName" label="库存分类" width="200"></el-table-column>
+      <el-table-column prop="unitName" label="计量单位" width="200"></el-table-column>
+      <el-table-column label="操作"  width="250" fixed="right">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleNew(scope.$index, scope.row)">首次进货</el-button>
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -88,6 +91,9 @@ export default {
     chagePage(val){
       this.stockSearch.pageNum = val;
       this.searchStock('page');
+    },
+    handleNew(index, row){
+      this.$router.push({ path: '/stock/newamount/' + row.id});
     },
     handleEdit(index, row){
       this.$router.push({ path: '/stock/' + row.id});

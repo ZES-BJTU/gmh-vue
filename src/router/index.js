@@ -21,6 +21,7 @@ import StockTypeDetail from '@/components/content/StockTypeDetail'
 import Stock from '@/components/content/Stock'
 import StockNew from '@/components/content/StockNew'
 import StockDetail from '@/components/content/StockDetail'
+import StockNewAmount from '@/components/content/StockNewAmount'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -108,6 +109,10 @@ export default new Router({
         { // 修改库存
           path: 'stock/:id',
           component: StockDetail
+        },
+        { // 新建库存数量
+          path: 'stock/newamount/:id',
+          component: StockNewAmount
         },
         { // 预约
           path: 'appointment',

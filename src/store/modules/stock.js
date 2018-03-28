@@ -65,6 +65,15 @@ const actions = {
       })
     });
   },
+  addStockAmount({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.post('/stocks/amount',info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
 }
 
 // mutations

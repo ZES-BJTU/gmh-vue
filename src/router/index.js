@@ -22,6 +22,19 @@ import Stock from '@/components/content/Stock'
 import StockNew from '@/components/content/StockNew'
 import StockDetail from '@/components/content/StockDetail'
 import StockNewAmount from '@/components/content/StockNewAmount'
+import StockAmount from '@/components/content/StockAmount'
+import StockAmountSupply from '@/components/content/StockAmountSupply'
+import StockAmountDetail from '@/components/content/StockAmountDetail'
+import ProductType from '@/components/content/ProductType'
+import ProductTypeNew from '@/components/content/ProductTypeNew'
+import ProductTypeDetail from '@/components/content/ProductTypeDetail'
+import Product from '@/components/content/Product'
+import ProductNew from '@/components/content/ProductNew'
+import ProductDetail from '@/components/content/ProductDetail'
+import ProductNewAmount from '@/components/content/ProductNewAmount'
+import ProductAmount from '@/components/content/ProductAmount'
+import ProductAmountSupply from '@/components/content/ProductAmountSupply'
+import ProductAmountDetail from '@/components/content/ProductAmountDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -113,6 +126,58 @@ export default new Router({
         { // 新建库存数量
           path: 'stock/newamount/:id',
           component: StockNewAmount
+        },
+        { // 库存数量
+          path: 'stockamount',
+          component: StockAmount
+        },
+        { // 补充库存数量
+          path: 'stockamountsupply/:id',
+          component: StockAmountSupply
+        },
+        { // 修改库存数量
+          path: 'stockamountdetail/:id',
+          component: StockAmountDetail
+        },
+        { // 产品分类
+          path: 'producttype',
+          component: ProductType
+        },
+        { // 新建产品分类
+          path: 'producttype/new',
+          component: ProductTypeNew
+        },
+        { // 修改产品分类
+          path: 'producttype/:id',
+          component: ProductTypeDetail
+        },
+        { // 产品
+          path: 'product',
+          component: Product
+        },
+        { // 新建产品
+          path: 'product/new',
+          component: ProductNew
+        },
+        { // 修改产品
+          path: 'product/:id',
+          component: ProductDetail
+        },
+        { // 新建产品数量
+          path: 'product/newamount/:id',
+          component: ProductNewAmount
+        },
+        { // 产品数量
+          path: 'productamount',
+          component: ProductAmount
+        },
+        { // 补充产品数量
+          path: 'productamountsupply/:id',
+          component: ProductAmountSupply
+        },
+        { // 修改产品数量
+          path: 'productamountdetail/:id',
+          component: ProductAmountDetail
         },
         { // 预约
           path: 'appointment',

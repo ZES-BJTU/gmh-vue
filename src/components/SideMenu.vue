@@ -52,6 +52,30 @@
                                 <span slot="title">库存管理</span>
                             </el-menu-item>
                         </router-link>
+                        <router-link to="/stockamount" v-if="role==='前台'">
+                            <el-menu-item index="9" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">库存数量管理</span>
+                            </el-menu-item>
+                        </router-link>
+                        <router-link to="/producttype" v-if="role==='前台'">
+                            <el-menu-item index="10" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">产品分类管理</span>
+                            </el-menu-item>
+                        </router-link>
+                        <router-link to="/product" v-if="role==='前台'">
+                            <el-menu-item index="11" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">产品管理</span>
+                            </el-menu-item>
+                        </router-link>
+                        <router-link to="/productamount" v-if="role==='前台'">
+                            <el-menu-item index="12" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">产品数量管理</span>
+                            </el-menu-item>
+                        </router-link>
                     </el-menu>
                 </el-col>
             </el-row>
@@ -87,8 +111,16 @@ export default {
         return "6";
       }else if( route.match('stocktype') ) {// 前台-库存分类管理
         return "7";
+      }else if( route.match('stockamount') ) {// 前台-库存数量管理
+        return "9";
       }else if( route.match('stock') ) {// 前台-库存管理
-        return "8";
+        return "8";// 调整顺序是为了优先匹配大stockamount,否则会导致菜单显示错误
+      }else if( route.match('producttype') ) {// 前台-产品分类管理
+        return "10";
+      }else if( route.match('productamount') ) {// 前台-产品数量管理
+        return "12";
+      }else if( route.match('product') ) {// 前台-产品管理
+        return "11";// 调整顺序是为了优先匹配大productamount,否则会导致菜单显示错误
       }
 
     }

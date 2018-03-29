@@ -151,6 +151,17 @@ const httpServer = {
         })
     })
   },
+  patch: function (url, params) {
+    return new Promise((resolve, reject) => {
+      Axios.patch(url, params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
   del: function (url, params) {
     return new Promise((resolve, reject) => {
       Axios.delete(url, params)

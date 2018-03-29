@@ -1,17 +1,17 @@
 <template>
-  <div class="Stock">
-    <el-form :inline="true" :model="stockSearch" ref="stockSearch" class="demo-form-inline search-form" @keyup.enter.native="searchStock('search')">
+  <div class="Product">
+    <el-form :inline="true" :model="productSearch" ref="productSearch" class="demo-form-inline search-form" @keyup.enter.native="searchProduct('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="stockSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="productSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchStock('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchProduct('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/stock/new">
+      <router-link to="/product/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
@@ -19,8 +19,9 @@
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="code" label="编码"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="stockTypeName" label="库存分类"></el-table-column>
+      <el-table-column prop="productTypeName" label="产品分类"></el-table-column>
       <el-table-column prop="unitName" label="计量单位"></el-table-column>
+      <el-table-column prop="unitPrice" label="单价"></el-table-column>
       <el-table-column label="操作"  width="250" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -44,10 +45,10 @@
 
 <script>
 export default {
-  name: "Stock",
+  name: "Product",
   data() {
     return {
-      stockSearch: {
+      productSearch: {
         content: '',
         oldContent: '',//储存最近一次搜索的内容
         pageNum: '1',
@@ -59,29 +60,29 @@ export default {
   },
   computed: {
     pageNum: function(){
-      return this.$store.state.stock.pageNum;
+      return this.$store.state.product.pageNum;
     },
     pageSize: function(){
-      return this.$store.state.stock.pageSize;
+      return this.$store.state.product.pageSize;
     },
     totalCount: function(){
-      return this.$store.state.stock.totalCount;
+      return this.$store.state.product.totalCount;
     },
     totalPages: function(){
-      return this.$store.state.stock.totalPages;
+      return this.$store.state.product.totalPages;
     },
     tableData: function(){
-      return this.$store.state.stock.stocks;
+      return this.$store.state.product.products;
     }
   },
   methods: {
-    searchStock(type) {
+    searchProduct(type) {
       this.loading = true;
       if(type === 'search'){
-        this.stockSearch.oldContent = this.stockSearch.content;
+        this.productSearch.oldContent = this.productSearch.content;
       }
-      this.stockSearch.type = type;
-      this.$store.dispatch("loadStock", this.stockSearch).then( res => {
+      this.productSearch.type = type;
+      this.$store.dispatch("loadProduct", this.productSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -89,14 +90,14 @@ export default {
       });
     },
     chagePage(val){
-      this.stockSearch.pageNum = val;
-      this.searchStock('page');
+      this.productSearch.pageNum = val;
+      this.searchProduct('page');
     },
     handleNew(index, row){
-      this.$router.push({ path: '/stock/newamount/' + row.id});
+      this.$router.push({ path: '/product/newamount/' + row.id});
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/stock/' + row.id});
+      this.$router.push({ path: '/product/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;
@@ -113,10 +114,10 @@ export default {
           if (action === 'confirm') {
             instance.confirmButtonLoading = true;
             instance.confirmButtonText = '删除中...';
-            this.$store.dispatch("delStock", row.id).then( res => {
+            this.$store.dispatch("delProduct", row.id).then( res => {
               done();
               instance.confirmButtonLoading = false;
-              this.searchStock('search');
+              this.searchProduct('search');
             }).catch( err => {
               console.log(err);
             });
@@ -133,7 +134,7 @@ export default {
     },
   },
   beforeMount: function () {
-    this.searchStock('search');
+    this.searchProduct('search');
   }
 };
 </script>

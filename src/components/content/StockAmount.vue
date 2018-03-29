@@ -17,6 +17,7 @@
     </div> -->
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
+      <el-table-column prop="stockAmountId" label="StockAmountId" v-if="false"></el-table-column>
       <el-table-column prop="code" label="编码"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="stockTypeName" label="库存分类"></el-table-column>
@@ -91,13 +92,14 @@ export default {
     },
     chagePage(val){
       this.stockAmountSearch.pageNum = val;
-      this.searchStock('page');
+      this.searchStockAmount('page');
     },
     handleSupply(index, row){
-      this.$router.push({ path: '/stockamountsupply/' + row.id});
+      console.log(row.stockAmountId);
+      this.$router.push({ path: '/stockamountsupply/' + row.stockAmountId});
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/stockamountdetail/' + row.id});
+      this.$router.push({ path: '/stockamountdetail/' + row.stockAmountId});
     },
     // handleDelete(index, row){
     //   const h = this.$createElement;

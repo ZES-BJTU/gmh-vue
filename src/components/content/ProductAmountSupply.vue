@@ -1,21 +1,21 @@
 <template>
-  <div class="StockAmountSupply">
+  <div class="ProductAmountSupply">
     <el-row class="page-title-row">
-      <router-link to="/stockamount" class="page-title-back">
+      <router-link to="/productamount" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
       <span class="page-title">补货</span>
     </el-row>
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="supplyStockAmountForm" ref="supplyStockAmountForm" label-width="110px" :rules="rules" @keyup.enter.native="enterFlag && onSubmit('supplyStockAmountForm')" v-loading="loading">
+        <el-form class="new-form" :model="supplyProductAmountForm" ref="supplyProductAmountForm" label-width="110px" :rules="rules" @keyup.enter.native="enterFlag && onSubmit('supplyProductAmountForm')" v-loading="loading">
           <el-form-item label="补货数量" prop="amount">
             <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
             <el-input style="display:none;"></el-input>
-            <el-input v-model.number="supplyStockAmountForm.amount" :autofocus="true"></el-input>
+            <el-input v-model.number="supplyProductAmountForm.amount" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit('supplyStockAmountForm')">提交</el-button>
+            <el-button type="primary" @click="onSubmit('supplyProductAmountForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -25,11 +25,11 @@
 
 <script>
 export default {
-  name: "StockAmountSupply",
+  name: "ProductAmountSupply",
   data() {
     return {
-      supplyStockAmountForm: {
-        stockId: '',
+      supplyProductAmountForm: {
+        id: '',
         amount: '',
       },
       rules: {
@@ -48,12 +48,12 @@ export default {
         if (valid) {
           this.loading = true;
           this.enterFlag = false;
-          this.$store.dispatch("supplyStockAmount", this.supplyStockAmountForm).then(res => {
+          this.$store.dispatch("supplyProductAmount", this.supplyProductAmountForm).then(res => {
               if (res.code === 0) {
                 this.$message.success("补货成功");
                 setTimeout(() => {
                   this.loading = false;
-                  this.$router.push({ path: "/stockamount" });
+                  this.$router.push({ path: "/productamount" });
                 }, 1000);
               }
             })
@@ -68,13 +68,13 @@ export default {
     },
   },
   beforeMount: function () {
-    if(this.$store.state.stockAmount.stockAmounts.length === 0){
+    if(this.$store.state.productAmount.productAmounts.length === 0){
       //如果vuex中没有数据，则返回列表页
-      this.$router.push({ path: '/stockAmount' });
+      this.$router.push({ path: '/productAmount' });
     }else{
       //从vuex中查询该id
-      const stockAmount = this.$store.getters.getStockAmountById(this.$route.params.id);
-      this.supplyStockAmountForm.stockId = stockAmount.id;
+      const productAmount = this.$store.getters.getProductAmountByPAId(this.$route.params.id);
+      this.supplyProductAmountForm.id = productAmount.productAmountId;
     }
   }
 };

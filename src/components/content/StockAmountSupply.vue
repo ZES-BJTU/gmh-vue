@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       supplyStockAmountForm: {
-        stockId: '',
+        id: '',
         amount: '',
       },
       rules: {
@@ -73,8 +73,8 @@ export default {
       this.$router.push({ path: '/stockAmount' });
     }else{
       //从vuex中查询该id
-      const stockAmount = this.$store.getters.getStockAmountById(this.$route.params.id);
-      this.supplyStockAmountForm.stockId = stockAmount.id;
+      const stockAmount = this.$store.getters.getStockAmountBySAId(this.$route.params.id);
+      this.supplyStockAmountForm.id = stockAmount.stockAmountId;
     }
   }
 };

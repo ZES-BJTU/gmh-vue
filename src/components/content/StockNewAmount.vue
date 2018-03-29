@@ -1,5 +1,5 @@
 <template>
-  <div class="StockNew">
+  <div class="StockNewAmount">
     <el-row class="page-title-row">
       <router-link to="/stock" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: "StockNew",
+  name: "StockNewAmount",
   data() {
     return {
       newStockAmountForm: {

@@ -1,13 +1,13 @@
 <template>
-  <div class="StockAmount">
-    <el-form :inline="true" :model="stockAmountSearch" ref="stockAmountSearch" class="demo-form-inline search-form" @keyup.enter.native="searchStockAmount('search')">
+  <div class="ProductAmount">
+    <el-form :inline="true" :model="productAmountSearch" ref="productAmountSearch" class="demo-form-inline search-form" @keyup.enter.native="searchProductAmount('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="stockAmountSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="productAmountSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchStockAmount('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchProductAmount('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <!-- <div class="operate-box">
@@ -17,11 +17,13 @@
     </div> -->
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
+      <el-table-column prop="productAmountId" label="SroductAmountId" v-if="false"></el-table-column>
       <el-table-column prop="code" label="编码"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="stockTypeName" label="库存分类"></el-table-column>
+      <el-table-column prop="productTypeName" label="产品分类"></el-table-column>
       <el-table-column prop="amount" label="数量"></el-table-column>
       <el-table-column prop="unitName" label="计量单位"></el-table-column>
+      <el-table-column prop="unitPrice" label="单价"></el-table-column>
       <el-table-column label="操作"  width="150" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -45,10 +47,10 @@
 
 <script>
 export default {
-  name: "StockAmount",
+  name: "ProductAmount",
   data() {
     return {
-      stockAmountSearch: {
+      productAmountSearch: {
         content: '',
         oldContent: '',//储存最近一次搜索的内容
         pageNum: '1',
@@ -60,29 +62,29 @@ export default {
   },
   computed: {
     pageNum: function(){
-      return this.$store.state.stockAmount.pageNum;
+      return this.$store.state.productAmount.pageNum;
     },
     pageSize: function(){
-      return this.$store.state.stockAmount.pageSize;
+      return this.$store.state.productAmount.pageSize;
     },
     totalCount: function(){
-      return this.$store.state.stockAmount.totalCount;
+      return this.$store.state.productAmount.totalCount;
     },
     totalPages: function(){
-      return this.$store.state.stockAmount.totalPages;
+      return this.$store.state.productAmount.totalPages;
     },
     tableData: function(){
-      return this.$store.state.stockAmount.stockAmounts;
+      return this.$store.state.productAmount.productAmounts;
     }
   },
   methods: {
-    searchStockAmount(type) {
+    searchProductAmount(type) {
       this.loading = true;
       if(type === 'search'){
-        this.stockAmountSearch.oldContent = this.stockAmountSearch.content;
+        this.productAmountSearch.oldContent = this.productAmountSearch.content;
       }
-      this.stockAmountSearch.type = type;
-      this.$store.dispatch("loadStockAmount", this.stockAmountSearch).then( res => {
+      this.productAmountSearch.type = type;
+      this.$store.dispatch("loadProductAmount", this.productAmountSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -90,14 +92,14 @@ export default {
       });
     },
     chagePage(val){
-      this.stockAmountSearch.pageNum = val;
-      this.searchStock('page');
+      this.productAmountSearch.pageNum = val;
+      this.searchProductAmount('page');
     },
     handleSupply(index, row){
-      this.$router.push({ path: '/stockamountsupply/' + row.id});
+      this.$router.push({ path: '/productamountsupply/' + row.productAmountId});
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/stockamountdetail/' + row.id});
+      this.$router.push({ path: '/productamountdetail/' + row.productAmountId});
     },
     // handleDelete(index, row){
     //   const h = this.$createElement;
@@ -134,7 +136,7 @@ export default {
     // },
   },
   beforeMount: function () {
-    this.searchStockAmount('search');
+    this.searchProductAmount('search');
   }
 };
 </script>

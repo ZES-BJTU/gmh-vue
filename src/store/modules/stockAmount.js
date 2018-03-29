@@ -12,7 +12,10 @@ const state = {
 const getters = {
   getStockAmountById: (state) => (id) => {
     return state.stockAmounts.find(stockAmount => stockAmount.id === Number.parseInt(id)) 
-  }
+  },
+  getStockAmountBySAId: (state) => (id) => {
+    return state.stockAmounts.find(stockAmount => stockAmount.stockAmountId === Number.parseInt(id)) 
+  },
 }
 
 // actions
@@ -40,7 +43,7 @@ const actions = {
   },
   supplyStockAmount({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.patch('/stocks/amount/' + info.stockId,info).then( res => {
+      httpServer.patch('/stocks/amount/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -49,7 +52,7 @@ const actions = {
   },
   modStockAmount({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/stocks/amount/' + info.stockId,info).then( res => {
+      httpServer.put('/stocks/amount/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);

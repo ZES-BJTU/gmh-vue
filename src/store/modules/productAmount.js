@@ -12,7 +12,10 @@ const state = {
 const getters = {
   getProductAmountById: (state) => (id) => {
     return state.productAmounts.find(productAmount => productAmount.id === Number.parseInt(id)) 
-  }
+  },
+  getProductAmountByPAId: (state) => (id) => {
+    return state.productAmounts.find(productAmount => productAmount.productAmountId === Number.parseInt(id)) 
+  },
 }
 
 // actions
@@ -40,7 +43,7 @@ const actions = {
   },
   supplyProductAmount({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.patch('/products/amount/' + info.stockId,info).then( res => {
+      httpServer.patch('/products/amount/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -49,7 +52,7 @@ const actions = {
   },
   modProductAmount({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/products/amount/' + info.stockId,info).then( res => {
+      httpServer.put('/products/amount/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -69,7 +72,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  loadStock(state, payload){
+  loadProductAmount(state, payload){
     state.pageNum = payload.pageNum;
     state.pageSize = payload.pageSize;
     state.totalCount = payload.totalCount;

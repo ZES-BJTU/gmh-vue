@@ -24,7 +24,7 @@
           <el-form-item label="计量单位名称" prop="unitName">
             <el-input v-model.trim="newProductForm.unitName" :autofocus="true"></el-input>
           </el-form-item>
-          <el-form-item label="单价(元)" prop="unitName">
+          <el-form-item label="单价(元)" prop="unitPrice">
             <el-input v-model.trim="newProductForm.unitPrice" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item>

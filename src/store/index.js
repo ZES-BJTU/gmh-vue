@@ -10,6 +10,7 @@ import stockAmount from './modules/stockAmount'
 import productType from './modules/productType'
 import product from './modules/product'
 import productAmount from './modules/productAmount'
+import customer from './modules/customer'
 import * as actions from './actions'
 import mutations from './mutations'
 
@@ -31,5 +32,6 @@ export default new Vuex.Store({
     productType,
     product,
     productAmount,
+    customer,
   }
 })

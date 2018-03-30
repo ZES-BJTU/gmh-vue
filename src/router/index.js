@@ -35,6 +35,9 @@ import ProductNewAmount from '@/components/content/ProductNewAmount'
 import ProductAmount from '@/components/content/ProductAmount'
 import ProductAmountSupply from '@/components/content/ProductAmountSupply'
 import ProductAmountDetail from '@/components/content/ProductAmountDetail'
+import Customer from '@/components/content/Customer'
+import CustomerNew from '@/components/content/CustomerNew'
+import CustomerDetail from '@/components/content/CustomerDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -178,6 +181,18 @@ export default new Router({
         { // 修改产品数量
           path: 'productamountdetail/:id',
           component: ProductAmountDetail
+        },
+        { // 客户
+          path: 'customer',
+          component: Customer
+        },
+        { // 新建客户
+          path: 'customer/new',
+          component: CustomerNew
+        },
+        { // 修改客户
+          path: 'customer/:id',
+          component: CustomerDetail
         },
         { // 预约
           path: 'appointment',

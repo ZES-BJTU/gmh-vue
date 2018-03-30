@@ -32,6 +32,9 @@ a{
 .el-select{
     width: 100%;// 设置select宽度100%
 }
+.el-date-editor.el-input, .el-date-editor.el-input__inner{
+    width: 100%;// 设置date-picker宽度100%
+}
 .search-form{
     float: left;
 }

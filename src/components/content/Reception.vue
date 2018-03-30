@@ -21,7 +21,7 @@
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="mobile" label="手机"></el-table-column>
       <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="remark" label="备注"></el-table-column>
+      <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -90,6 +90,13 @@ export default {
     chagePage(val){
       this.receptionSearch.pageNum = val;
       this.searchReception('page');
+    },
+    handleRemark(row, column){
+      if(!row.remark || row.remark === ''){
+        return '暂无备注';
+      }else{
+        return row.remark;
+      }
     },
     handleEdit(index, row){
       this.$router.push({ path: '/reception/' + row.id});

@@ -19,7 +19,7 @@
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
-      <el-table-column prop="remark" label="备注"></el-table-column>
+      <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -87,6 +87,13 @@ export default {
     chagePage(val){
       this.storeSearch.pageNum = val;
       this.searchStore('page');
+    },
+    handleRemark(row, column){
+      if(!row.remark || row.remark === ''){
+        return '暂无备注';
+      }else{
+        return row.remark;
+      }
     },
     handleEdit(index, row){
       this.$router.push({ path: '/store/' + row.id});

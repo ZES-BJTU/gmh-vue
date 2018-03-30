@@ -49,5 +49,34 @@ export default {
       sessionStorage.removeItem("name");
       sessionStorage.removeItem("token");
     }
+
+    Vue.prototype.toDatetimeDay = function (timestamp) {
+      //timestamp是整数，否则要parseInt转换  
+      let time = new Date(parseInt(timestamp));
+      let y = time.getFullYear();
+      let m = time.getMonth() + 1;
+      let d = time.getDate();
+      let h = time.getHours();
+      let mm = time.getMinutes();
+      let s = time.getSeconds();
+      return y + '-' +  ( m < 10 ? '0' + m : m ) + '-' + ( d < 10 ? '0' + d : d);
+    }
+
+    Vue.prototype.toDatetimeMin = function (timestamp) {
+      //timestamp是整数，否则要parseInt转换  
+      let time = new Date(parseInt(timestamp));
+      let y = time.getFullYear();
+      let m = time.getMonth() + 1;
+      let d = time.getDate();
+      let h = time.getHours();
+      let mm = time.getMinutes();
+      let s = time.getSeconds();
+      return y + '-' + ( m < 10 ? '0' + m : m ) + '-' + ( d < 10 ? '0' + d : d) + ' ' + ( h < 10 ? '0' + h : h) + ':' + ( mm < 10 ? '0' + mm : mm);
+    }
+    Vue.prototype.toTimeStamp = function (date) {
+      // datetime = new Date(Date.parse(datetime.replace(/-/g, "/")));
+      let timeStamp = date.getTime();
+      return timeStamp;
+    }
   }
 }

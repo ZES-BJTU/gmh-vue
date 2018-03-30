@@ -38,6 +38,9 @@ import ProductAmountDetail from '@/components/content/ProductAmountDetail'
 import Customer from '@/components/content/Customer'
 import CustomerNew from '@/components/content/CustomerNew'
 import CustomerDetail from '@/components/content/CustomerDetail'
+import Employee from '@/components/content/Employee'
+import EmployeeNew from '@/components/content/EmployeeNew'
+import EmployeeDetail from '@/components/content/EmployeeDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -193,6 +196,18 @@ export default new Router({
         { // 修改客户
           path: 'customer/:id',
           component: CustomerDetail
+        },
+        { // 员工
+          path: 'employee',
+          component: Employee
+        },
+        { // 新建员工
+          path: 'employee/new',
+          component: EmployeeNew
+        },
+        { // 修改员工
+          path: 'employee/:id',
+          component: EmployeeDetail
         },
         { // 预约
           path: 'appointment',

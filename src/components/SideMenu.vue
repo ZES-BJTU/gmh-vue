@@ -82,6 +82,12 @@
                                 <span slot="title">客户管理</span>
                             </el-menu-item>
                         </router-link>
+                        <router-link to="/employee" v-if="role==='前台'">
+                            <el-menu-item index="14" disabled>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">员工管理</span>
+                            </el-menu-item>
+                        </router-link>
                     </el-menu>
                 </el-col>
             </el-row>
@@ -129,6 +135,8 @@ export default {
         return "11";// 调整顺序是为了优先匹配大productamount,否则会导致菜单显示错误
       }else if( route.match('customer') ) {// 前台-客户管理
         return "13";
+      }else if( route.match('employee') ) {// 前台-员工管理
+        return "14";
       }
 
     }

@@ -1,13 +1,13 @@
 <template>
   <div class="ProjectNew">
     <el-row class="page-title-row">
-      <router-link to="/project-type" class="page-title-back">
+      <router-link to="/project" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
       <span class="page-title">新建美容项目</span>
     </el-row>
 
     <el-row type="flex" justify="start">
-      <el-col :xs="24" :sm="12" :md="8">
+      <el-col :xs="24" :sm="18" :md="12">
         <el-form class="new-form" :model="newProjectForm" ref="newProjectForm" label-width="110px" 
           :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newProjectForm')" v-loading="loading">
           <el-form-item label="名称" prop="name">
@@ -31,26 +31,38 @@
           <el-form-item label="实习生积分" prop="internIntegral">
             <el-input v-model.number="newProjectForm.internIntegral" placeholder="请输入实习生积分"></el-input>
           </el-form-item>
-          <el-form-item label="项目消耗品">
-            <el-select v-model="newProjectForm.projectStockParams" filterable 
-              remote placeholder="请输入关键词" :remote-method="searchStocks">
-              <el-option v-for="stock in stocks" :key="stock.id" :label="stock.name" :value="stock.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
           <el-form-item label="备注">
             <el-input v-model.trim="newProjectForm.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
+          <el-form-item label="项目消耗品">
+            <el-table :data="projectStocks" size="mini" v-loading="loading" style="width: 100%">
+              <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
+              <el-table-column prop="name" label="库存"></el-table-column>
+              <el-table-column prop="amount" label="数量"></el-table-column>
+              <el-table-column prop="unitName" label="单位"></el-table-column>
+              <el-table-column label="操作" width="50px;" fixed="right">
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger"
+                    @click="handleDelete(scope.$index, scope.row)">x</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit('newProjectTypeForm')">提交</el-button>
+            <el-button type="primary" @click="projectStockParamsDialog = true">添加项目消耗品</el-button>
+            <el-button type="primary" @click="onSubmit('newProjectForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
+    <ProjectStock :visible="projectStockParamsDialog" 
+      v-on:closeDialog="projectStockParamsDialog = false"
+      v-on:addProjectStock="handleAddProjectStock"></ProjectStock>
   </div>
 </template>
 
 <script>
+import ProjectStock from './ProjectStock'
 export default {
   name: "ProjectNew",
   data() {
@@ -63,7 +75,7 @@ export default {
         integral: '',
         internIntegral: '',
         remark: '',
-        projectStockParams: ''
+        projectStockParams: []
       },
       rules: {
         name: [
@@ -89,16 +101,18 @@ export default {
           { type: 'number', message: "实习生积分必须是数字", trigger: "blur" }
         ]
       },
-      stocks: [],
       loading: false,
       enterFlag: true, //true代表允许回车，false代表不允许回车，避免重复提交
-      filterable: true,
-      remote: true,
+      projectStockParamsDialog: false,
+      projectStocks: [],
     };
   },
   computed: {
     projectTypes: function(){
       return this.$store.state.projectType.projectTypesAll;
+    },
+    stocks: function(){
+      return this.$store.state.stock.stocksAll;
     }
   },
   methods: {
@@ -108,13 +122,13 @@ export default {
           this.loading = true;
           this.enterFlag = false;
           this.$store
-            .dispatch("addProjectType", this.newProjectTypeForm)
+            .dispatch("addProject", this.newProjectForm)
             .then(res => {
               if (res.code === 0) {
                 this.$message.success("添加成功");
                 setTimeout(() => {
                   this.loading = false;
-                  this.$router.push({ path: "/project-type" });
+                  this.$router.push({ path: "/project" });
                 }, 1000);
               }
             })
@@ -128,12 +142,26 @@ export default {
         }
       });
     },
-    searchStocks(query) {
-      if (query !== '') {
-        this.stocks = this.$store.getters.getStockByName(query);
-      } else {
-        this.stocks = this.$store.state.stock.stocksAll;
-      }
+    handleAddProjectStock(payload){
+      let stock = this.$store.getters.getStockAllById(payload.stockId);
+      this.projectStocks.push({
+        'id': stock.id,
+        'name': stock.name,
+        'amount': payload.stockConsumptionAmount,
+        'unitName': stock.unitName
+      })
+      this.newProjectForm.projectStockParams.push({
+        'stockId': payload.stockId,
+        'stockConsumptionAmount': payload.stockConsumptionAmount
+      });
+    },
+    handleDelete(index, row){
+      console.log(row.id);
+      var arrIndex = this.projectStocks.findIndex((projectStock, index, arr) => {
+        return projectStock.id === row.id;
+      })
+      this.projectStocks.splice(arrIndex,1);
+      this.newProjectForm.projectStockParams.splice(arrIndex,1);
     },
     loadProjectTypeAll(){
       this.$store.dispatch("loadProjectTypeAll").then( res => {
@@ -155,7 +183,8 @@ export default {
   beforeMount: function () {
     this.loadStockAll();
     this.loadProjectTypeAll();
-  }
+  },
+  components: {ProjectStock}
 };
 </script>
 

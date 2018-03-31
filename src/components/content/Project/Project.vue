@@ -15,10 +15,22 @@
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
-    <!-- <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
+    <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="topTypeDesc" label="顶层分类"></el-table-column>
+      <el-table-column prop="code" label="代码"></el-table-column>
+      <el-table-column prop="projectTypeName" label="美容项目分类"></el-table-column>
+      <el-table-column prop="unitPrice" label="单价"></el-table-column>
+      <el-table-column prop="integral" label="积分"></el-table-column>
+      <el-table-column prop="internIntegral" label="实习生积分"></el-table-column>
+      <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
+      <el-table-column prop="projectStockVos" label="项目消耗品">
+        <template slot-scope="scope">
+            <div v-for="vo in scope.row.projectStockVos" :key="vo.stockId">
+              {{vo.stockName + ' : ' + vo.stockConsumptionAmount + vo.unitName}}
+            </div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -33,7 +45,7 @@
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
-       @current-change="chagePage"></el-pagination> -->
+       @current-change="chagePage"></el-pagination>
   </div>
 </template>
 
@@ -86,6 +98,24 @@ export default {
     chagePage(val){
       this.projectSearch.pageNum = val;
       this.searchProjectType('page');
+    },
+    handleRemark(row, column){
+      if(!row.remark || row.remark === ''){
+        return '暂无备注';
+      }else{
+        return row.remark;
+      }
+    },
+    handleProjectStocks(row, column){
+      if(!row.projectStockVos || row.projectStockVos === ''){
+        return '暂无消耗品';
+      }else{
+        let ps = '';
+        for( let vo of row.projectStockVos){
+          ps += vo.stockName + ':' + vo.stockConsumptionAmount + vo.unitName + '\<br /\>'
+        }
+        return ps;
+      }
     },
     handleEdit(index, row){
       this.$router.push({ path: '/project/' + row.id});

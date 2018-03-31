@@ -135,12 +135,12 @@
 							</router-link>
 						</el-submenu>
 
-						<!-- <router-link to="/member-card" v-if="role==='店长' || role==='前台'">
+						<router-link to="/member-card" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="11">
 								<i class="el-icon-document"></i>
 								<span slot="title">会员卡</span>
 							</el-menu-item>
-						</router-link> -->
+						</router-link>
 
 						<el-submenu index="12" v-if="role==='店长' || role==='前台'">
 							<template slot="title">

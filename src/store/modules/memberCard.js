@@ -5,32 +5,31 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  projects: [],
-  projectsAll: [],
+  memberCards: [],
 }
 
 // getters
 const getters = {
-  getProjectById: (state) => (id) => {
-    return state.projects.find(project => project.id === Number.parseInt(id)) 
-  }
+  getMemberCardById: (state) => (id) => {
+    return state.memberCards.find(memberCard => memberCard.id === Number.parseInt(id)) 
+  },
 }
 
 // actions
 const actions = {
-  loadProject({commit}, info) {
+  loadMemberCard({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/projects',{
+      httpServer.get('/member/cards',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {
-        commit('loadProject', {
+        commit('loadMemberCard', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
-          projects: res.data.data
+          memberCards: res.data.data
         });
         resolve(res);
       })
@@ -39,59 +38,44 @@ const actions = {
       })
     });
   },
-  loadProjectAll({commit}, info) {
+  addMemberCard({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/projects/all').then( res => {
-        commit('loadProjectAll', {
-          projectsAll: res.data
-        });
+      httpServer.post('/member/cards',info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  addProject({commit}, info) {
+  modMemberCard({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.post('/projects',info).then( res => {
+      httpServer.put('/member/cards/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  modProject({commit}, info) {
+  delMemberCard({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/projects/' + info.id,info).then( res => {
+      httpServer.del('/member/cards/' + info,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
-  },
-  delProject({commit}, info) {
-    return new Promise((resolve, reject) => {
-      httpServer.del('/projects/' + info,info).then( res => {
-        resolve(res);
-      }).catch( error => {
-        reject(error);
-      })
-    });
-  },
+  }
 }
 
 // mutations
 const mutations = {
-  loadProject(state, payload){
+  loadMemberCard(state, payload){
     state.pageNum = payload.pageNum;
     state.pageSize = payload.pageSize;
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
-    state.projects = payload.projects;
-  },
-  loadProjectAll(state, payload){
-    state.projectsAll = payload.projectsAll;
-  },
+    state.memberCards = payload.memberCards;
+  }
 }
 
 export default {

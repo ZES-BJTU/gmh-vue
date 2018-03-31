@@ -14,6 +14,9 @@ const getters = {
   getStockById: (state) => (id) => {
     return state.stocks.find(stock => stock.id === Number.parseInt(id)) 
   },
+  getStockAllById: (state) => (id) => {
+    return state.stocksAll.find(stock => stock.id === Number.parseInt(id)) 
+  },
   getStockByName: (state) => (query) => {
     return state.stocksAll.filter(stock => stock.name.toLowerCase().indexOf(query.toLowerCase()) > -1);
   },

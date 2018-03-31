@@ -47,6 +47,9 @@ import ProjectTypeDetail from '@/components/content/ProjectType/ProjectTypeDetai
 import Project from '@/components/content/Project/Project'
 import ProjectNew from '@/components/content/Project/ProjectNew'
 import ProjectDetail from '@/components/content/Project/ProjectDetail'
+import MemberCard from '@/components/content/MemberCard/MemberCard'
+import MemberCardNew from '@/components/content/MemberCard/MemberCardNew'
+import MemberCardDetail from '@/components/content/MemberCard/MemberCardDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -238,6 +241,18 @@ export default new Router({
         { // 修改美容项目
           path: 'project/:id',
           component: ProjectDetail
+        },
+        { // 会员卡
+          path: 'member-card',
+          component: MemberCard
+        },
+        { // 新建会员卡
+          path: 'member-card/new',
+          component: MemberCardNew
+        },
+        { // 修改会员卡
+          path: 'member-card/:id',
+          component: MemberCardDetail
         },
         { // 预约
           path: 'appointment',

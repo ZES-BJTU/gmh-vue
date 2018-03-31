@@ -8,7 +8,8 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="newStockForm" ref="newStockForm" label-width="110px" :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newStockForm')" v-loading="loading">
+        <el-form class="new-form" :model="newStockForm" ref="newStockForm" label-width="110px" 
+          :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newStockForm')" v-loading="loading">
           <el-form-item label="名称" prop="name">
             <el-input v-model.trim="newStockForm.name" :autofocus="true"></el-input>
           </el-form-item>

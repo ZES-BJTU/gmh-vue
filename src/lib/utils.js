@@ -50,6 +50,11 @@ export default {
       sessionStorage.removeItem("token");
     }
 
+    Vue.prototype.toDateObject = function (timestamp) {
+      //timestamp是整数，否则要parseInt转换
+      return new Date(parseInt(timestamp));
+    }
+
     Vue.prototype.toDatetimeDay = function (timestamp) {
       //timestamp是整数，否则要parseInt转换  
       let time = new Date(parseInt(timestamp));

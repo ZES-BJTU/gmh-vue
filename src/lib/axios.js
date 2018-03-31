@@ -102,6 +102,13 @@ Axios.interceptors.response.use(
     //     path: "/error/502"
     //   });
     // }
+    if (error.message.match('timeout')) {
+      Message({
+        showClose: true,
+        message: "网络不好，请稍后再试",
+        type: "error"
+      });
+    }
     if (error.message === '未登录') {
       router.push({
         path: "/signin"

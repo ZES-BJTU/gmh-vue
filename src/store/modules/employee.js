@@ -24,7 +24,7 @@ const actions = {
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {
-        commit('loadStock', {
+        commit('loadEmployee', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,

@@ -5,31 +5,32 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  employees: [],
+  projectTypes: [],
+  projectTypesAll: []
 }
 
 // getters
 const getters = {
-  getEmployeeById: (state) => (id) => {
-    return state.employees.find(employee => employee.id === Number.parseInt(id)) 
+  getProjectTypeById: (state) => (id) => {
+    return state.projectTypes.find(projectType => projectTyp.id === Number.parseInt(id)) 
   }
 }
 
 // actions
 const actions = {
-  loadEmployee({commit}, info) {
+  loadProjectType({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/employees/search',{
+      httpServer.get('/projects/types',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {
-        commit('loadStock', {
+        commit('loadProjectType', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
-          employees: res.data.data
+          projectTypes: res.data.data
         });
         resolve(res);
       })
@@ -38,44 +39,59 @@ const actions = {
       })
     });
   },
-  addEmployee({commit}, info) {
+  loadProjectTypeAll({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.post('/employees',info).then( res => {
+      httpServer.get('/projects/types/all').then( res => {
+        commit('loadProjectTypeAll', {
+          projectTypesAll: res.data
+        });
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  modEmployee({commit}, info) {
+  addProdjectType({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/employees/' + info.id,info).then( res => {
+      httpServer.post('/projects/types',info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  delEmployee({commit}, info) {
+  modProjectType({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.del('/employees/' + info,info).then( res => {
+      httpServer.put('/projects/types/' + info.id,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
-  }
+  },
+  delProjectType({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.del('/projects/types/' + info,info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
 }
 
 // mutations
 const mutations = {
-  loadEmployee(state, payload){
+  loadProjectType(state, payload){
     state.pageNum = payload.pageNum;
     state.pageSize = payload.pageSize;
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
-    state.employees = payload.employees;
+    state.projectTypes = payload.projectTypes;
   },
+  loadProjectTypeAll(state, payload){
+    state.projectTypesAll = payload.projectTypesAll;
+  }
 }
 
 export default {

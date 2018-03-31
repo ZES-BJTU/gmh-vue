@@ -1,7 +1,7 @@
 <template>
   <div class="StockTypeDetail">
     <el-row class="page-title-row">
-      <router-link to="/stocktype" class="page-title-back">
+      <router-link to="/stock-type" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
       <span class="page-title">编辑库存分类</span>
     </el-row>
@@ -52,7 +52,7 @@ export default {
               this.$message.success('修改成功');
               setTimeout(() => {
                 this.loading = false;
-                this.$router.push({ path: '/stocktype' });
+                this.$router.push({ path: '/stock-type' });
               },2000)
             }
           }).catch( err => {
@@ -68,7 +68,7 @@ export default {
   beforeMount: function () {
     if(this.$store.state.stockType.stockTypes.length === 0){
       //如果vuex中没有数据，则返回列表页
-      this.$router.push({ path: '/stocktype' });
+      this.$router.push({ path: '/stock-type' });
     }else{
       //从vuex中查询该id
       const stockType = this.$store.getters.getStockTypeById(this.$route.params.id);

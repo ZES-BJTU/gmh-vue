@@ -1,7 +1,7 @@
 <template>
   <div class="StockTypeNew">
     <el-row class="page-title-row">
-      <router-link to="/stocktype" class="page-title-back">
+      <router-link to="/stock-type" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
       <span class="page-title">新建库存分类</span>
     </el-row>
@@ -53,7 +53,7 @@ export default {
                 this.$message.success("添加成功");
                 setTimeout(() => {
                   this.loading = false;
-                  this.$router.push({ path: "/stocktype" });
+                  this.$router.push({ path: "/stock-type" });
                 }, 1000);
               }
             })

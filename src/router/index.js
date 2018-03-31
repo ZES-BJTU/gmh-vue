@@ -41,6 +41,9 @@ import CustomerDetail from '@/components/content/CustomerDetail'
 import Employee from '@/components/content/Employee'
 import EmployeeNew from '@/components/content/EmployeeNew'
 import EmployeeDetail from '@/components/content/EmployeeDetail'
+import ProjectType from '@/components/content/ProjectType/ProjectType'
+import ProjectTypeNew from '@/components/content/ProjectType/ProjectTypeNew'
+import ProjectTypeDetail from '@/components/content/ProjectType/ProjectTypeDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -106,15 +109,15 @@ export default new Router({
           component: OperatorDetail
         },
         { // 库存分类
-          path: 'stocktype',
+          path: 'stock-type',
           component: StockType
         },
         { // 新建库存分类
-          path: 'stocktype/new',
+          path: 'stock-type/new',
           component: StockTypeNew
         },
         { // 修改库存分类
-          path: 'stocktype/:id',
+          path: 'stock-type/:id',
           component: StockTypeDetail
         },
         { // 库存
@@ -130,31 +133,31 @@ export default new Router({
           component: StockDetail
         },
         { // 新建库存数量
-          path: 'stock/newamount/:id',
+          path: 'stock/new-amount/:id',
           component: StockNewAmount
         },
         { // 库存数量
-          path: 'stockamount',
+          path: 'stock-amount',
           component: StockAmount
         },
         { // 补充库存数量
-          path: 'stockamountsupply/:id',
+          path: 'stock-amount-supply/:id',
           component: StockAmountSupply
         },
         { // 修改库存数量
-          path: 'stockamountdetail/:id',
+          path: 'stock-amount-detail/:id',
           component: StockAmountDetail
         },
         { // 产品分类
-          path: 'producttype',
+          path: 'product-type',
           component: ProductType
         },
         { // 新建产品分类
-          path: 'producttype/new',
+          path: 'product-type/new',
           component: ProductTypeNew
         },
         { // 修改产品分类
-          path: 'producttype/:id',
+          path: 'product-type/:id',
           component: ProductTypeDetail
         },
         { // 产品
@@ -170,19 +173,19 @@ export default new Router({
           component: ProductDetail
         },
         { // 新建产品数量
-          path: 'product/newamount/:id',
+          path: 'product/new-amount/:id',
           component: ProductNewAmount
         },
         { // 产品数量
-          path: 'productamount',
+          path: 'product-amount',
           component: ProductAmount
         },
         { // 补充产品数量
-          path: 'productamountsupply/:id',
+          path: 'product-amount-supply/:id',
           component: ProductAmountSupply
         },
         { // 修改产品数量
-          path: 'productamountdetail/:id',
+          path: 'product-amount-detail/:id',
           component: ProductAmountDetail
         },
         { // 客户
@@ -208,6 +211,18 @@ export default new Router({
         { // 修改员工
           path: 'employee/:id',
           component: EmployeeDetail
+        },
+        { // 美容项目分类
+          path: 'project-type',
+          component: ProjectType
+        },
+        { // 新建员工
+          path: 'project-type/new',
+          component: ProjectTypeNew
+        },
+        { // 修改员工
+          path: 'project-type/:id',
+          component: ProjectTypeDetail
         },
         { // 预约
           path: 'appointment',

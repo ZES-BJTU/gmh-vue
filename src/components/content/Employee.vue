@@ -1,17 +1,17 @@
 <template>
   <div class="Employee">
-    <el-form :inline="true" :model="employeeSearch" ref="employeeSearch" class="demo-form-inline search-form" @keyup.enter.native="searchCustomer('search')">
+    <el-form :inline="true" :model="employeeSearch" ref="employeeSearch" class="demo-form-inline search-form" @keyup.enter.native="searchEmployee('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
         <el-input v-model.trim="employeeSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchCustomer('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchEmployee('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/customer/new">
+      <router-link to="/employee/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
@@ -21,7 +21,6 @@
       <el-table-column prop="gender" label="性别"></el-table-column>
       <el-table-column prop="mobile" label="手机"></el-table-column>
       <el-table-column prop="birthday" label="生日" :formatter="toDate"></el-table-column>
-      <el-table-column prop="source" label="来源" :formatter="handleSource"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column label="操作"  width="150" fixed="right">
         <template slot-scope="scope">
@@ -89,7 +88,7 @@ export default {
     },
     chagePage(val){
       this.employeeSearch.pageNum = val;
-      this.searchStock('page');
+      this.searchEmployee('page');
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){

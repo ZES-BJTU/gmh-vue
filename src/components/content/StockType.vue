@@ -11,7 +11,7 @@
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/stockType/new">
+      <router-link to="/stock-type/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
@@ -87,7 +87,7 @@ export default {
       this.searchStockType('page');
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/stockType/' + row.id});
+      this.$router.push({ path: '/stock-type/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;

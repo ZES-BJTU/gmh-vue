@@ -31,7 +31,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model.trim="newPrincipalForm.remark"></el-input>
+            <el-input v-model.trim="newPrincipalForm.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('newPrincipalForm')">提交</el-button>

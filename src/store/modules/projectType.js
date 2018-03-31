@@ -12,7 +12,7 @@ const state = {
 // getters
 const getters = {
   getProjectTypeById: (state) => (id) => {
-    return state.projectTypes.find(projectType => projectTyp.id === Number.parseInt(id)) 
+    return state.projectTypes.find(projectType => projectType.id === Number.parseInt(id)) 
   }
 }
 
@@ -51,7 +51,7 @@ const actions = {
       })
     });
   },
-  addProdjectType({commit}, info) {
+  addProjectType({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.post('/projects/types',info).then( res => {
         resolve(res);

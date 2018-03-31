@@ -18,7 +18,7 @@
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="stockAmountId" label="StockAmountId" v-if="false"></el-table-column>
-      <el-table-column prop="code" label="编码"></el-table-column>
+      <el-table-column prop="code" label="代码"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="stockTypeName" label="库存分类"></el-table-column>
       <el-table-column prop="amount" label="数量"></el-table-column>

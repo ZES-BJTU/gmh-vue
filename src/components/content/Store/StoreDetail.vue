@@ -9,17 +9,17 @@
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
         <el-form class="new-form" :model="modStoreForm" :rules="rules" ref="modStoreForm" label-width="80px" @keyup.enter.native="enterFlag && onSubmit('modStoreForm')" v-loading="loading">
-          <el-form-item label="店铺名称" prop="name">
+          <el-form-item label="名称" prop="name">
             <el-input v-model.trim="modStoreForm.name" :autofocus="true"></el-input>
           </el-form-item>
-          <el-form-item label="店铺地址" prop="address">
+          <el-form-item label="地址" prop="address">
             <el-input v-model.trim="modStoreForm.address"></el-input>
           </el-form-item>
-          <el-form-item label="店铺电话">
+          <el-form-item label="电话">
             <el-input v-model.trim="modStoreForm.phone"></el-input>
           </el-form-item>
-          <el-form-item label="店铺备注">
-            <el-input v-model.trim="modStoreForm.remark"></el-input>
+          <el-form-item label="备注">
+            <el-input v-model.trim="modStoreForm.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary"  @click="onSubmit('modStoreForm')">提交</el-button>

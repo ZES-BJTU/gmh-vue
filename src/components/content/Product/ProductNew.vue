@@ -12,8 +12,8 @@
           <el-form-item label="名称" prop="name">
             <el-input v-model.trim="newProductForm.name" :autofocus="true"></el-input>
           </el-form-item>
-          <el-form-item label="编码" prop="code">
-            <el-input v-model.number="newProductForm.code" :autofocus="true"></el-input>
+          <el-form-item label="代码" prop="code">
+            <el-input v-model="newProductForm.code" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="所属产品分类" prop="productTypeId">
             <el-select v-model.number="newProductForm.productTypeId" placeholder="请选择产品分类">
@@ -53,8 +53,7 @@ export default {
           { required: true, message: "名称不能为空", trigger: "blur" }
         ],
         code: [
-          { required: true, message: "编码不能为空", trigger: "blur" },
-          { type: 'number', message: "编码必须是数字", trigger: "blur" }
+          { required: true, message: "代码不能为空", trigger: "blur" }
         ],
         productTypeId: [
           { required: true, message: "产品分类不能为空", trigger: "blur" },

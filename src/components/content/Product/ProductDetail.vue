@@ -14,8 +14,8 @@
           <el-form-item label="名称" prop="name">
             <el-input v-model.trim="modProductForm.name" :autofocus="true"></el-input>
           </el-form-item>
-          <el-form-item label="编码" prop="code">
-            <el-input v-model.number="modProductForm.code" :autofocus="true"></el-input>
+          <el-form-item label="代码" prop="code">
+            <el-input v-model="modProductForm.code" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="所属产品分类" prop="productTypeId">
             <el-select v-model.number="modProductForm.productTypeId" placeholder="请选择产品分类">
@@ -56,8 +56,7 @@ export default {
           { required: true, message: "名称不能为空", trigger: "blur" }
         ],
         code: [
-          { required: true, message: "编码不能为空", trigger: "blur" },
-          { type: 'number', message: "编码必须是数字", trigger: "blur" }
+          { required: true, message: "代码不能为空", trigger: "blur" }
         ],
         stockTypeId: [
           { required: true, message: "产品分类不能为空", trigger: "blur" },
@@ -123,7 +122,7 @@ export default {
       const product = this.$store.getters.getProductById(this.$route.params.id);
       this.modProductForm.id = product.id;
       this.modProductForm.name = product.name;
-      this.modProductForm.code = Number.parseInt(product.code);
+      this.modProductForm.code = product.code;
       this.modProductForm.productTypeId = product.productTypeId;
       this.modProductForm.unitName = product.unitName;
       this.modProductForm.unitPrice = product.unitPrice;

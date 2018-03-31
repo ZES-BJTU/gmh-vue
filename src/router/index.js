@@ -44,6 +44,9 @@ import EmployeeDetail from '@/components/content/Employee/EmployeeDetail'
 import ProjectType from '@/components/content/ProjectType/ProjectType'
 import ProjectTypeNew from '@/components/content/ProjectType/ProjectTypeNew'
 import ProjectTypeDetail from '@/components/content/ProjectType/ProjectTypeDetail'
+import Project from '@/components/content/Project/Project'
+import ProjectNew from '@/components/content/Project/ProjectNew'
+import ProjectDetail from '@/components/content/Project/ProjectDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -216,13 +219,25 @@ export default new Router({
           path: 'project-type',
           component: ProjectType
         },
-        { // 新建员工
+        { // 新建美容项目分类
           path: 'project-type/new',
           component: ProjectTypeNew
         },
-        { // 修改员工
+        { // 修改美容项目分类
           path: 'project-type/:id',
           component: ProjectTypeDetail
+        },
+        { // 美容项目
+          path: 'project',
+          component: Project
+        },
+        { // 新建美容项目
+          path: 'project/new',
+          component: ProjectNew
+        },
+        { // 修改美容项目
+          path: 'project/:id',
+          component: ProjectDetail
         },
         { // 预约
           path: 'appointment',

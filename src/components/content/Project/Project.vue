@@ -1,21 +1,21 @@
 <template>
-  <div class="ProjectType">
-    <el-form :inline="true" :model="projectTypeSearch" ref="projectTypeSearch" class="demo-form-inline search-form" @keyup.enter.native="searchProjectType('search')">
+  <div class="Project">
+    <el-form :inline="true" :model="projectSearch" ref="projectSearch" class="demo-form-inline search-form" @keyup.enter.native="searchProject('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="projectTypeSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="projectSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchProjectType('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchProject('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/project-type/new">
+      <router-link to="/project/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>
-    <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
+    <!-- <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="topTypeDesc" label="顶层分类"></el-table-column>
@@ -33,16 +33,16 @@
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
-       @current-change="chagePage"></el-pagination>
+       @current-change="chagePage"></el-pagination> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "ProjectType",
+  name: "Project",
   data() {
     return {
-      projectTypeSearch: {
+      projectSearch: {
         content: "",
         oldContent: "",//储存最近一次搜索的内容
         pageNum: 1,
@@ -54,29 +54,29 @@ export default {
   },
   computed: {
     pageNum: function(){
-      return this.$store.state.projectType.pageNum;
+      return this.$store.state.project.pageNum;
     },
     pageSize: function(){
-      return this.$store.state.projectType.pageSize;
+      return this.$store.state.project.pageSize;
     },
     totalCount: function(){
-      return this.$store.state.projectType.totalCount;
+      return this.$store.state.project.totalCount;
     },
     totalPages: function(){
-      return this.$store.state.projectType.totalPages;
+      return this.$store.state.project.totalPages;
     },
     tableData: function(){
-      return this.$store.state.projectType.projectTypes;
+      return this.$store.state.project.projects;
     }
   },
   methods: {
-    searchProjectType(type) {
+    searchProject(type) {
       this.loading = true;
       if(type === 'search'){
-        this.projectTypeSearch.oldContent = this.projectTypeSearch.content;
+        this.projectSearch.oldContent = this.projectSearch.content;
       }
-      this.projectTypeSearch.type = type;
-      this.$store.dispatch("loadProjectType", this.projectTypeSearch).then( res => {
+      this.projectSearch.type = type;
+      this.$store.dispatch("loadProject", this.projectSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -84,11 +84,11 @@ export default {
       });
     },
     chagePage(val){
-      this.projectTypeSearch.pageNum = val;
+      this.projectSearch.pageNum = val;
       this.searchProjectType('page');
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/project-type/' + row.id});
+      this.$router.push({ path: '/project/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;
@@ -105,10 +105,10 @@ export default {
           if (action === 'confirm') {
             instance.confirmButtonLoading = true;
             instance.confirmButtonText = '删除中...';
-            this.$store.dispatch("delProjectType", row.id).then( res => {
+            this.$store.dispatch("delProject", row.id).then( res => {
               done();
               instance.confirmButtonLoading = false;
-              this.searchProjectType('search');
+              this.searchProject('search');
             }).catch( err => {
               console.log(err);
             });
@@ -125,7 +125,7 @@ export default {
     },
   },
   beforeMount: function () {
-    this.searchProjectType('search');
+    this.searchProject('search');
   }
 };
 </script>

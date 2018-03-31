@@ -12,6 +12,8 @@ import product from './modules/product'
 import productAmount from './modules/productAmount'
 import customer from './modules/customer'
 import employee from './modules/employee'
+import projectType from './modules/projectType'
+import project from './modules/project'
 import * as actions from './actions'
 import mutations from './mutations'
 
@@ -35,5 +37,7 @@ export default new Vuex.Store({
     productAmount,
     customer,
     employee,
+    projectType,
+    project,
   }
 })

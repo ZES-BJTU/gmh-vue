@@ -50,6 +50,10 @@ import ProjectDetail from '@/components/content/Project/ProjectDetail'
 import MemberCard from '@/components/content/MemberCard/MemberCard'
 import MemberCardNew from '@/components/content/MemberCard/MemberCardNew'
 import MemberCardDetail from '@/components/content/MemberCard/MemberCardDetail'
+import CustomerCard from '@/components/content/CustomerCard/CustomerCard'
+import CustomerCardReturn from '@/components/content/CustomerCard/CustomerCardReturn'
+import CustomerCardTurn from '@/components/content/CustomerCard/CustomerCardTurn'
+import CustomerCardChangeStore from '@/components/content/CustomerCard/CustomerCardChangeStore'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment'
 import Schedule from '@/components/Schedule'
@@ -253,6 +257,22 @@ export default new Router({
         { // 修改会员卡
           path: 'member-card/:id',
           component: MemberCardDetail
+        },
+        { // 客户会员卡
+          path: 'customer-card',
+          component: CustomerCard
+        },
+        { // 客户会员卡退卡
+          path: 'customer-card-return/:id',
+          component: CustomerCardReturn
+        },
+        { // 客户会员卡转卡
+          path: 'customer-card-turn/:id',
+          component: CustomerCardTurn
+        },
+        { // 客户会员卡转店
+          path: 'customer-card-change-store/:id',
+          component: CustomerCardChangeStore
         },
         { // 预约
           path: 'appointment',

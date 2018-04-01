@@ -15,7 +15,7 @@
             <el-input v-model.trim="modStockForm.name" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="代码" prop="code">
-            <el-input v-model="modStockForm.code" :autofocus="true"></el-input>
+            <el-input v-model="modStockForm.code"></el-input>
           </el-form-item>
           <el-form-item label="所属库存分类" prop="stockTypeId">
             <el-select v-model.number="modStockForm.stockTypeId" placeholder="请选择库存分类">
@@ -24,7 +24,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="计量单位名称" prop="unitName">
-            <el-input v-model.trim="modStockForm.unitName" :autofocus="true"></el-input>
+            <el-input v-model.trim="modStockForm.unitName"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('modStockForm')">提交</el-button>

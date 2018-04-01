@@ -15,6 +15,7 @@ import employee from './modules/employee'
 import projectType from './modules/projectType'
 import project from './modules/project'
 import memberCard from './modules/memberCard'
+import customerCard from './modules/customerCard'
 import * as actions from './actions'
 import mutations from './mutations'
 
@@ -41,5 +42,6 @@ export default new Vuex.Store({
     projectType,
     project,
     memberCard,
+    customerCard,
   }
 })

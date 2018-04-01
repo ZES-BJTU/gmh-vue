@@ -6,7 +6,11 @@
           </el-menu-item>
           <el-submenu index="2" class="account-item">
               <template slot="title">{{name}}</template>
-              <el-menu-item index="2-1">修改密码</el-menu-item>
+              <router-link to="/modpwd">
+								<el-menu-item index="2-1">
+                  修改密码
+                </el-menu-item>
+							</router-link>
               <el-menu-item index="2-3" @click="signout">退出登录</el-menu-item>
           </el-submenu>
         </el-menu>

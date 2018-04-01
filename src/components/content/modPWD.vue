@@ -50,20 +50,12 @@ export default {
         if (valid) {
           this.loading = true;
           this.enterFlag = false;
-          this.$store.dispatch("addCustomer", {
-            name: this.newCustomerForm.name,
-            gender: this.newCustomerForm.gender,
-            mobile: this.newCustomerForm.mobile,
-            //考虑到接口失败的情况，不能直接修改把原来的日期转化成时间戳，否则getDate()失效
-            birthday: this.toTimeStamp(this.newCustomerForm.birthday),
-            source: this.newCustomerForm.source,
-            remark: this.newCustomerForm.remark
-          }).then(res => {
+          this.$store.dispatch("modPWD", this.resetPWDForm).then(res => {
               if (res.code === 0) {
-                this.$message.success("添加成功");
+                this.$message.success("修改成功,请重新登录");
                 setTimeout(() => {
                   this.loading = false;
-                  this.$router.push({ path: "/customer" });
+                  this.$router.push({ path: "/signin" });
                 }, 1000);
               }
             })

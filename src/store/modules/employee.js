@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   employees: [],
+  employeesByTopType: []
 }
 
 // getters
@@ -30,6 +31,21 @@ const actions = {
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
           employees: res.data.data
+        });
+        resolve(res);
+      })
+      .catch( err => {
+        reject(err);
+      })
+    });
+  },
+  loadEmployeeByTopType({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/employees/topType',{
+        'topType': info
+      }).then( res => {
+        commit('loadEmployeeByTopType', {
+          employeesByTopType: res.data
         });
         resolve(res);
       })
@@ -75,6 +91,9 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.employees = payload.employees;
+  },
+  loadEmployeeByTopType(state, payload){
+    state.employeesByTopType = payload.employeesByTopType;
   },
 }
 

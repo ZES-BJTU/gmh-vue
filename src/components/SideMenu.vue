@@ -6,62 +6,53 @@
 					<el-menu :default-active="activeMenu" :unique-opened="true">
 						<router-link to="/store" v-if="role==='管理员'">
 							<el-menu-item index="1">
-								<i class="el-icon-document"></i>
 								<span slot="title">店铺</span>
 							</el-menu-item>
 						</router-link>
 
 						<router-link to="/principal" v-if="role==='管理员'">
 							<el-menu-item index="2">
-								<i class="el-icon-document"></i>
 								<span slot="title">店铺负责人</span>
 							</el-menu-item>
 						</router-link>
 
-						<router-link to="/chart" v-if="role==='店长'">
+						<!-- <router-link to="/chart" v-if="role==='店长'">
 							<el-menu-item index="3">
-								<i class="el-icon-document"></i>
 								<span slot="title">首页</span>
 							</el-menu-item>
-						</router-link>
+						</router-link> -->
 
 						<router-link to="/reception" v-if="role==='店长'">
 							<el-menu-item index="4">
-								<i class="el-icon-document"></i>
 								<span slot="title">前台</span>
 							</el-menu-item>
 						</router-link>
 
-						<router-link to="/operator" v-if="role==='店长'">
+						<!-- <router-link to="/operator" v-if="role==='店长'">
 							<el-menu-item index="5">
-								<i class="el-icon-document"></i>
 								<span slot="title">操作员</span>
 							</el-menu-item>
-						</router-link>
+						</router-link> -->
 
-						<router-link to="/appointment" v-if="role==='店长' || role==='前台'">
+						<!-- <router-link to="/appointment" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="6">
-								<i class="el-icon-document"></i>
 								<span slot="title">预约</span>
 							</el-menu-item>
-						</router-link>
+						</router-link> -->
 
 						<!-- <el-submenu index="7" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
-								<i class="el-icon-location"></i>
 								<span>消费记录</span>
 							</template>
 
 							<router-link to="/consume">
 								<el-menu-item index="7-1">
-									<i class="el-icon-document"></i>
 									<span slot="title">消费记录</span>
 								</el-menu-item>
 							</router-link>
 
 							<router-link to="/consume-change">
 								<el-menu-item index="7-2">
-									<i class="el-icon-document"></i>
 									<span slot="title">消费记录变动</span>
 								</el-menu-item>
 							</router-link>
@@ -69,7 +60,6 @@
 
 						<el-submenu index="8" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
-								<i class="el-icon-location"></i>
 								<span>客户</span>
 							</template>
 							<router-link to="/customer">
@@ -99,7 +89,6 @@
 
 						<el-submenu index="9" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
-								<i class="el-icon-location"></i>
 								<span>库存</span>
 							</template>
 							<router-link to="/stock-type">
@@ -120,7 +109,6 @@
 						</el-submenu>
 						<el-submenu index="10" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
-								<i class="el-icon-location"></i>
 								<span>美容项目</span>
 							</template>
 							<router-link to="/project-type">
@@ -137,14 +125,12 @@
 
 						<router-link to="/member-card" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="11">
-								<i class="el-icon-document"></i>
 								<span slot="title">会员卡</span>
 							</el-menu-item>
 						</router-link>
 
 						<el-submenu index="12" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
-								<i class="el-icon-location"></i>
 								<span>产品</span>
 							</template>
 							<router-link to="/product-type">
@@ -166,21 +152,18 @@
 
 						<!-- <router-link to="/activity" v-if="role==='店长' || role==='前台'">
 								<el-menu-item index="13">
-										<i class="el-icon-document"></i>
 										<span slot="title">活动管理</span>
 								</el-menu-item>
 						</router-link> -->
 
 						<router-link to="/employee" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="14">
-								<i class="el-icon-document"></i>
 								<span slot="title">员工</span>
 							</el-menu-item>
 						</router-link>
 
 						<!-- <router-link to="/employee" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="14">
-								<i class="el-icon-document"></i>
 								<span slot="title">员工绩效</span>
 							</el-menu-item>
 						</router-link> -->

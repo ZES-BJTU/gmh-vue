@@ -57,6 +57,15 @@ const actions = {
       })
     });
   },
+  modPWD({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.patch('/users/changePassword',info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
   delUser({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.del('/users/' + info,info).then( res => {

@@ -56,8 +56,12 @@ import CustomerCardTurn from '@/components/content/CustomerCard/CustomerCardTurn
 import CustomerCardChangeStore from '@/components/content/CustomerCard/CustomerCardChangeStore'
 import CustomerCardChangeRecord from '@/components/content/CustomerCard/CustomerCardChangeRecord'
 import Chart from '@/components/content/Chart'
-import Appointment from '@/components/content/Appointment'
+import Appointment from '@/components/content/Appointment/Appointment'
+import AppointmentNew from '@/components/content/Appointment/AppointmentNew'
+import AppointmentDetail from '@/components/content/Appointment/AppointmentDetail'
+import AppointmentFinish from '@/components/content/Appointment/AppointmentFinish'
 import Schedule from '@/components/Schedule'
+import ModPWD from '@/components/content/ModPWD'
 
 Vue.use(Router)
 
@@ -279,9 +283,25 @@ export default new Router({
           path: 'customer-card-change-record',
           component: CustomerCardChangeRecord
         },
-        { // 预约
-          path: 'appointment',
-          component: Appointment
+        // { // 预约
+        //   path: 'appointment',
+        //   component: Appointment
+        // },
+        // { // 新建预约
+        //   path: 'appointment/new',
+        //   component: AppointmentNew
+        // },
+        // { // 修改预约
+        //   path: 'appointment-detail/:id',
+        //   component: AppointmentDetail
+        // },
+        // { // 完成预约
+        //   path: 'appointment-finish/:id',
+        //   component: AppointmentFinish
+        // },
+        { // 修改密码
+          path: 'modpwd',
+          component: ModPWD
         },
       ],
       meta: { requiresSignin: true }

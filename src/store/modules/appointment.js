@@ -5,35 +5,31 @@ const state = {
   pageSize: 0,
   totalCount: 0,
   totalPages: 0,
-  projects: [],
-  projectsAll: [],
+  appointments: [],
 }
 
 // getters
 const getters = {
-  getProjectById: (state) => (id) => {
-    return state.projects.find(project => project.id === Number.parseInt(id)) 
-  },
-  // getProjectByType: (state) => (typeId) => {
-  //   return state.projectsAll.filter(project => project.projectTypeId === Number.parseInt(typeId)) 
-  // },
+  getAppointmentById: (state) => (id) => {
+    return state.appointments.find(appointment => appointment.id === Number.parseInt(id)) 
+  }
 }
 
 // actions
 const actions = {
-  loadProject({commit}, info) {
+  loadAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/projects',{
-        'search': (info.type === 'search' ? info.content : info.oldContent),
+      httpServer.put('/appointment/list' , {
+        'appointmentKeyWords': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {
-        commit('loadProject', {
+        commit('loadAppointment', {
           pageNum: res.data.pageNum,
           pageSize: res.data.pageSize,
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
-          projects: res.data.data
+          appointments: res.data.data
         });
         resolve(res);
       })
@@ -42,39 +38,36 @@ const actions = {
       })
     });
   },
-  loadProjectAll({commit}, info) {
+  addAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/projects/all').then( res => {
-        commit('loadProjectAll', {
-          projectsAll: res.data
-        });
+      httpServer.put('/appointment/create', info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  addProject({commit}, info) {
+  modAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.post('/projects',info).then( res => {
+      httpServer.put('/appointment/modify', info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  modProject({commit}, info) {
+  finishAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/projects/' + info.id,info).then( res => {
+      httpServer.del('/appointment/finish/', info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
       })
     });
   },
-  delProject({commit}, info) {
+  cancelAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.del('/projects/' + info,info).then( res => {
+      httpServer.del('/appointment/cancel/',info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -85,15 +78,12 @@ const actions = {
 
 // mutations
 const mutations = {
-  loadProject(state, payload){
+  loadAppointment(state, payload){
     state.pageNum = payload.pageNum;
     state.pageSize = payload.pageSize;
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
-    state.projects = payload.projects;
-  },
-  loadProjectAll(state, payload){
-    state.projectsAll = payload.projectsAll;
+    state.appointments = payload.appointments;
   },
 }
 

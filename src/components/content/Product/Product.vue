@@ -119,6 +119,8 @@ export default {
               instance.confirmButtonLoading = false;
               this.searchProduct('search');
             }).catch( err => {
+              done();
+              instance.confirmButtonLoading = false;
               console.log(err);
             });
           } else {

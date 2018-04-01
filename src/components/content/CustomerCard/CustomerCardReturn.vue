@@ -9,13 +9,13 @@
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
         <el-form class="new-form" :model="returnCustomerCardForm" ref="returnCustomerCardForm" label-width="110px" 
-          @keyup.enter.native="enterFlag && onSubmit('returnCustomerCardForm')" 
+          :rules="rules" @keyup.enter.native="enterFlag && onSubmit('returnCustomerCardForm')" 
           v-loading="loading">
           <el-form-item label="退卡原因" prop="returnedReason">
             <el-input v-model.trim="returnCustomerCardForm.returnedReason" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="退卡金额(元)" prop="returnedMoney">
-            <el-input v-model="returnCustomerCardForm.returnedMoney"></el-input>
+            <el-input v-model.number="returnCustomerCardForm.returnedMoney"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('returnCustomerCardForm')">提交</el-button>
@@ -30,11 +30,34 @@
 export default {
   name: "CustomerCardReturn",
   data() {
+    // let validatePositiveNumber = (rule, value, callback) => {
+    //   // if (value === '') {
+    //   //   callback(new Error('数字不能为空'));
+    //   // } else if (!Number.isInteger(value)) {
+    //   //   callback(new Error(''));
+    //   // } else {
+    //   //   callback();
+    //   // }
+    //   // 实数
+    //   let type="/^-?\d+\.?\d*$/";
+    //   let reg = new RegExp(type); 
+    //   if(!reg.test(value)){ 
+    //     callback(new Error('请输入正确的金额'));
+    //   }else{
+    //     callback();
+    //   }
+    // };
     return {
       returnCustomerCardForm: {
         id: '',
         returnedReason: '',
         returnedMoney: '',
+      },
+      rules: {
+        returnedMoney: [
+          { required: true, message: "退卡金额不能为空", trigger: "blur" },
+          { type: "number", message: "退卡金额必须是数字", trigger: "blur" },
+        ]
       },
       loading: false,
       enterFlag: true //true代表允许回车，false代表不允许回车，避免重复提交

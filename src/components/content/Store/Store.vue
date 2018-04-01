@@ -118,6 +118,8 @@ export default {
               instance.confirmButtonLoading = false;
               this.searchStore('search');
             }).catch( err => {
+              done();
+              instance.confirmButtonLoading = false;
               console.log(err);
             });
           } else {

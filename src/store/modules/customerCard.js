@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   customerCards: [],
+  customerCardChanges: [],
 }
 
 // getters
@@ -30,6 +31,27 @@ const actions = {
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
           customerCards: res.data.data
+        });
+        resolve(res);
+      })
+      .catch( err => {
+        reject(err);
+      })
+    });
+  },
+  loadCustomerCardChangeList({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/customerMemberCard/changedList', {
+        'keyWords': (info.type === 'search' ? info.content : info.oldContent),
+        'pageNum': info.pageNum,
+        'pageSize': info.pageSize
+      }).then( res => {
+        commit('loadCustomerCardChangeList', {
+          pageNum: res.data.pageNum,
+          pageSize: res.data.pageSize,
+          totalCount: res.data.totalCount,
+          totalPages: res.data.totalPages,
+          customerCardChanges: res.data.data
         });
         resolve(res);
       })
@@ -75,6 +97,13 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.customerCards = payload.customerCards;
+  },
+  loadCustomerCardChangeList(state, payload){
+    state.pageNum = payload.pageNum;
+    state.pageSize = payload.pageSize;
+    state.totalCount = payload.totalCount;
+    state.totalPages = payload.totalPages;
+    state.customerCardChanges = payload.customerCardChanges;
   },
 }
 

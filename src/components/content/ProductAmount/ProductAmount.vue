@@ -121,6 +121,8 @@ export default {
     //           instance.confirmButtonLoading = false;
     //           this.searchStock('search');
     //         }).catch( err => {
+    //           done();
+    //           instance.confirmButtonLoading = false;
     //           console.log(err);
     //         });
     //       } else {

@@ -122,6 +122,8 @@ export default {
               instance.confirmButtonLoading = false;
               this.searchPrincipal('search');
             }).catch( err => {
+              done();
+              instance.confirmButtonLoading = false;
               console.log(err);
             });
           } else {

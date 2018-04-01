@@ -1,17 +1,17 @@
 <template>
-  <div class="CustomerCard">
-    <el-form :inline="true" :model="customerCardSearch" ref="customerCardSearch" class="demo-form-inline search-form" @keyup.enter.native="searchCustomerCard('search')">
+  <div class="CustomerCardChangeRecord">
+    <el-form :inline="true" :model="customerCardChangeRecordSearch" ref="customerCardChangeRecordSearch" 
+      class="demo-form-inline search-form" @keyup.enter.native="searchCustomerCardChangeRecord('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="customerCardSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="customerCardChangeRecordSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchCustomerCard('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchCustomerCardChangeRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
-      <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="customerName" label="姓名"></el-table-column>
       <el-table-column prop="memberCardName" label="卡名"></el-table-column>
       <el-table-column prop="remainingMoney" label="余额" :formatter="handleRemainMoney"></el-table-column>
@@ -26,16 +26,6 @@
       <el-table-column prop="turnedReason" label="换卡原因" :formatter="handlTurnedReason"></el-table-column>
       <el-table-column prop="turnedMoney" label="补/退金额" :formatter="handlTurnedMoney"></el-table-column>
       <el-table-column prop="uniqueIdentifier" label="流水号"></el-table-column>
-      <el-table-column label="操作"  width="220" fixed="right">
-        <template slot-scope="scope" v-if="scope.row.isValid === '是'">
-          <el-button size="mini"
-            @click="handleTurn(scope.$index, scope.row)">转卡</el-button>
-          <el-button size="mini"
-            @click="handleChangeStore(scope.$index, scope.row)">转店</el-button>
-          <el-button size="mini" type="danger"
-            @click="handleReturn(scope.$index, scope.row)">退卡</el-button>
-        </template>
-      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
@@ -45,10 +35,10 @@
 
 <script>
 export default {
-  name: "CustomerCard",
+  name: "CustomerCardChangeRecord",
   data() {
     return {
-      customerCardSearch: {
+      customerCardChangeRecordSearch: {
         content: '',
         oldContent: '',//储存最近一次搜索的内容
         pageNum: '1',
@@ -72,17 +62,17 @@ export default {
       return this.$store.state.customerCard.totalPages;
     },
     tableData: function(){
-      return this.$store.state.customerCard.customerCards;
+      return this.$store.state.customerCard.customerCardChanges;
     }
   },
   methods: {
-    searchCustomerCard(type) {
+    searchCustomerCardChangeRecord(type) {
       this.loading = true;
       if(type === 'search'){
-        this.customerCardSearch.oldContent = this.customerCardSearch.content;
+        this.customerCardChangeRecordSearch.oldContent = this.customerCardChangeRecordSearch.content;
       }
-      this.customerCardSearch.type = type;
-      this.$store.dispatch("loadCustomerCard", this.customerCardSearch).then( res => {
+      this.customerCardChangeRecordSearch.type = type;
+      this.$store.dispatch("loadCustomerCardChangeList", this.customerCardChangeRecordSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -91,7 +81,7 @@ export default {
     },
     chagePage(val){
       this.customerCardSearch.pageNum = val;
-      this.searchCustomerCard('page');
+      this.searchCustomerCardChangeRecord('page');
     },
     handleRemainMoney(row, column){
       if(!row.remainingMoney || row.remainingMoney === ''){
@@ -163,18 +153,9 @@ export default {
         return '￥' + row.turnedMoney;
       }
     },
-    handleTurn(index, row){
-      this.$router.push({ path: '/customer-card-turn/' + row.id});
-    },
-    handleChangeStore(index, row){
-      this.$router.push({ path: '/customer-card-change-store/' + row.id});
-    },
-    handleReturn(index, row){
-      this.$router.push({ path: '/customer-card-return/' + row.id});
-    },
   },
   beforeMount: function () {
-    this.searchCustomerCard('search');
+    this.searchCustomerCardChangeRecord('search');
   }
 };
 </script>

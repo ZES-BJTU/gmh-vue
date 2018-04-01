@@ -140,6 +140,8 @@ export default {
               instance.confirmButtonLoading = false;
               this.searchProject('search');
             }).catch( err => {
+              done();
+              instance.confirmButtonLoading = false;
               console.log(err);
             });
           } else {

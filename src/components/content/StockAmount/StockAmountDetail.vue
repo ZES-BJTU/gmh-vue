@@ -8,7 +8,8 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="modStockAmountForm" ref="modStockAmountForm" label-width="110px" :rules="rules" @keyup.enter.native="enterFlag && onSubmit('modStockAmountForm')" v-loading="loading">
+        <el-form class="new-form" :model="modStockAmountForm" ref="modStockAmountForm" label-width="110px" 
+          :rules="rules" @keyup.enter.native="enterFlag && onSubmit('modStockAmountForm')" v-loading="loading">
           <el-form-item label="数量" prop="amount">
             <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
             <el-input style="display:none;"></el-input>

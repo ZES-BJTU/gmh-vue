@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   memberCards: [],
+  memberCardsAll: [],
 }
 
 // getters
@@ -35,6 +36,18 @@ const actions = {
       })
       .catch( err => {
         reject(err);
+      })
+    });
+  },
+  loadMemberCardAll({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/member/cards/all').then( res => {
+        commit('loadMemberCardAll', {
+          memberCardsAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
       })
     });
   },
@@ -75,6 +88,9 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.memberCards = payload.memberCards;
+  },
+  loadMemberCardAll(state, payload){
+    state.memberCardsAll = payload.memberCardsAll;
   }
 }
 

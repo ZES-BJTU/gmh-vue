@@ -84,13 +84,13 @@
 								</el-menu-item>
 							</router-link>
 
-							<router-link to="/customer-activity">
+							<!-- <router-link to="/customer-activity">
 								<el-menu-item index="8-3">
 									<span slot="title">客户活动</span>
 								</el-menu-item>
-							</router-link>
+							</router-link> -->
 
-							<router-link to="/customer-card-change">
+							<router-link to="/customer-card-change-record">
 								<el-menu-item index="8-4">
 									<span slot="title">客户会员卡信息变动</span>
 								</el-menu-item>

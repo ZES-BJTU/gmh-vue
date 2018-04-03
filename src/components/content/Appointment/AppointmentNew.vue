@@ -29,16 +29,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model.trim="newAppointmentForm.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
+            <el-input v-model.trim="newAppointmentForm.remarks" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item label="项目">
             <el-table :data="appointmentProjectsCopy" size="mini" v-loading="loading" style="width: 100%">
               <el-table-column prop="projectId" label="项目ID" v-if="false"></el-table-column>
-              <el-table-column prop="projectName" label="项目名称"></el-table-column>
+              <el-table-column prop="projectName" label="名称"></el-table-column>
+              <el-table-column prop="projectCode" label="代码"></el-table-column>
               <el-table-column prop="employeeId" label="员工ID" v-if="false"></el-table-column>
               <el-table-column prop="employeeName" label="员工姓名"></el-table-column>
-              <el-table-column prop="beginTime" label="开始时间" :formatter="handleBeginTime"></el-table-column>
-              <el-table-column prop="endTime" label="结束时间" :formatter="handleEndTime"></el-table-column>
+              <el-table-column prop="beginTime" label="开始时间"></el-table-column>
+              <el-table-column prop="endTime" label="结束时间"></el-table-column>
               <el-table-column label="操作" width="50px;" fixed="right">
                 <template slot-scope="scope">
                   <el-button size="mini" type="danger"
@@ -49,14 +50,14 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleOpenDialog">添加项目</el-button>
-            <el-button type="primary" @click="onSubmit('newProjectForm')">提交</el-button>
+            <el-button type="primary" @click="onSubmit('newAppointmentForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
     <AppointmentProject :visible="appointmentProjectDialog"
       v-on:closeDialog="appointmentProjectDialog = false" :options="options"
-      v-on:addProjectStock="handleAddAppointmentProject"></AppointmentProject>
+      v-on:addAppointmentProject="handleAddAppointmentProject"></AppointmentProject>
   </div>
 </template>
 
@@ -72,7 +73,7 @@ export default {
         customerGender: '',
         isLine: '',
         remarks: '',
-        appointmentProjects: []
+        appointmentProjectParams: []
       },
       rules: {
         customerName: [
@@ -133,7 +134,7 @@ export default {
           this.loading = true;
           this.enterFlag = false;
           this.$store
-            .dispatch("addAppointment", this.newProjectForm)
+            .dispatch("addAppointment", this.newAppointmentForm)
             .then(res => {
               if (res.code === 0) {
                 this.$message.success("添加成功");
@@ -183,21 +184,6 @@ export default {
       this.fillOption(arr1,0);
       this.fillOption(arr2,1);
       this.fillOption(arr3,2);
-      // for(let projectType of this.projectTypes){
-      //   let projects = this.projects.filter(project => project.projectTypeId === Number.parseInt(projectType.id));
-      //   let child = [];
-      //   for( let project of projects ){
-      //     child.push({
-      //       'value': project.id,
-      //       'label': project.code + '-' + project.name, 
-      //     })
-      //   }
-      //   this.options.push({
-      //     'value': projectType.id,
-      //     'label': projectType.name,
-      //     'children': child
-      //   })
-      // }
       this.appointmentProjectDialog = true
     },
     fillOption(arr,num){
@@ -218,24 +204,36 @@ export default {
       }
     },
     handleAddAppointmentProject(payload){
-      // let stock = this.$store.getters.getStockAllById(payload.stockId);
-      // this.projectStocks.push({
-      //   'id': stock.id,
-      //   'name': stock.name,
-      //   'amount': payload.stockConsumptionAmount,
-      //   'unitName': stock.unitName
-      // })
-      // this.newProjectForm.projectStockParams.push({
-      //   'stockId': payload.stockId,
-      //   'stockConsumptionAmount': payload.stockConsumptionAmount
-      // });
+      console.log(payload);
+      let employee = this.$store.getters.getEmployeeFromAllById(payload.employeeId);
+      let project = this.$store.getters.getProjectFromAllById(payload.projectId);
+      let beginTimeStamp = this.toTimeStamp(payload.appointmentTime[0]);
+      let beginTimeString = this.toDatetimeMin(beginTimeStamp);
+      let endTimeStamp = this.toTimeStamp(payload.appointmentTime[1]);
+      let endTimeString = this.toDatetimeMin(endTimeStamp);
+      this.appointmentProjectsCopy.push({
+        'projectId': project.id,
+        'projectName': project.name,
+        'projectCode': project.code,
+        'employeeId': employee.id,
+        'employeeName': employee.name,
+        'beginTime': beginTimeString,
+        'endTime': endTimeString,
+      })
+      this.newAppointmentForm.appointmentProjectParams.push({
+        'projectId': project.id,
+        'projectCode': project.code,
+        'employeeId': employee.id,
+        'beginTime': beginTimeStamp,
+        'endTime': endTimeStamp,
+      })
     },
     handleDelete(index, row){
-      var arrIndex = this.projectStocks.findIndex((projectStock, index, arr) => {
-        return projectStock.id === row.id;
+      var arrIndex = this.appointmentProjectsCopy.findIndex((appointmentProject, index, arr) => {
+        return appointmentProject.id === row.id;
       })
-      this.projectStocks.splice(arrIndex,1);
-      this.newProjectForm.projectStockParams.splice(arrIndex,1);
+      this.appointmentProjectsCopy.splice(arrIndex,1);
+      this.newAppointmentForm.appointmentProjectParams.splice(arrIndex,1);
     },
     loadProjectTypeAll(){
       this.$store.dispatch("loadProjectTypeAll").then( res => {
@@ -252,12 +250,20 @@ export default {
       }).catch( err => {
         console.log(err);
       });
+    },
+    loadEmployeeAll(){
+      this.$store.dispatch("loadEmployeeAll").then( res => {
+        this.loading = false;
+        // this.$message.success('查询成功');
+      }).catch( err => {
+        console.log(err);
+      });
     }
   },
   beforeMount: function () {
     this.loadProjectTypeAll();
     this.loadProjectAll();
-    // this.loadEmployeeAll();
+    this.loadEmployeeAll();
   },
   components: {AppointmentProject}
 };

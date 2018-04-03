@@ -16,11 +16,11 @@
 							</el-menu-item>
 						</router-link>
 
-						<!-- <router-link to="/chart" v-if="role==='店长'">
+						<router-link to="/chart" v-if="role==='店长'">
 							<el-menu-item index="3">
 								<span slot="title">首页</span>
 							</el-menu-item>
-						</router-link> -->
+						</router-link>
 
 						<router-link to="/reception" v-if="role==='店长'">
 							<el-menu-item index="4">
@@ -28,19 +28,19 @@
 							</el-menu-item>
 						</router-link>
 
-						<!-- <router-link to="/operator" v-if="role==='店长'">
+						<router-link to="/operator" v-if="role==='店长'">
 							<el-menu-item index="5">
 								<span slot="title">操作员</span>
 							</el-menu-item>
-						</router-link> -->
+						</router-link>
 
-						<!-- <router-link to="/appointment" v-if="role==='店长' || role==='前台'">
+						<router-link to="/appointment" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="6">
 								<span slot="title">预约</span>
 							</el-menu-item>
-						</router-link> -->
+						</router-link>
 
-						<!-- <el-submenu index="7" v-if="role==='店长' || role==='前台'">
+						<el-submenu index="7" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
 								<span>消费记录</span>
 							</template>
@@ -56,7 +56,7 @@
 									<span slot="title">消费记录变动</span>
 								</el-menu-item>
 							</router-link>
-						</el-submenu> -->
+						</el-submenu>
 
 						<el-submenu index="8" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
@@ -74,11 +74,11 @@
 								</el-menu-item>
 							</router-link>
 
-							<!-- <router-link to="/customer-activity">
+							<router-link to="/customer-activity">
 								<el-menu-item index="8-3">
 									<span slot="title">客户活动</span>
 								</el-menu-item>
-							</router-link> -->
+							</router-link>
 
 							<router-link to="/customer-card-change-record">
 								<el-menu-item index="8-4">

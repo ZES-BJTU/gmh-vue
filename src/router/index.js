@@ -283,22 +283,22 @@ export default new Router({
           path: 'customer-card-change-record',
           component: CustomerCardChangeRecord
         },
-        // { // 预约
-        //   path: 'appointment',
-        //   component: Appointment
-        // },
-        // { // 新建预约
-        //   path: 'appointment/new',
-        //   component: AppointmentNew
-        // },
-        // { // 修改预约
-        //   path: 'appointment-detail/:id',
-        //   component: AppointmentDetail
-        // },
-        // { // 完成预约
-        //   path: 'appointment-finish/:id',
-        //   component: AppointmentFinish
-        // },
+        { // 预约
+          path: 'appointment',
+          component: Appointment
+        },
+        { // 新建预约
+          path: 'appointment/new',
+          component: AppointmentNew
+        },
+        { // 修改预约
+          path: 'appointment-detail/:id',
+          component: AppointmentDetail
+        },
+        { // 完成预约
+          path: 'appointment-finish/:id',
+          component: AppointmentFinish
+        },
         { // 修改密码
           path: 'modpwd',
           component: ModPWD

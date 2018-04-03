@@ -6,13 +6,17 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   employees: [],
-  employeesByTopType: []
+  employeesByTopType: [],
+  employeesAll: []
 }
 
 // getters
 const getters = {
   getEmployeeById: (state) => (id) => {
     return state.employees.find(employee => employee.id === Number.parseInt(id)) 
+  },
+  getEmployeeFromAllById: (state) => (id) => {
+    return state.employeesAll.find(employee => employee.id === Number.parseInt(id)) 
   }
 }
 
@@ -46,6 +50,19 @@ const actions = {
       }).then( res => {
         commit('loadEmployeeByTopType', {
           employeesByTopType: res.data
+        });
+        resolve(res);
+      })
+      .catch( err => {
+        reject(err);
+      })
+    });
+  },
+  loadEmployeeAll({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/employees/workType').then( res => {
+        commit('loadEmployeeAll', {
+          employeesAll: res.data
         });
         resolve(res);
       })
@@ -94,6 +111,9 @@ const mutations = {
   },
   loadEmployeeByTopType(state, payload){
     state.employeesByTopType = payload.employeesByTopType;
+  },
+  loadEmployeeAll(state, payload){
+    state.employeesAll = payload.employeesAll;
   },
 }
 

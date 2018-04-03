@@ -14,9 +14,9 @@ const getters = {
   getProjectById: (state) => (id) => {
     return state.projects.find(project => project.id === Number.parseInt(id)) 
   },
-  // getProjectByType: (state) => (typeId) => {
-  //   return state.projectsAll.filter(project => project.projectTypeId === Number.parseInt(typeId)) 
-  // },
+  getProjectFromAllById: (state) => (id) => {
+    return state.projectsAll.find(project => project.id === Number.parseInt(id)) 
+  },
 }
 
 // actions

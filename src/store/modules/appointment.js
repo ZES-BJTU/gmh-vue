@@ -74,6 +74,15 @@ const actions = {
       })
     });
   },
+  getEmployeeTimeTable({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.post('/appointment/queryEmployeeTimeTable',info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
 }
 
 // mutations

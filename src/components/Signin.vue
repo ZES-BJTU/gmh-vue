@@ -82,9 +82,9 @@ export default {
               if(data.role==='管理员'){
                   this.$router.push({ path: '/store' });
               }else if (data.role==='店长'){
-                  this.$router.push({ path: '/reception' });
+                  this.$router.push({ path: '/appointment' });
               }else if (data.role==='前台'){
-                  this.$router.push({ path: '/customer' });
+                  this.$router.push({ path: '/appointment' });
               }
               // else if (data.role==='操作员'){
               //     this.$router.push({ path: '/time' });

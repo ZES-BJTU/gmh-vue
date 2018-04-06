@@ -1,13 +1,14 @@
 <template>
-  <div class="Project">
-    <el-form :inline="true" :model="projectSearch" ref="projectSearch" class="demo-form-inline search-form" @keyup.enter.native="searchProject('search')">
+  <div class="Activity">
+    <el-form :inline="true" :model="activitySearch" ref="activitySearch" class="demo-form-inline search-form" 
+      @keyup.enter.native="searchActivity('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="projectSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="activitySearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchProject('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchActivity('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
@@ -33,10 +34,10 @@
       </el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
-          <el-button size="mini" 
+          <el-button  size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <!-- <el-button size="mini" type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -48,10 +49,10 @@
 
 <script>
 export default {
-  name: "Project",
+  name: "Activity",
   data() {
     return {
-      projectSearch: {
+      activitySearch: {
         content: "",
         oldContent: "",//储存最近一次搜索的内容
         pageNum: 1,
@@ -63,29 +64,29 @@ export default {
   },
   computed: {
     pageNum: function(){
-      return this.$store.state.project.pageNum;
+      return this.$store.state.activity.pageNum;
     },
     pageSize: function(){
-      return this.$store.state.project.pageSize;
+      return this.$store.state.activity.pageSize;
     },
     totalCount: function(){
-      return this.$store.state.project.totalCount;
+      return this.$store.state.activity.totalCount;
     },
     totalPages: function(){
-      return this.$store.state.project.totalPages;
+      return this.$store.state.activity.totalPages;
     },
     tableData: function(){
-      return this.$store.state.project.projects;
+      return this.$store.state.activity.activities;
     }
   },
   methods: {
-    searchProject(type) {
+    searchActivity(type) {
       this.loading = true;
       if(type === 'search'){
-        this.projectSearch.oldContent = this.projectSearch.content;
+        this.activitySearch.oldContent = this.activitySearch.content;
       }
-      this.projectSearch.type = type;
-      this.$store.dispatch("loadProject", this.projectSearch).then( res => {
+      this.activitySearch.type = type;
+      this.$store.dispatch("loadActivity", this.activitySearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -93,8 +94,8 @@ export default {
       });
     },
     chagePage(val){
-      this.projectSearch.pageNum = val;
-      this.searchProject('page');
+      this.activitySearch.pageNum = val;
+      this.searchActivity('page');
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){
@@ -117,44 +118,44 @@ export default {
     handleEdit(index, row){
       this.$router.push({ path: '/project/' + row.id});
     },
-    handleDelete(index, row){
-      const h = this.$createElement;
-      this.$msgbox({
-        title: '提示',
-        message: h('p', null, [
-          h('span', null, '此操作将会永久删除该记录！ ')
-        ]),
-        showCancelButton: true,
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true;
-            instance.confirmButtonText = '删除中...';
-            this.$store.dispatch("delProject", row.id).then( res => {
-              done();
-              instance.confirmButtonLoading = false;
-              this.searchProject('search');
-            }).catch( err => {
-              done();
-              instance.confirmButtonLoading = false;
-              console.log(err);
-            });
-          } else {
-            done();
-          }
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消删除'
-        });
-      });
-    },
+    // handleDelete(index, row){
+    //   const h = this.$createElement;
+    //   this.$msgbox({
+    //     title: '提示',
+    //     message: h('p', null, [
+    //       h('span', null, '此操作将会永久删除该记录！ ')
+    //     ]),
+    //     showCancelButton: true,
+    //     confirmButtonText: '删除',
+    //     cancelButtonText: '取消',
+    //     type: 'warning',
+    //     beforeClose: (action, instance, done) => {
+    //       if (action === 'confirm') {
+    //         instance.confirmButtonLoading = true;
+    //         instance.confirmButtonText = '删除中...';
+    //         this.$store.dispatch("delProject", row.id).then( res => {
+    //           done();
+    //           instance.confirmButtonLoading = false;
+    //           this.searchActivity('search');
+    //         }).catch( err => {
+    //           done();
+    //           instance.confirmButtonLoading = false;
+    //           console.log(err);
+    //         });
+    //       } else {
+    //         done();
+    //       }
+    //     }
+    //   }).catch(() => {
+    //     this.$message({
+    //       type: 'info',
+    //       message: '取消删除'
+    //     });
+    //   });
+    // },
   },
   beforeMount: function () {
-    this.searchProject('search');
+    this.searchActivity('search');
   }
 };
 </script>

@@ -40,8 +40,10 @@
       <el-table-column prop="beginTime" label="开始时间" width="125px;" :formatter="handleBeginTime"></el-table-column>
       <el-table-column prop="endTime" label="结束时间" width="125px;" :formatter="handleEndTime"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
-      <el-table-column label="操作" width="150px;" fixed="right">
+      <el-table-column label="操作" width="220px;" fixed="right">
         <template slot-scope="scope" v-if="scope.row.status === '未完成'">
+          <el-button size="mini" type="success"
+            @click="handleFinish(scope.$index, scope.row)">完成</el-button>
           <el-button size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger"
@@ -126,8 +128,45 @@ export default {
       }
       return endTimes;
     },
+    handleFinish(index, row){
+      const h = this.$createElement;
+      this.$msgbox({
+        title: '提示',
+        message: h('p', null, [
+          h('span', null, '是否完成预约？')
+        ]),
+        showCancelButton: true,
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'success',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true;
+            instance.confirmButtonText = '完成中...';
+            this.$store.dispatch("finishAppointment", {
+              'appointmentId': row.id
+            }).then( res => {
+              done();
+              instance.confirmButtonLoading = false;
+              this.searchAppointment('search');
+            }).catch( err => {
+              done();
+              instance.confirmButtonLoading = false;
+              console.log(err);
+            });
+          } else {
+            done();
+          }
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消操作'
+        });
+      });
+    },
     handleEdit(index, row){
-      this.$router.push({ path: '/appointment/' + row.id});
+      this.$router.push({ path: '/appointment-detail/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;

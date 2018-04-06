@@ -207,13 +207,13 @@ export default {
         // 店长|前台-预约
         return "6";
       } else if (route.match("consume-change")) {
-        // 店长|前台-消费记录
+				// 店长|前台-消费记录变动
         return "7-2"; //调整顺序是为了优先匹配consume-change
       } else if (route.match("consume")) {
-        // 店长|前台-消费记录变动
+        // 店长|前台-消费记录
         return "7-1";
       } else if (route.match("customer-card-change")) {
-        // 店长|前台-客户活动
+        // 店长|前台-客户会员卡信息变动
         return "8-4"; //调整顺序是为了优先匹配customer-card-change
       }else if (route.match("customer-activity")) {
         // 店长|前台-客户活动

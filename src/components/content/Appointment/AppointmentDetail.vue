@@ -1,5 +1,5 @@
 <template>
-  <div class="AppointmentNew">
+  <div class="AppointmentDetail">
     <el-row class="page-title-row">
       <router-link to="/appointment" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
@@ -35,7 +35,7 @@
             <el-table :data="appointmentProjectsCopy" size="mini" v-loading="loading" style="width: 100%">
               <el-table-column prop="projectId" label="项目ID" v-if="false"></el-table-column>
               <el-table-column prop="projectName" label="名称"></el-table-column>
-              <el-table-column prop="projectCode" label="代码"></el-table-column>
+              <!-- <el-table-column prop="projectCode" label="代码"></el-table-column> -->
               <el-table-column prop="employeeId" label="员工ID" v-if="false"></el-table-column>
               <el-table-column prop="employeeName" label="员工姓名"></el-table-column>
               <el-table-column prop="beginTime" label="开始时间"></el-table-column>
@@ -50,7 +50,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleOpenDialog">添加项目</el-button>
-            <el-button type="primary" @click="onSubmit('newAppointmentForm')">提交</el-button>
+            <el-button type="primary" @click="onSubmit('modAppointmentForm')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -64,7 +64,7 @@
 <script>
 import AppointmentProject from './AppointmentProject'
 export default {
-  name: "AppointmentNew",
+  name: "AppointmentDetail",
   data() {
     return {
       modAppointmentForm: {
@@ -135,7 +135,7 @@ export default {
           this.loading = true;
           this.enterFlag = false;
           this.$store
-            .dispatch("modAppointment", this.newAppointmentForm)
+            .dispatch("modAppointment", this.modAppointmentForm)
             .then(res => {
               if (res.code === 0) {
                 this.$message.success("修改成功");
@@ -221,7 +221,7 @@ export default {
         'beginTime': beginTimeString,
         'endTime': endTimeString,
       })
-      this.newAppointmentForm.appointmentProjectParams.push({
+      this.modAppointmentForm.appointmentProjectParams.push({
         'projectId': project.id,
         'projectCode': project.code,
         'employeeId': employee.id,
@@ -234,7 +234,7 @@ export default {
         return appointmentProject.id === row.id;
       })
       this.appointmentProjectsCopy.splice(arrIndex,1);
-      this.newAppointmentForm.appointmentProjectParams.splice(arrIndex,1);
+      this.modAppointmentForm.appointmentProjectParams.splice(arrIndex,1);
     },
     loadProjectTypeAll(){
       this.$store.dispatch("loadProjectTypeAll").then( res => {
@@ -270,26 +270,26 @@ export default {
       this.loadProjectAll();
       this.loadEmployeeAll();
       //从vuex中查询该id
-      const appointment = this.$store.getters.getAppointmentById(this.$route.params.id);
-      this.modAppointmentForm.id = appointment.id;
-      this.modAppointmentForm.customerName = appointment.customerName;
-      this.modAppointmentForm.customerMobile = Number.parseInt(appointment.customerMobile);
-      this.modAppointmentForm.customerGender = ( appointment.gender === '男' ? 1 : 0);
-      this.modAppointmentForm.isLine = appointment.isLine;
-      this.modAppointmentForm.remarks = appointment.remarks;
-      this.modAppointmentForm.appointmentProjectParams = appointment.appointmentProjects;
-      for( let appointmentProject of appointment.appointmentProjects){
+      const app = this.$store.getters.getAppointmentById(this.$route.params.id);
+      console.log(app);
+      this.modAppointmentForm.id = app.id;
+      this.modAppointmentForm.customerName = app.customerName;
+      this.modAppointmentForm.customerMobile = Number.parseInt(app.customerMobile);
+      this.modAppointmentForm.customerGender = ( app.gender === '男' ? 1 : 0);
+      this.modAppointmentForm.isLine = ( app.isLine === '是' ? 1 : 0);
+      this.modAppointmentForm.remarks = app.remarks;
+      for( let appointmentProject of app.appointmentProjects){
         this.modAppointmentForm.appointmentProjectParams.push({
-          'projectId': appointmentProject.id,
-          'projectCode': appointmentProject.code,
-          'employeeId': appointmentProject.id,
+          'projectId': appointmentProject.projectId,
+          // 'projectCode': appointmentProject.code,
+          'employeeId': appointmentProject.employeeId,
           'beginTime': appointmentProject.beginTime,
           'endTime': appointmentProject.endTime,
         })
         this.appointmentProjectsCopy.push({
           'projectId': appointmentProject.projectId,
           'projectName': appointmentProject.projectName,
-          'projectCode': appointmentProject.projectCode,
+          // 'projectCode': appointmentProject.projectCode,
           'employeeId': appointmentProject.employeeId,
           'employeeName': appointmentProject.employeeName,
           'beginTime': this.toDatetimeMin(appointmentProject.beginTime),

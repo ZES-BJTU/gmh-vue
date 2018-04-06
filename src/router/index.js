@@ -279,6 +279,10 @@ export default new Router({
           path: 'customer-card-change-store/:id',
           component: CustomerCardChangeStore
         },
+        {
+          path: 'customer-activity',
+          component: CustomerActivity
+        },
         { // 客户会员卡退换记录
           path: 'customer-card-change-record',
           component: CustomerCardChangeRecord

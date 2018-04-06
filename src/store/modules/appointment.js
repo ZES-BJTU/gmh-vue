@@ -67,7 +67,7 @@ const actions = {
   },
   cancelAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.del('/appointment/cancel/',info).then( res => {
+      httpServer.put('/appointment/cancel/' + info.appointmentId,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);

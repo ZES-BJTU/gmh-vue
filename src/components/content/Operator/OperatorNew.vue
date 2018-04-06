@@ -42,12 +42,12 @@ export default {
   data() {
     return {
       newOperatorForm: {
-        role: "4", //1.管理员 2.店长 3.前台 4.操作员
-        name: "",
-        email: "",
-        mobile: "",
-        gender: "",
-        remark: ""
+        role: 4, //1.管理员 2.店长 3.前台 4.操作员
+        name: '',
+        email: '',
+        mobile: '',
+        gender: '',
+        remark: ''
       },
       genders: [
         {

@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       newPrincipalForm: {
-        role: '2', //1.管理员 2.店长 3.前台 4.操作员
+        role: 2, //1.管理员 2.店长 3.前台 4.操作员
         name: '',
         email: '',
         mobile: '',

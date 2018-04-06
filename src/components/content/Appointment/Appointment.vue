@@ -17,32 +17,37 @@
       </router-link>
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
-      <!-- <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="code" label="代码"></el-table-column>
-      <el-table-column prop="projectTypeName" label="美容项目分类"></el-table-column>
-      <el-table-column prop="unitPrice" label="单价"></el-table-column>
-      <el-table-column prop="integral" label="积分"></el-table-column>
-      <el-table-column prop="internIntegral" label="实习生积分"></el-table-column>
+      <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
+      <el-table-column prop="customerName" label="姓名"></el-table-column>
+      <el-table-column prop="customerMobile" label="手机"></el-table-column>
+      <el-table-column prop="customerGender" label="性别"></el-table-column>
+      <el-table-column prop="isLine" label="点排"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column prop="projectStockVos" label="项目消耗品">
+      <el-table-column prop="projects" label="项目">
         <template slot-scope="scope">
-            <div v-for="vo in scope.row.projectStockVos" :key="vo.stockId">
-              {{vo.stockName + ' : ' + vo.stockConsumptionAmount + vo.unitName}}
+            <div v-for="appointmentProject in scope.row.appointmentProjects" :key="appointmentProject.projectId">
+              {{appointmentProject.projectName}}
             </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150px;" fixed="right">
+      <el-table-column prop="employees" label="员工">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <div v-for="appointmentProject in scope.row.appointmentProjects" :key="appointmentProject.projectId">
+              {{appointmentProject.employeeName}}
+            </div>
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column prop="beginTime" label="开始时间" width="125px;" :formatter="handleBeginTime"></el-table-column>
+      <el-table-column prop="endTime" label="结束时间" width="125px;" :formatter="handleEndTime"></el-table-column>
+      <el-table-column prop="status" label="状态"></el-table-column>
+      <el-table-column label="操作" width="150px;" fixed="right">
+        <template slot-scope="scope" v-if="scope.row.status === '未完成'">
+          <el-button size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger"
+            @click="handleDelete(scope.$index, scope.row)">取消</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
@@ -107,19 +112,22 @@ export default {
         return row.remark;
       }
     },
-    handleProjectStocks(row, column){
-      if(!row.projectStockVos || row.projectStockVos === ''){
-        return '暂无消耗品';
-      }else{
-        let ps = '';
-        for( let vo of row.projectStockVos){
-          ps += vo.stockName + ':' + vo.stockConsumptionAmount + vo.unitName + '\<br /\>'
-        }
-        return ps;
+    handleBeginTime(row, column){
+      let beginTimes = '';
+      for( let appointmentProject of row.appointmentProjects){
+        beginTimes += this.toDatetimeMin(appointmentProject.beginTime);
       }
+      return beginTimes;
+    },
+    handleEndTime(row, column){
+      let endTimes = '';
+      for( let appointmentProject of row.appointmentProjects){
+        endTimes += this.toDatetimeMin(appointmentProject.endTime);
+      }
+      return endTimes;
     },
     handleEdit(index, row){
-      this.$router.push({ path: '/project/' + row.id});
+      this.$router.push({ path: '/appointment/' + row.id});
     },
     handleDelete(index, row){
       const h = this.$createElement;
@@ -136,7 +144,9 @@ export default {
           if (action === 'confirm') {
             instance.confirmButtonLoading = true;
             instance.confirmButtonText = '取消中...';
-            this.$store.dispatch("cancelAppointment", row.id).then( res => {
+            this.$store.dispatch("cancelAppointment", {
+              'appointmentId': row.id
+            }).then( res => {
               done();
               instance.confirmButtonLoading = false;
               this.searchAppointment('search');

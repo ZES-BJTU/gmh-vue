@@ -18,12 +18,12 @@
                 <el-button class="signin-btn" @click="onSubmit('signinForm')">GO</el-button>
               </el-row>
             </el-form>
-            <!-- <el-row type="flex" justify="center">
+            <el-row type="flex" justify="center">
               <div class="signin-link">
                 忘记密码了？点此
                 <router-link to="/resetpwd" class="forget-pwd ">重置密码</router-link>
               </div>
-            </el-row> -->
+            </el-row>
           </el-col>
         </el-row>
       </el-main>

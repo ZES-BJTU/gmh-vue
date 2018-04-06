@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       newReceptionForm: {
-        role: '3', //1.管理员 2.店长 3.前台 4.操作员
+        role: 3, //1.管理员 2.店长 3.前台 4.操作员
         name: '',
         email: '',
         mobile: '',

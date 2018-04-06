@@ -26,10 +26,23 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="请选择员工">
+            <el-form-item label="请选择查询日期">
               <el-date-picker v-model="employeeSchedule" type="date" 
                 placeholder="查询员工日程" @change="handleDateChange">
               </el-date-picker>
+              <div class="schedule">
+                <div class="schedule-item" v-for="item of employeeSchedule" 
+                  :key="item.beginTime" :class="item.isFree === 1 ? 'free' : 'occupy'"
+                  :style="{ 'flex': '1 ' + item.percent + '%' }">
+                  <div class="beginTime">
+                    {{item.beginTime}}
+                  </div>
+                  <div class="line">-</div>
+                  <div class="endTime">
+                    {{item.endTime}}
+                  </div>
+                </div>
+              </div>
             </el-form-item>
           </el-form>
         </el-col>
@@ -66,7 +79,7 @@ export default {
           { required: true, message: "预约时间不能为空", trigger: "blur" }
         ]
       },
-      employeeSchedule: ''
+      employeeSchedule: []
     }
   },
   computed: {
@@ -114,7 +127,12 @@ export default {
           'date': this.toTimeStamp(val)
         }).then(res => {
           if (res.code === 0) {
-            console.log(res.data);
+            this.employeeSchedule = [];
+            for(let item of res.data){
+              item.beginTime = this.toMin(item.beginTime);
+              item.endTime = this.toMin(item.endTime);
+              this.employeeSchedule.push(item);
+            }
           }
         })
         .catch(err => {
@@ -128,5 +146,39 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  .schedule{
+    display: flex;
+    margin-top: 10px;
+  }
+  .schedule-item{
+    flex: 1;
+    height: 50px;
+    line-height: 50px;
+    padding: 5px 0;
+    &.free{
+      background: #49bfd6;
+    }
+    &.occupy{
+      background: #8d8d8d;
+    }
 
+    & .line{
+      height: 10px;
+      line-height: 10px;
+      text-align: center;
+    }
+    & .beginTime, & .endTime{
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+    }
+    &:first-child{
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    &:last-child{
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
 </style>

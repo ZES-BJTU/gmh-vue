@@ -78,6 +78,14 @@ export default {
       let s = time.getSeconds();
       return y + '-' + ( m < 10 ? '0' + m : m ) + '-' + ( d < 10 ? '0' + d : d) + ' ' + ( h < 10 ? '0' + h : h) + ':' + ( mm < 10 ? '0' + mm : mm);
     }
+    Vue.prototype.toMin = function (timestamp) {
+      //timestamp是整数，否则要parseInt转换  
+      let time = new Date(parseInt(timestamp));
+      let h = time.getHours();
+      let mm = time.getMinutes();
+      let s = time.getSeconds();
+      return ( h < 10 ? '0' + h : h) + ':' + ( mm < 10 ? '0' + mm : mm);
+    }
     Vue.prototype.toTimeStamp = function (date) {
       // datetime = new Date(Date.parse(datetime.replace(/-/g, "/")));
       let timeStamp = date.getTime();

@@ -11,13 +11,13 @@
         <el-form class="new-form" :model="newActivityForm" ref="newActivityForm" label-width="110px" 
           :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newActivityForm')" v-loading="loading">
           <el-form-item label="名称" prop="name">
-            <el-input v-model.trim="newActivityForm.name" :autofocus="true"></el-input>
+            <el-input v-model.trim="newActivityForm.name" placeholder="请输入名称" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="代码" prop="code">
             <el-input v-model.trim="newActivityForm.code" placeholder="请输入代码"></el-input>
           </el-form-item>
-          <el-form-item label="价格(￥)" prop="code">
-            <el-input v-model.trim="newActivityForm.price" placeholder="请输入价格"></el-input>
+          <el-form-item label="价格(￥)" prop="price">
+            <el-input v-model.number="newActivityForm.price" placeholder="请输入价格"></el-input>
           </el-form-item>
           <el-form-item label="有效期至" prop="deadline">
             <el-date-picker v-model="newActivityForm.deadline" align="center" 
@@ -32,7 +32,7 @@
               <el-table-column prop="type" label="类型"></el-table-column>
               <el-table-column prop="name" label="内容/金额"></el-table-column>
               <el-table-column prop="number" label="个数"></el-table-column>
-              <el-table-column prop="reamrk" label="备注"></el-table-column>
+              <el-table-column prop="remark" label="备注"></el-table-column>
               <el-table-column label="操作" width="50px;" fixed="right">
                 <template slot-scope="scope">
                   <el-button size="mini" type="danger"
@@ -103,21 +103,27 @@ export default {
         if (valid) {
           this.loading = true;
           this.enterFlag = false;
-          this.$store.dispatch("addActivity", this.newActivityForm)
-            .then(res => {
-              if (res.code === 0) {
-                this.$message.success("添加成功");
-                setTimeout(() => {
-                  this.loading = false;
-                  this.$router.push({ path: "/activity" });
-                }, 1000);
-              }
-            })
-            .catch(err => {
-              this.loading = false;
-              this.enterFlag = true;
-              console.log(err);
-            });
+          this.$store.dispatch("addActivity", {
+            'name': this.newActivityForm.name,
+            'code': this.newActivityForm.code,
+            'price': this.newActivityForm.price,
+            'deadline': this.toTimeStamp(this.newActivityForm.deadline),
+            'remark': this.newActivityForm.remark,
+            'activityContentParams': this.newActivityForm.activityContentParams
+          }).then(res => {
+            if (res.code === 0) {
+              this.$message.success("添加成功");
+              setTimeout(() => {
+                this.loading = false;
+                this.$router.push({ path: "/activity" });
+              }, 1000);
+            }
+          })
+          .catch(err => {
+            this.loading = false;
+            this.enterFlag = true;
+            console.log(err);
+          });
         } else {
           return false;
         }
@@ -133,7 +139,7 @@ export default {
         type = '会员卡';
         customerCard = this.$store.getters.getCustomerCardFromAllById(payload.relatedId);
         name = customerCard.name;
-      }else if(payload === 3){
+      }else if(payload.type === 3){
         type = '产品';
         product = this.$store.getters.getProductFromAllById(payload.relatedId);
         name = product.name;
@@ -146,7 +152,7 @@ export default {
         'type': type,
         'name': name,
         'number': payload.number,
-        'remark': payload.remark === '' ? '暂无备注' : payload.remark
+        'remark': (payload.remark === '') ? '暂无备注' : payload.remark
       })
       this.newActivityForm.activityContentParams.push({
         'type': payload.type,

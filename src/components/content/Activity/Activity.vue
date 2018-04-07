@@ -19,16 +19,42 @@
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
+      <el-table-column prop="price" label="价格"></el-table-column>
       <el-table-column prop="code" label="代码"></el-table-column>
-      <el-table-column prop="projectTypeName" label="美容项目分类"></el-table-column>
-      <el-table-column prop="unitPrice" label="单价"></el-table-column>
-      <el-table-column prop="integral" label="积分"></el-table-column>
-      <el-table-column prop="internIntegral" label="实习生积分"></el-table-column>
+      <el-table-column prop="deadline" label="有效期至" :formatter="handleDeadline"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column prop="projectStockVos" label="项目消耗品">
+      <el-table-column prop="type" label="类型">
         <template slot-scope="scope">
-            <div v-for="vo in scope.row.projectStockVos" :key="vo.stockId">
-              {{vo.stockName + ' : ' + vo.stockConsumptionAmount + vo.unitName}}
+            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
+              {{vo.type}}
+            </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="relatedName" label="内容">
+        <template slot-scope="scope">
+            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
+              {{vo.relatedName}}
+            </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="content" label="金额">
+        <template slot-scope="scope">
+            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
+              {{vo.content}}
+            </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="number" label="数量">
+        <template slot-scope="scope">
+            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
+              {{vo.number}}
+            </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remark" label="活动备注">
+        <template slot-scope="scope">
+            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
+              {{vo.remark}}
             </div>
         </template>
       </el-table-column>
@@ -96,6 +122,9 @@ export default {
     chagePage(val){
       this.activitySearch.pageNum = val;
       this.searchActivity('page');
+    },
+    handleDeadline(row, column){
+      return this.toDatetimeDay(row.deadline);
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){

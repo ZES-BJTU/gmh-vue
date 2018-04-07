@@ -51,7 +51,7 @@ const actions = {
       })
     });
   },
-  addActivities({commit}, info) {
+  addActivity({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.post('/activities',info).then( res => {
         resolve(res);

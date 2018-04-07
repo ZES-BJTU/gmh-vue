@@ -4,46 +4,46 @@
       :close-on-click-modal="false" :close-on-press-escape="false" >
       <el-row type="flex" justify="start">
         <el-col :xs="20">
-          <el-form :model="activityContent" ref="activityContent" label-width="70px" :rules="rules">
+          <el-form :model="activityContentForm" ref="activityContentForm" label-width="70px" :rules="rules">
             <el-form-item label="类型" prop="type">
-              <el-select v-model.number="activityContent.type" placeholder="请选择性别" @change="handleTypeChange">
+              <el-select v-model.number="activityContentForm.type" placeholder="请选择类型" @change="handleTypeChange">
                 <el-option v-for="type in types" :key="type.value" :label="type.name" :value="type.value">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="项目" prop="relatedId" v-if="this.activityContent.type === 1">
-              <el-select v-model.number="activityContent.relatedId" placeholder="请选择项目" filterable>
-                <el-option v-for="project in projects" :key="project.id" :label="project.code+project.name" :value="project.id">
+            <el-form-item label="项目" prop="relatedId" v-if="this.activityContentForm.type === 1">
+              <el-select v-model.number="activityContentForm.relatedId" placeholder="请选择项目" filterable>
+                <el-option v-for="project in projects" :key="project.id" :label="project.code+'-'+project.name" :value="project.id">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="会员卡" prop="relatedId" v-if="this.activityContent.type === 2">
-              <el-select v-model.number="activityContent.relatedId" placeholder="请选择会员卡" filterable>
+            <el-form-item label="会员卡" prop="relatedId" v-if="this.activityContentForm.type === 2">
+              <el-select v-model.number="activityContentForm.relatedId" placeholder="请选择会员卡" filterable>
                 <el-option v-for="customerCard in customerCards" :key="customerCard.id" :label="customerCard.name" :value="customerCard.id">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="产品" prop="relatedId" v-if="this.activityContent.type === 3">
-              <el-select v-model.number="activityContent.relatedId" placeholder="请选择产品" filterable>
+            <el-form-item label="产品" prop="relatedId" v-if="this.activityContentForm.type === 3">
+              <el-select v-model.number="activityContentForm.relatedId" placeholder="请选择产品" filterable>
                 <el-option v-for="product in products" :key="product.id" :label="product.name" :value="product.id">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="金额" prop="content" v-if="this.activityContent.type === 4">
-              <el-input v-model.number="activityContent.content" placeholder="请输入代金券金额"></el-input>
+            <el-form-item label="金额" v-if="this.activityContentForm.type === 4">
+              <el-input v-model.number="activityContentForm.content" placeholder="请输入代金券金额"></el-input>
             </el-form-item>
-            <el-form-item label="个数" prop="content">
-              <el-input v-model.number="activityContent.number" placeholder="请输入个数"></el-input>
+            <el-form-item label="个数" prop="number">
+              <el-input v-model.number="activityContentForm.number" placeholder="请输入个数"></el-input>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input v-model.trim="activityContent.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
+              <el-input v-model.trim="activityContentForm.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
             </el-form-item>
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="onClose('activityContent')">取 消</el-button>
-        <el-button type="primary" @click="onSubmit('activityContent')">确 定</el-button>
+        <el-button @click="onClose('activityContentForm')">取 消</el-button>
+        <el-button type="primary" @click="onSubmit('activityContentForm')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -55,7 +55,7 @@ export default {
   props: ['visible','options'],
   data() {
     return {
-      activityContent: {
+      activityContentForm: {
         type: '',
         relatedId: '',
         content: '',
@@ -111,7 +111,7 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$emit('addActivityContent', this.activityContent);
+          this.$emit('addActivityContent', this.activityContentForm);
           this.$emit('closeDialog', false);
           this.$refs[formName].resetFields();
         } else {
@@ -142,11 +142,10 @@ export default {
     },
     onClose(formName){
       this.$emit('closeDialog', false);
-      console.log(this.$refs[formName]);
       this.$refs[formName].resetFields();
     },
     handleTypeChange(val) {
-      this.activityContent.relatedId = '';
+      this.activityContentForm.relatedId = '';
       if( val === 1 ){
         this.loadProjectAll();
       }else if( val === 2){

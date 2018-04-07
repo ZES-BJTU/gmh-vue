@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   customerCards: [],
+  customerCardsAll: [],
   customerCardChanges: [],
 }
 
@@ -13,7 +14,10 @@ const state = {
 const getters = {
   getCustomerCardById: (state) => (id) => {
     return state.customerCards.find(customerCard => customerCard.id === Number.parseInt(id)) 
-  }
+  },
+  getCustomerCardFromAllById: (state) => (id) => {
+    return state.customerCardsAll.find(customerCard => customerCard.id === Number.parseInt(id)) 
+  },
 }
 
 // actions
@@ -36,6 +40,18 @@ const actions = {
       })
       .catch( err => {
         reject(err);
+      })
+    });
+  },
+  loadCustomerCardAll({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/member/cards/all').then( res => {
+        commit('loadCustomerCardAll', {
+          customerCardsAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
       })
     });
   },
@@ -97,6 +113,9 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.customerCards = payload.customerCards;
+  },
+  loadCustomerCardAll(state, payload){
+    state.customerCardsAll = payload.customerCardsAll;
   },
   loadCustomerCardChangeList(state, payload){
     state.pageNum = payload.pageNum;

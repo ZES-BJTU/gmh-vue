@@ -74,7 +74,7 @@
 								</el-menu-item>
 							</router-link>
 
-							<router-link to="/customer-activity">
+							<router-link to="/activity">
 								<el-menu-item index="8-3">
 									<span slot="title">客户活动</span>
 								</el-menu-item>
@@ -215,7 +215,7 @@ export default {
       } else if (route.match("customer-card-change")) {
         // 店长|前台-客户会员卡信息变动
         return "8-4"; //调整顺序是为了优先匹配customer-card-change
-      }else if (route.match("customer-activity")) {
+      }else if (route.match("activity")) {
         // 店长|前台-客户活动
         return "8-3"; //调整顺序是为了优先匹配customer-activity
       } else if (route.match("customer-card")) {

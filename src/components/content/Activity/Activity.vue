@@ -12,7 +12,7 @@
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/project/new">
+      <router-link to="/activity/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
     </div>

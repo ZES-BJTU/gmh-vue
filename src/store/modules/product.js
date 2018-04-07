@@ -6,12 +6,16 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   products: [],
+  productsAll: [],
 }
 
 // getters
 const getters = {
   getProductById: (state) => (id) => {
     return state.products.find(product => product.id === Number.parseInt(id)) 
+  },
+  getProductFromAllById: (state) => (id) => {
+    return state.productsAll.find(product => product.id === Number.parseInt(id)) 
   }
 }
 
@@ -35,6 +39,18 @@ const actions = {
       })
       .catch( err => {
         reject(err);
+      })
+    });
+  },
+  loadProductAll({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/products/all').then( res => {
+        commit('loadProductAll', {
+          productsAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
       })
     });
   },
@@ -84,6 +100,9 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.products = payload.products;
+  },
+  loadProductAll(state, payload){
+    state.productsAll = payload.productsAll;
   },
 }
 

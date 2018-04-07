@@ -55,6 +55,9 @@ import CustomerCardReturn from '@/components/content/CustomerCard/CustomerCardRe
 import CustomerCardTurn from '@/components/content/CustomerCard/CustomerCardTurn'
 import CustomerCardChangeStore from '@/components/content/CustomerCard/CustomerCardChangeStore'
 import CustomerCardChangeRecord from '@/components/content/CustomerCard/CustomerCardChangeRecord'
+import Activity from '@/components/content/Activity/Activity'
+import ActivityNew from '@/components/content/Activity/ActivityNew'
+import ActivityDetail from '@/components/content/Activity/ActivityDetail'
 import Chart from '@/components/content/Chart'
 import Appointment from '@/components/content/Appointment/Appointment'
 import AppointmentNew from '@/components/content/Appointment/AppointmentNew'
@@ -279,9 +282,17 @@ export default new Router({
           path: 'customer-card-change-store/:id',
           component: CustomerCardChangeStore
         },
-        {
-          path: 'customer-activity',
-          component: CustomerActivity
+        { // 活动
+          path: 'activity',
+          component: Activity
+        },
+        { // 新建活动
+          path: 'activity/new',
+          component: ActivityNew
+        },
+        { // 修改活动
+          path: 'activity/:id',
+          component: ActivityDetail
         },
         { // 客户会员卡退换记录
           path: 'customer-card-change-record',

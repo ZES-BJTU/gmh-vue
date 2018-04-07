@@ -19,7 +19,7 @@ const getters = {
 const actions = {
   loadActivity({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.get('/activities/search',{
+      httpServer.get('/activities',{
         'search': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize

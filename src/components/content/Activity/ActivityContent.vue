@@ -1,55 +1,49 @@
 <template>
-  <div class="AppointmentProject">
-    <el-dialog title="项目" :visible.sync="isVisible" :show-close="false"
+  <div class="ActivityContent">
+    <el-dialog title="活动内容" :visible.sync="isVisible" :show-close="false"
       :close-on-click-modal="false" :close-on-press-escape="false" >
       <el-row type="flex" justify="start">
         <el-col :xs="20">
-          <el-form :model="appointmentProject" ref="appointmentProject" :rules="rules">
-            <el-form-item label="请选择美容项目">
-              <el-cascader :options="options" @change="handleChange"
-                @active-item-change="handleProjectChange" filterable></el-cascader>
-            </el-form-item>
-            <el-form-item label="请选择时间" prop="">
-              <el-date-picker
-                v-model="appointmentProject.appointmentTime"
-                type="datetimerange"
-                align="center"
-                range-separator="至"
-                start-placeholder="开始时间"
-                end-placeholder="结束时间">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="请选择员工">
-              <el-select v-model.number="appointmentProject.employeeId" filterable placeholder="请输入关键词">
-                <el-option v-for="employee in employees" :key="employee.id" 
-                  :label="employee.name" :value="employee.id">
+          <el-form :model="activityContent" ref="activityContent" label-width="70px" :rules="rules">
+            <el-form-item label="类型" prop="type">
+              <el-select v-model.number="activityContent.type" placeholder="请选择性别" @change="handleTypeChange">
+                <el-option v-for="type in types" :key="type.value" :label="type.name" :value="type.value">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="请选择查询日期">
-              <el-date-picker v-model="employeeSchedule" type="date" 
-                placeholder="查询员工日程" @change="handleDateChange">
-              </el-date-picker>
-              <div class="schedule">
-                <div class="schedule-item" v-for="item of employeeSchedule" 
-                  :key="item.beginTime" :class="item.isFree === 1 ? 'free' : 'occupy'"
-                  :style="{ 'flex': '1 ' + item.percent + '%' }">
-                  <div class="beginTime">
-                    {{item.beginTime}}
-                  </div>
-                  <div class="line">-</div>
-                  <div class="endTime">
-                    {{item.endTime}}
-                  </div>
-                </div>
-              </div>
+            <el-form-item label="项目" prop="relatedId" v-if="this.activityContent.type === 1">
+              <el-select v-model.number="activityContent.relatedId" placeholder="请选择项目" filterable>
+                <el-option v-for="project in projects" :key="project.id" :label="project.code+project.name" :value="project.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="会员卡" prop="relatedId" v-if="this.activityContent.type === 2">
+              <el-select v-model.number="activityContent.relatedId" placeholder="请选择会员卡" filterable>
+                <el-option v-for="customerCard in customerCards" :key="customerCard.id" :label="customerCard.name" :value="customerCard.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="产品" prop="relatedId" v-if="this.activityContent.type === 3">
+              <el-select v-model.number="activityContent.relatedId" placeholder="请选择产品" filterable>
+                <el-option v-for="product in products" :key="product.id" :label="product.name" :value="product.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="金额" prop="content" v-if="this.activityContent.type === 4">
+              <el-input v-model.number="activityContent.content" placeholder="请输入代金券金额"></el-input>
+            </el-form-item>
+            <el-form-item label="个数" prop="content">
+              <el-input v-model.number="activityContent.number" placeholder="请输入个数"></el-input>
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input v-model.trim="activityContent.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
             </el-form-item>
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="onClose('appointmentProject')">取 消</el-button>
-        <el-button type="primary" @click="onSubmit('appointmentProject')">确 定</el-button>
+        <el-button @click="onClose('activityContent')">取 消</el-button>
+        <el-button type="primary" @click="onSubmit('activityContent')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -57,44 +51,67 @@
 
 <script>
 export default {
-  name: "AppointmentProject",
+  name: "ActivityContent",
   props: ['visible','options'],
   data() {
     return {
-      appointmentProject: {
-        projectId: '',
-        employeeId: '',
-        appointmentTime: '',
+      activityContent: {
+        type: '',
+        relatedId: '',
+        content: '',
+        number: '',
+        remark: ''
       },
       rules: {
-        projectId: [
-          { required: true, message: "库存不能为空", trigger: "blur" },
-          { type: 'number', message: "库存必须是数字", trigger: "blur" }
+        type: [
+          { required: true, message: "类型不能为空", trigger: "blur" },
+          { type: 'number', message: "类型必须是数字", trigger: "blur" }
         ],
-        stockConsumptionAmount: [
-          { required: true, message: "数量不能为空", trigger: "blur" },
-          { type: 'number', message: "数量必须是数字", trigger: "blur" }
+        number: [
+          { required: true, message: "个数不能为空", trigger: "blur" },
+          { type: 'number', message: "个数必须是数字", trigger: "blur" }
         ],
-        appointmentTime: [
-          { required: true, message: "预约时间不能为空", trigger: "blur" }
-        ]
       },
-      employeeSchedule: []
+      types: [
+        {
+          name: "项目",
+          value: 1
+        },
+        {
+          name: "会员卡",
+          value: 2
+        },
+        {
+          name: "产品",
+          value: 3
+        },
+        {
+          name: "代金券",
+          value: 4
+        }
+      ],
+      relatedContent: [],
     }
   },
   computed: {
     isVisible: function(){
       return this.visible;
     },
-    employees: function(){
-      return this.$store.state.employee.employeesByTopType;
+    projects: function(){
+      return this.$store.state.project.projectsAll;
+    },
+    products: function(){
+      return this.$store.state.product.productsAll;
+    },
+    customerCards: function(){
+      return this.$store.state.customerCard.customerCardsAll;
     }
   },
   methods: {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$emit('addAppointmentProject', this.appointmentProject);
+          this.$emit('addActivityContent', this.activityContent);
           this.$emit('closeDialog', false);
           this.$refs[formName].resetFields();
         } else {
@@ -102,83 +119,46 @@ export default {
         }
       });
     },
-    onClose(formName){
-      this.$emit('closeDialog', false);
-      console.log(this.$refs[formName]);
-      this.$refs[formName].resetFields();
-      this.appointmentProject.appointmentTime = [];
-    },
-    handleChange(val){
-      this.appointmentProject.projectId = val[2];
-    },
-    handleProjectChange(val) {
-      this.$store.dispatch("loadEmployeeByTopType",val[0]).then( res => {
-        // this.$message.success('查询成功');
+    loadProjectAll(){
+      this.$store.dispatch("loadProjectAll").then( res => {
+        this.loading = false;
       }).catch( err => {
         console.log(err);
       });
     },
-    handleDateChange(val){
-      if(this.appointmentProject.employeeId === '' || !this.appointmentProject.employeeId){
-        this.$message.error("请选择员工");
-      }else{
-        this.$store.dispatch("getEmployeeTimeTable", {
-          'employeeId':this.appointmentProject.employeeId,
-          'date': this.toTimeStamp(val)
-        }).then(res => {
-          if (res.code === 0) {
-            this.employeeSchedule = [];
-            for(let item of res.data){
-              item.beginTime = this.toMin(item.beginTime);
-              item.endTime = this.toMin(item.endTime);
-              this.employeeSchedule.push(item);
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    loadProductAll(){
+      this.$store.dispatch("loadProductAll").then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
+    loadCustomerCardAll(){
+      this.$store.dispatch("loadCustomerCardAll").then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
+    onClose(formName){
+      this.$emit('closeDialog', false);
+      console.log(this.$refs[formName]);
+      this.$refs[formName].resetFields();
+    },
+    handleTypeChange(val) {
+      this.activityContent.relatedId = '';
+      if( val === 1 ){
+        this.loadProjectAll();
+      }else if( val === 2){
+        this.loadCustomerCardAll();
+      }else if( val === 3 ){
+        this.loadProductAll();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .schedule{
-    display: flex;
-    margin-top: 10px;
-  }
-  .schedule-item{
-    flex: 1;
-    height: 50px;
-    line-height: 50px;
-    padding: 5px 0;
-    &.free{
-      background: #49bfd6;
-    }
-    &.occupy{
-      background: #8d8d8d;
-    }
-
-    & .line{
-      height: 10px;
-      line-height: 10px;
-      text-align: center;
-    }
-    & .beginTime, & .endTime{
-      height: 20px;
-      line-height: 20px;
-      text-align: center;
-    }
-    &:first-child{
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
-    }
-    &:last-child{
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
-  }
 </style>

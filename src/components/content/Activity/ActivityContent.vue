@@ -119,40 +119,12 @@ export default {
         }
       });
     },
-    loadProjectAll(){
-      this.$store.dispatch("loadProjectAll").then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
-    loadProductAll(){
-      this.$store.dispatch("loadProductAll").then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
-    loadCustomerCardAll(){
-      this.$store.dispatch("loadCustomerCardAll").then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
     onClose(formName){
       this.$emit('closeDialog', false);
       this.$refs[formName].resetFields();
     },
     handleTypeChange(val) {
       this.activityContentForm.relatedId = '';
-      if( val === 1 ){
-        this.loadProjectAll();
-      }else if( val === 2){
-        this.loadCustomerCardAll();
-      }else if( val === 3 ){
-        this.loadProductAll();
-      }
     },
   },
 };

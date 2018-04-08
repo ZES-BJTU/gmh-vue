@@ -23,41 +23,6 @@
       <el-table-column prop="code" label="代码"></el-table-column>
       <el-table-column prop="deadline" label="有效期至" :formatter="handleDeadline"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column prop="type" label="类型">
-        <template slot-scope="scope">
-            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
-              {{vo.type}}
-            </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="relatedName" label="内容">
-        <template slot-scope="scope">
-            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
-              {{vo.relatedName}}
-            </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="content" label="金额">
-        <template slot-scope="scope">
-            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
-              {{vo.content}}
-            </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="number" label="数量">
-        <template slot-scope="scope">
-            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
-              {{vo.number}}
-            </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="remark" label="活动备注">
-        <template slot-scope="scope">
-            <div v-for="vo in scope.row.activityContentVos" :key="vo.id">
-              {{vo.remark}}
-            </div>
-        </template>
-      </el-table-column>
       <el-table-column label="操作" width="150px;" fixed="right">
         <template slot-scope="scope">
           <el-button  size="mini"
@@ -133,19 +98,8 @@ export default {
         return row.remark;
       }
     },
-    handleProjectStocks(row, column){
-      if(!row.projectStockVos || row.projectStockVos === ''){
-        return '暂无消耗品';
-      }else{
-        let ps = '';
-        for( let vo of row.projectStockVos){
-          ps += vo.stockName + ':' + vo.stockConsumptionAmount + vo.unitName + '\<br /\>'
-        }
-        return ps;
-      }
-    },
     handleEdit(index, row){
-      this.$router.push({ path: '/project/' + row.id});
+      this.$router.push({ path: '/activity/' + row.id});
     },
     // handleDelete(index, row){
     //   const h = this.$createElement;
@@ -182,10 +136,34 @@ export default {
     //     });
     //   });
     // },
+    loadProjectAll(){
+      this.$store.dispatch("loadProjectAll").then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
+    loadProductAll(){
+      this.$store.dispatch("loadProductAll").then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
+    loadCustomerCardAll(){
+      this.$store.dispatch("loadCustomerCardAll").then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
   },
   beforeMount: function () {
     this.searchActivity('search');
-  }
+    this.loadProjectAll();
+    this.loadProductAll();
+    this.loadCustomerCardAll();
+}
 };
 </script>
 

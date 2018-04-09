@@ -150,8 +150,8 @@ export default {
         console.log(err);
       });
     },
-    loadCustomerCardAll(){
-      this.$store.dispatch("loadCustomerCardAll").then( res => {
+    loadMemberCardAll(){
+      this.$store.dispatch("loadMemberCardAll").then( res => {
         this.loading = false;
       }).catch( err => {
         console.log(err);
@@ -162,7 +162,7 @@ export default {
     this.searchActivity('search');
     this.loadProjectAll();
     this.loadProductAll();
-    this.loadCustomerCardAll();
+    this.loadMemberCardAll();
 }
 };
 </script>

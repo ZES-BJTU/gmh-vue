@@ -19,7 +19,7 @@
             </el-form-item>
             <el-form-item label="会员卡" prop="relatedId" v-if="this.activityContentForm.type === 2">
               <el-select v-model.number="activityContentForm.relatedId" placeholder="请选择会员卡" filterable>
-                <el-option v-for="customerCard in customerCards" :key="customerCard.id" :label="customerCard.name" :value="customerCard.id">
+                <el-option v-for="memberCard in memberCards" :key="memberCard.id" :label="memberCard.name" :value="memberCard.id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -103,8 +103,8 @@ export default {
     products: function(){
       return this.$store.state.product.productsAll;
     },
-    customerCards: function(){
-      return this.$store.state.customerCard.customerCardsAll;
+    memberCards: function(){
+      return this.$store.state.memberCard.memberCardsAll;
     }
   },
   methods: {

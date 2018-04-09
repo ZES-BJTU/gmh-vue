@@ -14,6 +14,9 @@ const getters = {
   getMemberCardById: (state) => (id) => {
     return state.memberCards.find(memberCard => memberCard.id === Number.parseInt(id)) 
   },
+  getMemberCardFromAllById: (state) => (id) => {
+    return state.memberCardsAll.find(memberCard => memberCard.id === Number.parseInt(id)) 
+  },
 }
 
 // actions

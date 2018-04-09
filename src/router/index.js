@@ -63,6 +63,11 @@ import Appointment from '@/components/content/Appointment/Appointment'
 import AppointmentNew from '@/components/content/Appointment/AppointmentNew'
 import AppointmentDetail from '@/components/content/Appointment/AppointmentDetail'
 import AppointmentFinish from '@/components/content/Appointment/AppointmentFinish'
+import ConsumeRecord from '@/components/content/ConsumeRecord/ConsumeRecord'
+import ConsumeRecordNewCard from '@/components/content/ConsumeRecord/ConsumeRecordNewCard'
+import ConsumeRecordNewProduct from '@/components/content/ConsumeRecord/ConsumeRecordNewProduct'
+import ConsumeRecordNewProject from '@/components/content/ConsumeRecord/ConsumeRecordNewProject'
+import ConsumeRecordNewActivity from '@/components/content/ConsumeRecord/ConsumeRecordNewActivity'
 import Schedule from '@/components/Schedule'
 import ModPWD from '@/components/content/ModPWD'
 
@@ -313,6 +318,26 @@ export default new Router({
         { // 完成预约
           path: 'appointment-finish/:id',
           component: AppointmentFinish
+        },
+        { // 消费记录
+          path: 'consume-record',
+          component: ConsumeRecord
+        },
+        { // 办卡
+          path: 'consume-record/new-card',
+          component: ConsumeRecordNewCard
+        },
+        { // 买产品
+          path: 'consume-record/new-product',
+          component: ConsumeRecordNewProduct
+        },
+        { // 买项目
+          path: 'consume-record/new-project',
+          component: ConsumeRecordNewProject
+        },
+        { // 买活动
+          path: 'consume-record/new-activity',
+          component: ConsumeRecordNewActivity
         },
         { // 修改密码
           path: 'modpwd',

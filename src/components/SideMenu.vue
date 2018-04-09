@@ -45,13 +45,13 @@
 								<span>消费记录</span>
 							</template>
 
-							<router-link to="/consume">
+							<router-link to="/consume-record">
 								<el-menu-item index="7-1">
 									<span slot="title">消费记录</span>
 								</el-menu-item>
 							</router-link>
 
-							<router-link to="/consume-change">
+							<router-link to="/consume-record-change">
 								<el-menu-item index="7-2">
 									<span slot="title">消费记录变动</span>
 								</el-menu-item>
@@ -74,7 +74,7 @@
 								</el-menu-item>
 							</router-link>
 
-							<router-link to="/activity">
+							<router-link to="/customer-activity">
 								<el-menu-item index="8-3">
 									<span slot="title">客户活动</span>
 								</el-menu-item>
@@ -150,11 +150,11 @@
 							</router-link>
 						</el-submenu>
 
-						<!-- <router-link to="/activity" v-if="role==='店长' || role==='前台'">
+						<router-link to="/activity" v-if="role==='店长' || role==='前台'">
 								<el-menu-item index="13">
-										<span slot="title">活动管理</span>
+										<span slot="title">活动</span>
 								</el-menu-item>
-						</router-link> -->
+						</router-link>
 
 						<router-link to="/employee" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="14">
@@ -215,7 +215,7 @@ export default {
       } else if (route.match("customer-card-change")) {
         // 店长|前台-客户会员卡信息变动
         return "8-4"; //调整顺序是为了优先匹配customer-card-change
-      }else if (route.match("activity")) {
+      }else if (route.match("customer-activity")) {
         // 店长|前台-客户活动
         return "8-3"; //调整顺序是为了优先匹配customer-activity
       } else if (route.match("customer-card")) {

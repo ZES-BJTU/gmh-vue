@@ -8,19 +8,19 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="18" :md="12">
-        <el-form class="new-form" :model="newCard" ref="newCard" label-width="110px" 
+        <el-form class="new-form" :model="newCard" ref="newCard" label-width="120px" 
           :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newCard')" v-loading="loading">
           <el-form-item label="手机" prop="customerMobile">
-            <el-input v-model.number="newCard.consumeRecordPo.customerMobile" placeholder="请输入手机" :autofocus="true"></el-input>
+            <el-input v-model.number="newCard.customerMobile" placeholder="请输入手机" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="消费金额(￥)" prop="consumeMoney">
-            <el-input v-model.number="newCard.consumeRecordPo.consumeMoney" placeholder="请输入消费金额"></el-input>
+            <el-input v-model.number="newCard.consumeMoney" placeholder="请输入消费金额"></el-input>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model.trim="newCard.consumeRecordPo.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
+            <el-input v-model.trim="newCard.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item label="会员卡">
-            <el-select v-model.number="newCard.consumeRecordDetails.cardId" placeholder="请输入会员卡名" 
+            <el-select v-model.number="newCard.cardId" placeholder="请输入会员卡名" 
               @change="handleCardSelect" filterable>
               <el-option v-for="memberCard in memberCards" :key="memberCard.id" :label="memberCard.name" :value="memberCard.id">
               </el-option>
@@ -38,6 +38,33 @@
               </el-option>
             </el-select>
           </el-form-item> -->
+          <el-form-item label="类型" prop="type">
+            <el-select v-model.number="newCard.type" placeholder="请选择类型" @change="handleChangeType">
+              <el-option v-for="cardType in cardTypes" :key="cardType.value" :label="cardType.name" :value="cardType.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="美容项目" prop="projectId" v-if="newCard.type === 1 || newCard.type === 3">
+            <el-select v-model.number="newCard.projectId" placeholder="请选择美容项目">
+              <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="次数" prop="times" v-if="newCard.type === 1 || newCard.type === 3">
+            <el-input v-model.number="newCard.times" placeholder="请输入次数"></el-input>
+          </el-form-item>
+          <el-form-item label="储值卡总额" prop="amount" v-if="newCard.type === 2 || newCard.type === 3">
+            <el-input v-model.number="newCard.amount" placeholder="请输入总额"></el-input>
+          </el-form-item>
+          <el-form-item label="项目折扣(0-100)" prop="projectDiscount">
+            <el-input v-model.number="newCard.projectDiscount" placeholder="请输入项目折扣"></el-input>
+          </el-form-item>
+          <el-form-item label="产品折扣(0-100)" prop="productDiscount">
+            <el-input v-model.number="newCard.productDiscount" placeholder="请输入产品折扣"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model.trim="newCard.cardRemark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
+          </el-form-item>
           <el-form-item label="项目">
             <el-table :data="cardGiftsCopy" size="mini" v-loading="loading" style="width: 100%">
               <el-table-column prop="type" label="类型"></el-table-column>
@@ -71,45 +98,61 @@ export default {
   data() {
     return {
       newCard: {
-        consumeRecordPo: {
-          customerMobile: '',
-          consumeType: 1,// 办卡
-          consumeMoney: '',
-          paymentWay: 3,// 现金
-          remark: '',
-        },
-        consumeRecordDetails: [
-          {
-            cardId: '',
-            amount: 1,
-            consultantId: '',
-            salesManId: '',
-          }
-        ],
+        customerMobile: '',
+        consumeType: 1,// 办卡
+        consumeMoney: '',
+        paymentWay: 3,// 现金
+        remark: '',
+        cardId: '',
+        amount: 1,
+        consultantId: '',
+        salesManId: '',
+        id: '',
+        type: '',
+        projectId: '',
+        times: '',
+        amount: '',
+        projectDiscount: '',
+        productDiscount: '',
+        cardRemark: '',
         gifts: []
       },
       rules: {
-        // customerMobile: [
-        //   { required: true, message: "手机号不能为空", trigger: "blur" },
-        //   { type: 'number', message: "手机号必须是数字", trigger: "blur" }
-        // ],
-        // consumeMoney: [
-        //   { required: true, message: "消费金额不能为空", trigger: "blur" },
-        //   { type: 'number', message: "消费金额必须是数字", trigger: "blur" }
-        // ],
-        // cardId: [
-        //   { required: true, message: "会员卡不能为空", trigger: "blur" },
-        //   { type: 'number', message: "会员卡必须是数字", trigger: "blur" }
-        // ],
-        // consultantId: [
-        //   { required: true, message: "顾问不能为空", trigger: "blur" },
-        //   { type: 'number', message: "顾问必须是数字", trigger: "blur" }
-        // ],
-        // salesManId: [
-        //   { required: true, message: "销售员为空", trigger: "blur" },
-        //   { type: 'number', message: "销售员必须是数字", trigger: "blur" }
-        // ],
+        customerMobile: [
+          { required: true, message: "手机号不能为空", trigger: "blur" },
+          { type: 'number', message: "手机号必须是数字", trigger: "blur" }
+        ],
+        consumeMoney: [
+          { required: true, message: "消费金额不能为空", trigger: "blur" },
+          { type: 'number', message: "消费金额必须是数字", trigger: "blur" }
+        ],
+        cardId: [
+          { required: true, message: "会员卡不能为空", trigger: "blur" },
+          { type: 'number', message: "会员卡必须是数字", trigger: "blur" }
+        ],
+        consultantId: [
+          { required: true, message: "顾问不能为空", trigger: "blur" },
+          { type: 'number', message: "顾问必须是数字", trigger: "blur" }
+        ],
+        salesManId: [
+          { required: true, message: "销售员为空", trigger: "blur" },
+          { type: 'number', message: "销售员必须是数字", trigger: "blur" }
+        ],
       },
+      cardTypes: [
+        {
+          name: '次卡',
+          value: 1
+        },
+        {
+          name: '储值卡',
+          value: 2
+        },
+        {
+          name: '混合卡',
+          value: 3
+        }
+      ],
       loading: false,
       enterFlag: true, //true代表允许回车，false代表不允许回车，避免重复提交
       cardGiftsDialog: false,
@@ -122,7 +165,10 @@ export default {
     },
     employees: function(){
       return this.$store.state.employee.employeesAll;
-    }
+    },
+    projects: function(){
+      return this.$store.state.project.projectsAll;
+    },
   },
   methods: {
     onSubmit(formName) {
@@ -131,13 +177,13 @@ export default {
           this.loading = true;
           this.enterFlag = false;
           this.$store
-            .dispatch("addConsumeRecord", this.newCard)
+            .dispatch("addConsumeRecord", this.handleData(this.newCard))
             .then(res => {
               if (res.code === 0) {
                 this.$message.success("添加成功");
                 setTimeout(() => {
                   this.loading = false;
-                  this.$router.push({ path: "/ConsumeRecord" });
+                  this.$router.push({ path: "/consume-record" });
                 }, 1000);
               }
             })
@@ -192,9 +238,83 @@ export default {
       this.newCard.gifts.splice(index,1);
     },
     handleCardSelect(val){
+      this.newCard.id = '';
+      this.newCard.type = '';
+      this.newCard.projectId = '';
+      this.newCard.times = '';
+      this.newCard.amount = '';
+      this.newCard.projectDiscount = '';
+      this.newCard.productDiscount = '';
+      this.newCard.cardRemark = '';
       let card = this.$store.getters.getMemberCardFromAllById(val);
-      this.newCard.consumeRecordPo.consumeMoney = card.price;
-      this.newCard.consumeRecordDetails[0].cardId = val;
+      this.newCard.consumeMoney = card.price;
+      this.newCard.cardId = val;
+      this.newCard.id = card.id;
+      this.newCard.type = card.type;
+      this.newCard.projectId = card.projectId;
+      this.newCard.times = card.times;
+      this.newCard.amount = card.amount;
+      this.newCard.projectDiscount = card.projectDiscount;
+      this.newCard.productDiscount = card.productDiscount;
+      this.newCard.cardRemark = card.remark;
+    },
+    handleChangeType(value){
+      if( value === 1){
+        this.newCard.amount = '';
+      }else if(value === 2){
+        this.newCard.times = '';
+        this.newCard.projectId = '';
+      }
+    },
+    handleData(data){
+      let dataChange = {
+        consumeRecordPo:{
+          customerMobile: '',
+          consumeType: '',
+          consumeMoney: '',
+          paymentWay: '',
+          remark: '',
+        },
+        consumeRecordDetails: [],
+        memberCardPo: {
+          id: '',
+          type: '',
+          projectId: '',
+          times: '',
+          amount: '',
+          projectDiscount: '',
+          productDiscount: '',
+          remark: '',
+        },
+        gifts: []
+      };
+
+      dataChange.consumeRecordPo.customerMobile = data.customerMobile;
+      dataChange.consumeRecordPo.consumeType = data.consumeType;
+      dataChange.consumeRecordPo.consumeMoney = data.consumeMoney;
+      dataChange.consumeRecordPo.paymentWay = data.paymentWay;
+      dataChange.consumeRecordPo.remark = data.remark;
+
+      dataChange.consumeRecordDetails.push({
+        'cardId': data.cardId,
+        'amount': data.amount,
+        'consultantId': 3,
+        // 'consultantId': data.consultantId,
+        'salesManId': 4,
+        // 'salesManId': data.salesManId,
+      });
+
+      dataChange.memberCardPo.id = data.id;
+      dataChange.memberCardPo.type = data.type;
+      dataChange.memberCardPo.projectId = data.projectId;
+      dataChange.memberCardPo.times = data.times;
+      dataChange.memberCardPo.amount = data.amount;
+      dataChange.memberCardPo.projectDiscount = data.projectDiscount;
+      dataChange.memberCardPo.productDiscount = data.productDiscount;
+      dataChange.memberCardPo.remark = data.cardRemark;
+      dataChange.gifts = data.gifts;
+      console.log(dataChange);
+      return dataChange;
     },
     loadMemberCardAll(){
       this.$store.dispatch("loadMemberCardAll").then( res => {
@@ -210,10 +330,18 @@ export default {
         console.log(err);
       });
     },
+    loadProjectAll(){
+      this.$store.dispatch("loadProjectAll").then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
   },
   beforeMount: function () {
     this.loadMemberCardAll();
     this.loadEmployeeAll();
+    this.loadProjectAll();
   },
   components: {CardGift}
 };

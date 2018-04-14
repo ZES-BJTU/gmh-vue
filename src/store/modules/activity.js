@@ -6,12 +6,16 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   activities: [],
+  activitiesAll: []
 }
 
 // getters
 const getters = {
   getActivityById: (state) => (id) => {
     return state.activities.find(activity => activity.id === Number.parseInt(id)) 
+  },
+  getActivityFromAllById: (state) => (id) => {
+    return state.activitiesAll.find(activity => activity.id === Number.parseInt(id)) 
   }
 }
 

@@ -19,7 +19,7 @@
         <el-button type="primary" icon="el-icon-plus">买产品</el-button>
       </router-link>
       <router-link to="/consume-record/new-project">
-        <el-button type="primary" icon="el-icon-plus">买项目</el-button>
+        <el-button type="primary" icon="el-icon-plus">做项目</el-button>
       </router-link>
       <router-link to="/consume-record/new-activity">
         <el-button type="primary" icon="el-icon-plus">买活动</el-button>

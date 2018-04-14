@@ -87,7 +87,15 @@ export default {
         {
           name: "总监",
           value: 5
-        }
+        },
+        {
+          name: "实习美容师",
+          value: 6
+        },
+        {
+          name: "实习咨询师",
+          value: 7
+        },
       ],
       rules: {
         name: [

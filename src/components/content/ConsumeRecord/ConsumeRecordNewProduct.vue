@@ -299,7 +299,7 @@ export default {
       });
     },
     handleAddCRProduct(payload){
-      let product = this.$store.getters.getProductFromAllById(payload.productId);
+      let product = this.$store.getters.getProductFromStoreAllById(payload.productId);
       this.productsCopy.push({
         'id': product.id,
         'name': product.name,
@@ -495,8 +495,8 @@ export default {
         console.log(err);
       });
     },
-    loadProductAll(){
-      this.$store.dispatch("loadProductAll").then( res => {
+    loadProductStoreAll(){
+      this.$store.dispatch("loadProductStoreAll").then( res => {
         this.loading = false;
       }).catch( err => {
         console.log(err);
@@ -524,7 +524,7 @@ export default {
     this.loadEmployeeAll();
     this.loadConsultants();
     this.loadSalesMans();
-    this.loadProductAll();
+    this.loadProductStoreAll();
   },
   components: {CRProduct}
 };

@@ -6,7 +6,7 @@
           <el-form-item prop="stockId">
             <el-select v-model.number="projectStockParams.stockId" filterable 
               placeholder="请输入关键词">
-              <el-option v-for="stock in stocks" :key="stock.id" :label="stock.name+'('+stock.unitName+')'" :value="stock.id">
+              <el-option v-for="stock in stocks" :key="stock.id" :label="stock.code+'-'+stock.name+'('+stock.unitName+')'" :value="stock.id">
               </el-option>
             </el-select>
           </el-form-item>

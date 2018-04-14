@@ -103,7 +103,7 @@
 							</router-link>
 							<router-link to="/stock-amount">
 								<el-menu-item index="9-3">
-									<span slot="title">库存数量管理</span>
+									<span slot="title">本店库存</span>
 								</el-menu-item>
 							</router-link>
 						</el-submenu>
@@ -145,7 +145,7 @@
 							</router-link>
 							<router-link to="/product-amount">
 								<el-menu-item index="12-3">
-									<span slot="title">产品数量管理</span>
+									<span slot="title">本店产品</span>
 								</el-menu-item>
 							</router-link>
 						</el-submenu>
@@ -228,7 +228,7 @@ export default {
         // 店长|前台-库存分类
         return "9-1";
       } else if (route.match("stock-amount")) {
-        // 店长|前台-库存数量
+        // 店长|前台-本店库存
         return "9-3"; // 调整顺序是为了优先匹配stock-amount
       } else if (route.match("stock")) {
         // 店长|前台-库存
@@ -246,7 +246,7 @@ export default {
         // 店长|前台-产品分类
         return "12-1";
       } else if (route.match("product-amount")) {
-        // 店长|前台-产品数量
+        // 店长|前台-本店产品
         return "12-3";// 调整顺序是为了优先匹配product-amount
       } else if (route.match("product")) {
         // 店长|前台-产品管理

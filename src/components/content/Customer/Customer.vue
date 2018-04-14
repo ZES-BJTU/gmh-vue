@@ -120,7 +120,11 @@ export default {
       this.searchStock('page');
     },
     toDate(row, column){
-      return this.toDatetimeDay(row.birthday);
+      if(!row.birthday || row.birthday === ''){
+        return '暂无生日';
+      }else{
+        return this.toDatetimeDay(row.birthday);
+      }
     },
     handleSource(row, column){
       if(!row.source || row.source === ''){

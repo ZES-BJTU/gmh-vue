@@ -63,11 +63,11 @@ Axios.interceptors.response.use(
         });
         break;
       case 204:
-        Message({
-          showClose: true,
-          message: '删除成功',
-          type: "success"
-        });
+        // Message({
+        //   showClose: true,
+        //   message: '删除成功',
+        //   type: "success"
+        // });
         break;
       default:
         if (res.data.code != 0) {
@@ -77,6 +77,16 @@ Axios.interceptors.response.use(
             message: res.data.message,
             type: "error"
           });
+          if(res.data.code === 20001){
+            // 登录失效
+            setTimeout(() => {
+              sessionStorage.removeItem("role");
+              sessionStorage.removeItem("account");
+              sessionStorage.removeItem("name");
+              sessionStorage.removeItem("token");
+              router.push({ path: "/signin" });
+            },1000)
+          }
           return Promise.reject(res.data.message);
         }
     } 

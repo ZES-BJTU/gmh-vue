@@ -76,9 +76,6 @@ export default {
           { required: true, message: "手机不能为空", trigger: "blur" },
           { type: "number", message: "请输入正确的手机", trigger: "blur" }
         ],
-        birthday: [
-          { required: true, message: "生日不能为空", trigger: "blur" },
-        ],
       },
       loading: false,
       enterFlag: true //true代表允许回车，false代表不允许回车，避免重复提交
@@ -95,7 +92,7 @@ export default {
             gender: this.newCustomerForm.gender,
             mobile: this.newCustomerForm.mobile,
             //考虑到接口失败的情况，不能直接修改把原来的日期转化成时间戳，否则getDate()失效
-            birthday: this.toTimeStamp(this.newCustomerForm.birthday),
+            birthday: (this.newCustomerForm.birthday === '' ? '' : this.toTimeStamp(this.newCustomerForm.birthday)),
             source: this.newCustomerForm.source,
             remark: this.newCustomerForm.remark
           }).then(res => {

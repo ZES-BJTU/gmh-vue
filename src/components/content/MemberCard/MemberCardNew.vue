@@ -27,7 +27,7 @@
           </el-form-item>
           <el-form-item label="美容项目" prop="projectId" v-if="newMemberCardForm.type === 1 || newMemberCardForm.type === 3">
             <el-select v-model.number="newMemberCardForm.projectId" placeholder="请选择美容项目">
-              <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id">
+              <el-option v-for="project in projects" :key="project.id" :label="project.code + '-' + project.name" :value="project.id">
               </el-option>
             </el-select>
           </el-form-item>

@@ -6,7 +6,7 @@
           <el-form-item prop="productId">
             <el-select v-model.number="productParams.productId" filterable 
               placeholder="请输入关键词">
-              <el-option v-for="product in products" :key="product.id" :label="product.name+'('+product.unitName+')'" :value="product.id">
+              <el-option v-for="product in products" :key="product.id" :label="product.code+'-'+product.name+'('+product.unitName+')'" :value="product.id">
               </el-option>
             </el-select>
           </el-form-item>
@@ -50,7 +50,7 @@ export default {
       return this.visible;
     },
     products: function(){
-      return this.$store.state.product.productsAll;
+      return this.$store.state.product.productsStoreAll;
     }
   },
   methods: {

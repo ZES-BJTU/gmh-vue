@@ -13,18 +13,18 @@
           <el-form-item label="手机" prop="customerMobile">
             <el-input v-model.number="newCard.customerMobile" placeholder="请输入手机" :autofocus="true"></el-input>
           </el-form-item>
-          <el-form-item label="消费金额(￥)" prop="consumeMoney">
-            <el-input v-model.number="newCard.consumeMoney" placeholder="请输入消费金额"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input v-model.trim="newCard.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
-          </el-form-item>
           <el-form-item label="会员卡">
             <el-select v-model.number="newCard.cardId" placeholder="请输入会员卡名" 
               @change="handleCardSelect" filterable>
               <el-option v-for="memberCard in memberCards" :key="memberCard.id" :label="memberCard.name" :value="memberCard.id">
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="消费金额(￥)" prop="consumeMoney">
+            <el-input v-model.number="newCard.consumeMoney" placeholder="请输入消费金额"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model.trim="newCard.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item label="顾问">
             <el-select v-model.number="newCard.consultantId" placeholder="请输入顾问名称" filterable>
@@ -39,7 +39,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="类型" prop="type">
-            <el-select v-model.number="newCard.type" placeholder="请选择类型" @change="handleChangeType">
+            <el-select v-model.number="newCard.type" placeholder="请选择类型" @change="handleChangeType" :disabled="true">
               <el-option v-for="cardType in cardTypes" :key="cardType.value" :label="cardType.name" :value="cardType.value">
               </el-option>
             </el-select>

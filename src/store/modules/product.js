@@ -7,6 +7,7 @@ const state = {
   totalPages: 0,
   products: [],
   productsAll: [],
+  productsStoreAll: [],
 }
 
 // getters
@@ -16,6 +17,9 @@ const getters = {
   },
   getProductFromAllById: (state) => (id) => {
     return state.productsAll.find(product => product.id === Number.parseInt(id)) 
+  },
+  getProductFromStoreAllById: (state) => (id) => {
+    return state.productsStoreAll.find(product => product.id === Number.parseInt(id)) 
   }
 }
 
@@ -47,6 +51,18 @@ const actions = {
       httpServer.get('/products/all').then( res => {
         commit('loadProductAll', {
           productsAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
+  loadProductStoreAll({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/products/store/all').then( res => {
+        commit('loadProductStoreAll', {
+          productsStoreAll: res.data
         });
         resolve(res);
       }).catch( error => {
@@ -103,6 +119,9 @@ const mutations = {
   },
   loadProductAll(state, payload){
     state.productsAll = payload.productsAll;
+  },
+  loadProductStoreAll(state, payload){
+    state.productsStoreAll = payload.productsStoreAll;
   },
 }
 

@@ -6,7 +6,7 @@
         <el-col :xs="20">
           <el-form :model="appointmentProject" ref="appointmentProject" :rules="rules">
             <el-form-item label="请选择美容项目" prop="projectId">
-              <el-cascader :options="options" @change="handleChange"
+              <el-cascader v-model="projectTemp" :options="options" @change="handleChange"
                 @active-item-change="handleProjectChange" filterable></el-cascader>
             </el-form-item>
             <el-form-item label="请选择时间" prop="appointmentTime">
@@ -79,6 +79,7 @@ export default {
           { required: true, message: "预约时间不能为空", trigger: "blur" }
         ]
       },
+      projectTemp: [],
       employeeSchedule: []
     }
   },
@@ -97,6 +98,9 @@ export default {
           this.$emit('addAppointmentProject', this.appointmentProject);
           this.$emit('closeDialog', false);
           this.$refs[formName].resetFields();
+          this.appointmentProject.projectId = '';
+          this.appointmentProject.appointmentTime = [];
+          this.projectTemp = [];
         } else {
           return false;
         }
@@ -106,7 +110,9 @@ export default {
       this.$emit('closeDialog', false);
       console.log(this.$refs[formName]);
       this.$refs[formName].resetFields();
+      this.appointmentProject.projectId = '';
       this.appointmentProject.appointmentTime = [];
+      this.projectTemp = [];
     },
     handleChange(val){
       this.appointmentProject.projectId = val[2];

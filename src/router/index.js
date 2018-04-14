@@ -57,6 +57,7 @@ import CustomerCardReturn from '@/components/content/CustomerCard/CustomerCardRe
 import CustomerCardTurn from '@/components/content/CustomerCard/CustomerCardTurn'
 import CustomerCardChangeStore from '@/components/content/CustomerCard/CustomerCardChangeStore'
 import CustomerCardChangeRecord from '@/components/content/CustomerCard/CustomerCardChangeRecord'
+import CustomerActivity from '@/components/content/CustomerActivity/CustomerActivity'
 import Activity from '@/components/content/Activity/Activity'
 import ActivityNew from '@/components/content/Activity/ActivityNew'
 import ActivityDetail from '@/components/content/Activity/ActivityDetail'
@@ -296,6 +297,10 @@ export default new Router({
         { // 客户会员卡转店
           path: 'customer-card-change-store/:id',
           component: CustomerCardChangeStore
+        },
+        { // 客户活动
+          path: 'customer-activity',
+          component: CustomerActivity
         },
         { // 活动
           path: 'activity',

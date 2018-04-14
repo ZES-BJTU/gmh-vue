@@ -28,7 +28,7 @@ const actions = {
   loadCustomerActivity({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/customerActivity/list', {
-        'keyWords': (info.type === 'search' ? info.content : info.oldContent),
+        'keyWord': (info.type === 'search' ? info.content : info.oldContent),
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {

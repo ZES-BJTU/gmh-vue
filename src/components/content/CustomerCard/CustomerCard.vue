@@ -15,7 +15,6 @@
       <el-table-column prop="customerName" label="姓名"></el-table-column>
       <el-table-column prop="memberCardName" label="卡名"></el-table-column>
       <el-table-column prop="remainingMoney" label="余额" :formatter="handleRemainMoney"></el-table-column>
-      <el-table-column prop="remainingTimes" label="剩余次数" :formatter="handleRemainTimes"></el-table-column>
       <el-table-column prop="isValid" label="是否有效"></el-table-column>
       <el-table-column prop="isReturned" label="是否退卡" :formatter="handleIsReturned"></el-table-column>
       <el-table-column prop="returnedReason" label="退卡原因" :formatter="handleReturnedReason"></el-table-column>
@@ -25,14 +24,20 @@
       <el-table-column prop="isTurned" label="是否换卡" :formatter="handlIsTurned"></el-table-column>
       <el-table-column prop="turnedReason" label="换卡原因" :formatter="handlTurnedReason"></el-table-column>
       <el-table-column prop="turnedMoney" label="补/退金额" :formatter="handlTurnedMoney"></el-table-column>
-      <el-table-column prop="uniqueIdentifier" label="流水号"></el-table-column>
-      <el-table-column label="操作"  width="220" fixed="right">
-        <template slot-scope="scope" v-if="scope.row.isValid === '是'">
+      <el-table-column prop="uniqueIdentifier"  width="150" label="流水号"></el-table-column>
+      <el-table-column label="操作"  width="450" fixed="right">
+        <template slot-scope="scope">
           <el-button size="mini"
+            @click="handleCardContentDetail(scope.$index, scope.row)">详情</el-button>
+          <el-button size="mini" v-if="scope.row.isValid === '是'"
+            @click="handleCharge(scope.$index, scope.row)">充值</el-button>
+          <el-button size="mini" v-if="scope.row.isValid === '是'"
+            @click="handleBuy(scope.$index, scope.row)">换疗程</el-button>
+          <el-button size="mini" v-if="scope.row.isValid === '是'"
             @click="handleTurn(scope.$index, scope.row)">转卡</el-button>
-          <el-button size="mini"
+          <el-button size="mini" v-if="scope.row.isValid === '是'"
             @click="handleChangeStore(scope.$index, scope.row)">转店</el-button>
-          <el-button size="mini" type="danger"
+          <el-button size="mini" type="danger" v-if="scope.row.isValid === '是'"
             @click="handleReturn(scope.$index, scope.row)">退卡</el-button>
         </template>
       </el-table-column>
@@ -40,6 +45,17 @@
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
+    <el-dialog title="会员卡内容详情" :visible.sync="cardContentVisible" :show-close="false"
+    :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-table :data="cardContentDetail" size="mini" v-loading="loading" style="width: 100%">
+        <el-table-column prop="type" label="类型"></el-table-column>
+        <el-table-column prop="name" label="内容"></el-table-column>
+        <el-table-column prop="amount" label="个数"></el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="onClose('')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -55,7 +71,9 @@ export default {
         pageSize: '10',
         type: ''
       },
-      loading: false
+      loading: false,
+      cardContentDetail: [],
+      cardContentVisible: false
     };
   },
   computed: {
@@ -163,8 +181,33 @@ export default {
         return '￥' + row.turnedMoney;
       }
     },
+    handleCharge(index, row){
+      this.$router.push({ path: '/customer-card-charge/' + row.id});
+    },
+    handleBuy(index, row){
+      this.$router.push({ path: '/customer-card-buy/' + row.id});
+    },
     handleTurn(index, row){
       this.$router.push({ path: '/customer-card-turn/' + row.id});
+    },
+    handleCardContentDetail(index, row){// 显示客户会员卡详情
+      let card = this.$store.getters.getCustomerCardById(row.id);
+      for(let content of card.customerMemberCardContent){
+        if(content.relatedName != null){
+          this.cardContentDetail.push({
+            'type': '项目',
+            'name': content.relatedName,
+            'amount': content.amount,
+          })
+        }else{
+          this.cardContentDetail.push({
+            'type': '代金券',
+            'name': content.content,
+            'amount': content.amount,
+          })
+        }
+      }
+      this.cardContentVisible = true;
     },
     handleChangeStore(index, row){
       this.$router.push({ path: '/customer-card-change-store/' + row.id});
@@ -172,6 +215,10 @@ export default {
     handleReturn(index, row){
       this.$router.push({ path: '/customer-card-return/' + row.id});
     },
+    onClose(formName){
+      this.cardContentVisible = false;
+      this.cardContentDetail = [];
+    }
   },
   beforeMount: function () {
     this.searchCustomerCard('search');

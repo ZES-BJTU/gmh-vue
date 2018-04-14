@@ -25,14 +25,14 @@
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column prop="projects" label="项目">
         <template slot-scope="scope">
-            <div v-for="appointmentProject in scope.row.appointmentProjects" :key="appointmentProject.projectId">
+            <div v-for="appointmentProject in scope.row.appointmentProjects">
               {{appointmentProject.projectName}}
             </div>
         </template>
       </el-table-column>
       <el-table-column prop="employees" label="员工">
         <template slot-scope="scope">
-            <div v-for="appointmentProject in scope.row.appointmentProjects" :key="appointmentProject.projectId">
+            <div v-for="appointmentProject in scope.row.appointmentProjects">
               {{appointmentProject.employeeName}}
             </div>
         </template>

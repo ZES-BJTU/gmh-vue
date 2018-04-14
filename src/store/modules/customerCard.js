@@ -7,6 +7,7 @@ const state = {
   totalPages: 0,
   customerCards: [],
   customerCardsAll: [],
+  customerCardPay: [],
   customerCardChanges: [],
 }
 
@@ -17,6 +18,9 @@ const getters = {
   },
   getCustomerCardFromAllById: (state) => (id) => {
     return state.customerCardsAll.find(customerCard => customerCard.id === Number.parseInt(id)) 
+  },
+  getCustomerCardPayById: (state) => (id) => {
+    return state.customerCardPay.find(customerCard => customerCard.id === Number.parseInt(id)) 
   },
 }
 
@@ -55,6 +59,21 @@ const actions = {
     //   })
     // });
   },
+  loadCustomerCardPay({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/customerMemberCard/getCardPay',{
+        'customerMobile': info.customerMobile,
+        'paymentWay': info.paymentWay // 1 会员卡去除代金券, 31 会员卡代金券
+      }).then( res => {
+        commit('loadCustomerCardPay', {
+          customerCardPay: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
   loadCustomerCardChangeList({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/customerMemberCard/changedList', {
@@ -73,6 +92,24 @@ const actions = {
       })
       .catch( err => {
         reject(err);
+      })
+    });
+  },
+  chargeCustomerCard({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/customerMemberCard/recharge', info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
+  buyCustomerCard({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/customerMemberCard/buyProject', info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
       })
     });
   },
@@ -116,6 +153,9 @@ const mutations = {
   },
   loadCustomerCardAll(state, payload){
     state.customerCardsAll = payload.customerCardsAll;
+  },
+  loadCustomerCardPay(state, payload){
+    state.customerCardPay = payload.customerCardPay;
   },
   loadCustomerCardChangeList(state, payload){
     state.pageNum = payload.pageNum;

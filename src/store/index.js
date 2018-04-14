@@ -18,6 +18,7 @@ import memberCard from './modules/memberCard'
 import customerCard from './modules/customerCard'
 import appointment from './modules/appointment'
 import activity from './modules/activity'
+import customerActivity from './modules/customerActivity'
 import consumeRecord from './modules/consumeRecord'
 import * as actions from './actions'
 import mutations from './mutations'
@@ -48,6 +49,7 @@ export default new Vuex.Store({
     customerCard,
     appointment,
     activity,
+    customerActivity,
     consumeRecord
   }
 })

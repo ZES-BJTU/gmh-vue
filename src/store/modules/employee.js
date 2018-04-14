@@ -7,6 +7,8 @@ const state = {
   totalPages: 0,
   employees: [],
   employeesByTopType: [],
+  consultants: [],
+  salesMans: [],
   employeesAll: []
 }
 
@@ -49,7 +51,24 @@ const actions = {
         'topType': info
       }).then( res => {
         commit('loadEmployeeByTopType', {
+          topType: info,
           employeesByTopType: res.data
+        });
+        resolve(res);
+      })
+      .catch( err => {
+        reject(err);
+      })
+    });
+  },
+  loadEmployeeByWorkType({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/employees/workType',{
+        'workType': info
+      }).then( res => {
+        commit('loadEmployeeByWorkType', {
+          workType: info,
+          employeeByWorkType: res.data
         });
         resolve(res);
       })
@@ -110,7 +129,18 @@ const mutations = {
     state.employees = payload.employees;
   },
   loadEmployeeByTopType(state, payload){
+    if(payload.topType === 4){
+      // 销售员
+      state.salesMans = payload.employeesByTopType;
+    }
     state.employeesByTopType = payload.employeesByTopType;
+  },
+  loadEmployeeByWorkType(state, payload){
+    if(payload.workType === 3){
+      // 美容咨询师
+      state.consultants = payload.employeeByWorkType;
+    }
+    state.employeesByWorkType = payload.employeesByWrokType;
   },
   loadEmployeeAll(state, payload){
     state.employeesAll = payload.employeesAll;

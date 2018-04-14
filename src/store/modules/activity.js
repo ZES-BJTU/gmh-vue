@@ -10,7 +10,7 @@ const state = {
 
 // getters
 const getters = {
-  getCustomerActivityById: (state) => (id) => {
+  getActivityById: (state) => (id) => {
     return state.activities.find(activity => activity.id === Number.parseInt(id)) 
   }
 }

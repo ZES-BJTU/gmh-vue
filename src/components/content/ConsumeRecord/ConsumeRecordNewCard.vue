@@ -26,27 +26,27 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="顾问">
-            <el-select v-model.number="newCard.consumeRecordDetails.consultantId" placeholder="请输入顾问名称" filterable>
-              <el-option v-for="employee in employees" :key="'c'+employee.id" :label="employee.name" :value="employee.id">
+          <el-form-item label="顾问">
+            <el-select v-model.number="newCard.consultantId" placeholder="请输入顾问名称" filterable>
+              <el-option v-for="consultant in consultants" :key="consultant.id" :label="consultant.name" :value="consultant.id">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="销售员">
-            <el-select v-model.number="newCard.consumeRecordDetails.salesManId" placeholder="请输入销售员名称" filterable>
-              <el-option v-for="employee in employees" :key="'s'+employee.id" :label="employee.name" :value="employee.id">
+            <el-select v-model.number="newCard.salesManId" placeholder="请输入销售员名称" filterable>
+              <el-option v-for="salesMan in salesMans" :key="salesMan.id" :label="salesMan.name" :value="salesMan.id">
               </el-option>
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
           <el-form-item label="类型" prop="type">
             <el-select v-model.number="newCard.type" placeholder="请选择类型" @change="handleChangeType">
               <el-option v-for="cardType in cardTypes" :key="cardType.value" :label="cardType.name" :value="cardType.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="美容项目" prop="projectId" v-if="newCard.type === 1 || newCard.type === 3">
-            <el-select v-model.number="newCard.projectId" placeholder="请选择美容项目">
-              <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id">
+          <el-form-item label="项目" prop="projectId" v-if="newCard.type === 1 || newCard.type === 3">
+            <el-select v-model.number="newCard.projectId" placeholder="请选择项目" filterable>
+              <el-option v-for="project in projects" :key="project.id" :label="project.code+'-'+project.name" :value="project.id">
               </el-option>
             </el-select>
           </el-form-item>
@@ -65,7 +65,7 @@
           <el-form-item label="备注">
             <el-input v-model.trim="newCard.cardRemark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
-          <el-form-item label="项目">
+          <el-form-item label="赠品">
             <el-table :data="cardGiftsCopy" size="mini" v-loading="loading" style="width: 100%">
               <el-table-column prop="type" label="类型"></el-table-column>
               <el-table-column prop="name" label="名称/金额"></el-table-column>
@@ -163,8 +163,11 @@ export default {
     memberCards: function(){
       return this.$store.state.memberCard.memberCardsAll;
     },
-    employees: function(){
-      return this.$store.state.employee.employeesAll;
+    consultants: function(){
+      return this.$store.state.employee.consultants;
+    },
+    salesMans: function(){
+      return this.$store.state.employee.salesMans;
     },
     projects: function(){
       return this.$store.state.project.projectsAll;
@@ -298,10 +301,8 @@ export default {
       dataChange.consumeRecordDetails.push({
         'cardId': data.cardId,
         'amount': data.amount,
-        'consultantId': 3,
-        // 'consultantId': data.consultantId,
-        'salesManId': 4,
-        // 'salesManId': data.salesManId,
+        'consultantId': data.consultantId,
+        'salesManId': data.salesManId,
       });
 
       dataChange.memberCardPo.id = data.id;
@@ -337,11 +338,27 @@ export default {
         console.log(err);
       });
     },
+    loadConsultants(){
+      this.$store.dispatch("loadEmployeeByTopType",4).then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
+    loadSalesMans(){
+      this.$store.dispatch("loadEmployeeByWorkType",3).then( res => {
+        this.loading = false;
+      }).catch( err => {
+        console.log(err);
+      });
+    },
   },
   beforeMount: function () {
     this.loadMemberCardAll();
     this.loadEmployeeAll();
     this.loadProjectAll();
+    this.loadConsultants();
+    this.loadSalesMans();
   },
   components: {CardGift}
 };

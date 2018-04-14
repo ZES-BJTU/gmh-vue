@@ -56,6 +56,15 @@ const actions = {
       })
     });
   },
+  calConsumeRecord({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/consume/calMoney', info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
 }
 
 // mutations

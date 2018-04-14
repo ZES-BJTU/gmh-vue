@@ -5,11 +5,11 @@
       <el-row type="flex" justify="start">
         <el-col :xs="20">
           <el-form :model="appointmentProject" ref="appointmentProject" :rules="rules">
-            <el-form-item label="请选择美容项目">
+            <el-form-item label="请选择美容项目" prop="projectId">
               <el-cascader :options="options" @change="handleChange"
                 @active-item-change="handleProjectChange" filterable></el-cascader>
             </el-form-item>
-            <el-form-item label="请选择时间" prop="">
+            <el-form-item label="请选择时间" prop="appointmentTime">
               <el-date-picker
                 v-model="appointmentProject.appointmentTime"
                 type="datetimerange"
@@ -19,7 +19,7 @@
                 end-placeholder="结束时间">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="请选择员工">
+            <el-form-item label="请选择员工" prop="employeeId">
               <el-select v-model.number="appointmentProject.employeeId" filterable placeholder="请输入关键词">
                 <el-option v-for="employee in employees" :key="employee.id" 
                   :label="employee.name" :value="employee.id">
@@ -71,9 +71,9 @@ export default {
           { required: true, message: "库存不能为空", trigger: "blur" },
           { type: 'number', message: "库存必须是数字", trigger: "blur" }
         ],
-        stockConsumptionAmount: [
-          { required: true, message: "数量不能为空", trigger: "blur" },
-          { type: 'number', message: "数量必须是数字", trigger: "blur" }
+        employeeId: [
+          { required: true, message: "员工不能为空", trigger: "blur" },
+          { type: 'number', message: "员工必须是数字", trigger: "blur" }
         ],
         appointmentTime: [
           { required: true, message: "预约时间不能为空", trigger: "blur" }
@@ -110,6 +110,11 @@ export default {
     },
     handleChange(val){
       this.appointmentProject.projectId = val[2];
+      this.$store.dispatch("loadEmployeeByTopType",val[0]).then( res => {
+        // this.$message.success('查询成功');
+      }).catch( err => {
+        console.log(err);
+      });
     },
     handleProjectChange(val) {
       this.$store.dispatch("loadEmployeeByTopType",val[0]).then( res => {

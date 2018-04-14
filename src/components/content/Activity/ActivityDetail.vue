@@ -188,7 +188,7 @@ export default {
       this.$router.push({ path: '/activity' });
     }else{
       //从vuex中查询该id
-      const activity = this.$store.getters.getCustomerActivityById(this.$route.params.id);
+      const activity = this.$store.getters.getActivityById(this.$route.params.id);
       
       this.modActivityForm.id = activity.id;
       this.modActivityForm.name = activity.name;

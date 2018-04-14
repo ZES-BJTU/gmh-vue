@@ -79,7 +79,7 @@
             </el-table>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="cardGiftsDialog = true">添加赠品</el-button>
+            <el-button @click="cardGiftsDialog = true">添加赠品</el-button>
             <el-button type="primary" @click="onSubmit('newCard')">提交</el-button>
           </el-form-item>
         </el-form>

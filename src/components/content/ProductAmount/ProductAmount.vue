@@ -10,11 +10,9 @@
         <el-button type="primary" @click="searchProductAmount('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
-    <!-- <div class="operate-box">
-      <router-link to="/stock/new">
-        <el-button type="primary" icon="el-icon-plus">新建</el-button>
-      </router-link>
-    </div> -->
+    <div class="operate-box">
+      <el-button icon="el-icon-download" @click="exportProductsVisible = true">导出产品流水</el-button>
+    </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="productAmountId" label="SroductAmountId" v-if="false"></el-table-column>
@@ -32,16 +30,31 @@
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <!-- <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
+    <el-dialog title="导出产品流水" :visible.sync="exportProductsVisible" :show-close="false"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-form :model="exportProductsForm" ref="exportProductsForm" v-loading="exportLoading">
+        <el-form-item prop="exportTime">
+          <el-date-picker
+            v-model="exportProductsForm.exportTime"
+            type="daterange"
+            align="center"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onClose('exportProductsForm')">取 消</el-button>
+        <el-button type="primary" @click="onExport('exportProductsForm')">导 出</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,7 +70,12 @@ export default {
         pageSize: '10',
         type: ''
       },
-      loading: false
+      exportProductsForm: {
+        exportTime: '',
+      },
+      loading: false,
+      exportProductsVisible: false,
+      exportLoading: false,
     };
   },
   computed: {
@@ -101,41 +119,44 @@ export default {
     handleEdit(index, row){
       this.$router.push({ path: '/product-amount-detail/' + row.productAmountId});
     },
-    // handleDelete(index, row){
-    //   const h = this.$createElement;
-    //   this.$msgbox({
-    //     title: '提示',
-    //     message: h('p', null, [
-    //       h('span', null, '此操作将会永久删除该记录！ ')
-    //     ]),
-    //     showCancelButton: true,
-    //     confirmButtonText: '删除',
-    //     cancelButtonText: '取消',
-    //     type: 'warning',
-    //     beforeClose: (action, instance, done) => {
-    //       if (action === 'confirm') {
-    //         instance.confirmButtonLoading = true;
-    //         instance.confirmButtonText = '删除中...';
-    //         this.$store.dispatch("delStock", row.id).then( res => {
-    //           done();
-    //           instance.confirmButtonLoading = false;
-    //           this.searchStock('search');
-    //         }).catch( err => {
-    //           done();
-    //           instance.confirmButtonLoading = false;
-    //           console.log(err);
-    //         });
-    //       } else {
-    //         done();
-    //       }
-    //     }
-    //   }).catch(() => {
-    //     this.$message({
-    //       type: 'info',
-    //       message: '取消删除'
-    //     });
-    //   });
-    // },
+    onClose(formName){
+      this.exportProductsVisible = false;
+      this.$refs[formName].resetFields();
+    },
+    onExport(formName){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.exportLoading = true;
+
+          let beginTime, endTime;
+          if(this.exportProductsForm.exportTime != ''){
+            beginTime = this.toTimeStamp(this.exportProductsForm.exportTime[0]);
+            endTime = this.toTimeStamp(this.exportProductsForm.exportTime[1]);
+          }else{
+            beginTime = '';
+            endTime = '';
+          }
+          if(beginTime != '' && endTime != '' && beginTime === endTime){
+            this.$message.error('请选择不同的日期！');
+            this.exportLoading = false;
+            this.$refs[formName].resetFields();
+          }else{
+            let token = sessionStorage.getItem('token');
+            var href = "http://localhost:8080/export/products";
+            href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
+            window.location.href = href;
+
+            setTimeout(() => {
+              this.exportLoading = false;
+              this.exportProductsVisible = false;
+              this.$refs[formName].resetFields();
+            },2000)
+          }
+        } else {
+          return false;
+        }
+      });
+    },
   },
   beforeMount: function () {
     this.searchProductAmount('search');

@@ -16,7 +16,7 @@
           <el-form-item label="消费金额(￥)" prop="consumeMoney">
             <el-input v-model.number="newProduct.consumeMoney" placeholder="请输入消费金额"></el-input>
           </el-form-item>
-          <el-form-item label="支付方式">
+          <el-form-item label="支付方式" prop="paymentWay">
             <el-select v-model.number="newProduct.paymentWay" placeholder="请选择支付方式" 
               @change="handlePaymentWaySelect">
               <el-option v-for="paymentWay in paymentWays" :key="paymentWay.value" :label="paymentWay.name" :value="paymentWay.value">
@@ -61,6 +61,9 @@
               <el-table-column prop="relatedName" label="内容"></el-table-column>
               <el-table-column prop="amount" label="个数"></el-table-column>
             </el-table>
+          </el-form-item>
+          <el-form-item label="储值(￥)" v-if="card.id != ''">
+            <el-input v-model="card.remainingMoney" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="产品折扣(0-100)" v-if="card.id != ''">
             <el-input v-model="card.productDiscount" :disabled="true"></el-input>
@@ -134,8 +137,8 @@
             <el-input v-model.trim="newProduct.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="calConsumeRecord()">添加产品</el-button>
-            <el-button type="primary" @click="prductsDialog = true">添加产品</el-button>
+            <el-button @click="prductsDialog = true">添加产品</el-button>
+            <el-button @click="calConsumeRecord()">结算</el-button>
             <el-button type="primary" @click="onSubmit('newProduct')">提交</el-button>
           </el-form-item>
         </el-form>
@@ -156,7 +159,7 @@ export default {
       newProduct: {
         customerMobile: '',
         consumeType: 2,// 办卡
-        consumeMoney: '',
+        consumeMoney: 0,
         paymentWay: '',
         payWayId: '',
         payWayContentId: '',
@@ -175,7 +178,7 @@ export default {
           { required: true, message: "消费金额不能为空", trigger: "blur" },
           { type: 'number', message: "消费金额必须是数字", trigger: "blur" }
         ],
-        payWayId: [
+        paymentWay: [
           { required: true, message: "支付方式不能为空", trigger: "blur" },
           { type: 'number', message: "支付方式必须是数字", trigger: "blur" }
         ],
@@ -208,7 +211,11 @@ export default {
         {
           name: '现金+活动代金券',
           value: 32
-        }
+        },
+        {
+          name: '赠送',
+          value: 4
+        },
       ],
       loading: false,
       enterFlag: true, //true代表允许回车，false代表不允许回车，避免重复提交
@@ -225,6 +232,7 @@ export default {
       maxAmount: 1,
       card: {
         id: '',
+        remainingMoney: '',
         productDiscount: '',
         uniqueIdentifier: '',
       },
@@ -263,24 +271,28 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.loading = true;
-          this.enterFlag = false;
-          this.$store
-            .dispatch("addConsumeRecord", this.handleData(this.newProduct))
-            .then(res => {
-              if (res.code === 0) {
-                this.$message.success("添加成功");
-                setTimeout(() => {
-                  this.loading = false;
-                  this.$router.push({ path: "/consume-record" });
-                }, 1000);
-              }
-            })
-            .catch(err => {
-              this.loading = false;
-              this.enterFlag = true;
-              console.log(err);
-            });
+          if(this.newProduct.products.length == 0){
+            this.$message.error("请添加产品!");
+          }else{
+            this.loading = true;
+            this.enterFlag = false;
+            this.$store
+              .dispatch("addConsumeRecord", this.handleData(this.newProduct))
+              .then(res => {
+                if (res.code === 0) {
+                  this.$message.success("添加成功");
+                  setTimeout(() => {
+                    this.loading = false;
+                    this.$router.push({ path: "/consume-record" });
+                  }, 1000);
+                }
+              })
+              .catch(err => {
+                this.loading = false;
+                this.enterFlag = true;
+                console.log(err);
+              });
+          }
         } else {
           return false;
         }
@@ -388,6 +400,7 @@ export default {
     handleCardContentSelect(val){// 切换会员卡
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.card.id = card.id
+      this.card.remainingMoney = card.remainingMoney;
       this.card.productDiscount = card.productDiscount;
       this.card.uniqueIdentifier = card.uniqueIdentifier;
       this.cardContentDetail = card.customerMemberCardContent;
@@ -490,10 +503,20 @@ export default {
       });
     },
     calConsumeRecord(){
-      this.$store.dispatch("calConsumeRecord",this.handleData(this.newProduct)).then( res => {
-        console.log(res);
-      }).catch( err => {
-        console.log(err);
+      this.$refs["newProduct"].validate(valid => {
+        if (valid) {
+          if(this.newProduct.products.length == 0){
+            this.$message.error("请添加产品!");
+          }else{
+            this.$store.dispatch("calConsumeRecord",this.handleData(this.newProduct)).then( res => {
+              this.newProduct.consumeMoney = res.data;
+            }).catch( err => {
+              console.log(err);
+            });
+          }
+        } else {
+          return false;
+        }
       });
     },
   },

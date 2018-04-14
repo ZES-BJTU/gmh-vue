@@ -1,6 +1,7 @@
 <template>
   <div class="Customer">
-    <el-form :inline="true" :model="customerSearch" ref="customerSearch" class="demo-form-inline search-form" @keyup.enter.native="searchCustomer('search')">
+    <el-form :inline="true" :model="customerSearch" ref="customerSearch" class="demo-form-inline search-form" 
+      @keyup.enter.native="searchCustomer('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
@@ -14,6 +15,7 @@
       <router-link to="/customer/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
+      <el-button icon="el-icon-download" @click="exportCustomerVisible = true">导出顾客信息</el-button>
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
@@ -38,10 +40,31 @@
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
+    <el-dialog title="导出顾客信息" :visible.sync="exportCustomerVisible" :show-close="false"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-form :model="exportCustomerForm" ref="exportCustomerForm"  v-loading="exportLoading">
+        <el-form-item prop="exportTime">
+          <el-date-picker
+            v-model="exportCustomerForm.exportTime"
+            type="daterange"
+            align="center"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onClose('exportCustomerForm')">取 消</el-button>
+        <el-button type="primary" @click="onExport('exportCustomerForm')">导 出</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import httpServer from '@/lib/axios'
+
 export default {
   name: "Customer",
   data() {
@@ -53,7 +76,12 @@ export default {
         pageSize: '10',
         type: ''
       },
-      loading: false
+      exportCustomerForm: {
+        exportTime: '',
+      },
+      loading: false,
+      exportCustomerVisible: false,
+      exportLoading: false,
     };
   },
   computed: {
@@ -145,7 +173,44 @@ export default {
           message: '取消删除'
         });
       });
-    }
+    },
+    onClose(formName){
+      this.exportCustomerVisible = false;
+      this.$refs[formName].resetFields();
+    },
+    onExport(formName){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.exportLoading = true;
+          let beginTime, endTime;
+          if(this.exportCustomerForm.exportTime != ''){
+            beginTime = this.toTimeStamp(this.exportCustomerForm.exportTime[0]);
+            endTime = this.toTimeStamp(this.exportCustomerForm.exportTime[1]);
+          }else{
+            beginTime = '';
+            endTime = '';
+          }
+          if(beginTime != '' && endTime != '' && beginTime === endTime){
+            this.$message.error('请选择不同的日期！');
+            this.exportLoading = false;
+            this.$refs[formName].resetFields();
+          }else{
+            let token = sessionStorage.getItem('token');
+            var href = "http://localhost:8080/export/customer";
+            href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
+            window.location.href = href;
+  
+            setTimeout(() => {
+              this.exportLoading = false;
+              this.exportCustomerVisible = false;
+              this.$refs[formName].resetFields();
+            },2000)
+          }
+        } else {
+          return false;
+        }
+      });
+    },
   },
   beforeMount: function () {
     this.searchCustomer('search');

@@ -137,7 +137,7 @@ export default {
         name = project.name;
       }else if(payload.type === 2){
         type = '会员卡';
-        customerCard = this.$store.getters.getCustomerCardFromAllById(payload.relatedId);
+        customerCard = this.$store.getters.getMemberCardFromAllById(payload.relatedId);
         name = customerCard.name;
       }else if(payload.type === 3){
         type = '产品';

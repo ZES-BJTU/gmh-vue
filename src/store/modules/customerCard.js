@@ -48,16 +48,16 @@ const actions = {
     });
   },
   loadCustomerCardAll({commit}, info) {
-    // return new Promise((resolve, reject) => {
-    //   httpServer.get('/member/cards/all').then( res => {
-    //     commit('loadCustomerCardAll', {
-    //       customerCardsAll: res.data
-    //     });
-    //     resolve(res);
-    //   }).catch( error => {
-    //     reject(error);
-    //   })
-    // });
+    return new Promise((resolve, reject) => {
+      httpServer.get('/customerMemberCard/all').then( res => {
+        commit('loadCustomerCardAll', {
+          customerCardsAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
   },
   loadCustomerCardPay({commit}, info) {
     return new Promise((resolve, reject) => {

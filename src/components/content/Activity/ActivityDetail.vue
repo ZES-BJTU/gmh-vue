@@ -204,7 +204,7 @@ export default {
           name = project.name;
         }else if(activityContent.type === '会员卡'){
           type= 2;
-          customerCard = this.$store.getters.getCustomerCardFromAllById(activityContent.relatedId);
+          customerCard = this.$store.getters.getMemberCardFromAllById(activityContent.relatedId);
           name = customerCard.name;
         }else if(activityContent.type === '产品'){
           type= 3;

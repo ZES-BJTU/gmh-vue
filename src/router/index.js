@@ -67,6 +67,7 @@ import AppointmentNew from '@/components/content/Appointment/AppointmentNew'
 import AppointmentDetail from '@/components/content/Appointment/AppointmentDetail'
 import AppointmentFinish from '@/components/content/Appointment/AppointmentFinish'
 import ConsumeRecord from '@/components/content/ConsumeRecord/ConsumeRecord'
+import ConsumeRecordCard from '@/components/content/ConsumeRecord/ConsumeRecordCard'
 import ConsumeRecordNewCard from '@/components/content/ConsumeRecord/ConsumeRecordNewCard'
 import ConsumeRecordNewProduct from '@/components/content/ConsumeRecord/ConsumeRecordNewProduct'
 import ConsumeRecordNewProject from '@/components/content/ConsumeRecord/ConsumeRecordNewProject'
@@ -338,20 +339,24 @@ export default new Router({
           path: 'consume-record',
           component: ConsumeRecord
         },
+        { // 消费记录办卡
+          path: 'consume-record-card',
+          component: ConsumeRecordCard
+        },
         { // 办卡
-          path: 'consume-record/new-card',
+          path: 'consume-record-card/new-card',
           component: ConsumeRecordNewCard
         },
         { // 买产品
-          path: 'consume-record/new-product',
+          path: 'consume-record-product/new-product',
           component: ConsumeRecordNewProduct
         },
         { // 买项目
-          path: 'consume-record/new-project',
+          path: 'consume-record-projetct/new-project',
           component: ConsumeRecordNewProject
         },
         { // 买活动
-          path: 'consume-record/new-activity',
+          path: 'consume-record-activity/new-activity',
           component: ConsumeRecordNewActivity
         },
         { // 修改密码

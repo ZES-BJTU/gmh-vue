@@ -1,0 +1,160 @@
+<template>
+  <div class="ConsumeRecordCard">
+    <el-form :inline="true" :model="consumeRecordCardSearch" ref="consumeRecordCardSearch" class="demo-form-inline search-form" 
+      @keyup.enter.native="searchConsumeCardRecord('search')">
+      <el-form-item>
+        <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
+        <el-input style="display:none;"></el-input>
+        <el-input v-model.trim="consumeRecordCardSearch.content" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="searchConsumeCardRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+      </el-form-item>
+    </el-form>
+    <div class="operate-box">
+      <router-link to="/consume-record-card/new-card">
+        <el-button type="primary" icon="el-icon-plus">办卡</el-button>
+      </router-link>
+    </div>
+    <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
+      <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
+      <el-table-column prop="tradeSerialNumber" label="流水号"></el-table-column>
+      <el-table-column prop="customerName" label="姓名"></el-table-column>
+      <el-table-column prop="customerMobile" label="手机"></el-table-column>
+      <el-table-column prop="consumeMoney" label="消费金额"></el-table-column>
+      <el-table-column prop="paymentWayName" label="支付方式"></el-table-column>
+      <el-table-column prop="isModified" label="是否修改"></el-table-column>
+      <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
+      <el-table-column prop="cardName" label="卡名">
+        <template slot-scope="scope">
+            {{scope.row.consumeRecordDetailUnion[0].cardName}}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="220px;" fixed="right">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleCardGiftDetail(scope.$index, scope.row)">详情</el-button>
+          <el-button size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination layout="total, prev, pager, next" 
+      :page-size="pageSize" :total="totalCount"
+       @current-change="chagePage"></el-pagination>
+    <el-dialog title="办卡赠品详情" :visible.sync="cardGiftContentVisible" :show-close="false"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-table :data="cardGiftContentDetail" size="mini" v-loading="loading" style="width: 100%">
+        <el-table-column prop="type" label="类型"></el-table-column>
+        <el-table-column prop="name" label="内容/金额"></el-table-column>
+        <el-table-column prop="amount" label="个数"></el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="onClose('')">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ConsumeRecordCard",
+  data() {
+    return {
+      consumeRecordCardSearch: {
+        content: "",
+        oldContent: "",//储存最近一次搜索的内容
+        pageNum: 1,
+        pageSize: 10,
+        consumeType: 1,
+      },
+      loading: false,
+      cardGiftContentDetail: [],
+      cardGiftContentVisible: false
+    };
+  },
+  computed: {
+    pageNum: function(){
+      return this.$store.state.consumeRecord.pageNum;
+    },
+    pageSize: function(){
+      return this.$store.state.consumeRecord.pageSize;
+    },
+    totalCount: function(){
+      return this.$store.state.consumeRecord.totalCount;
+    },
+    totalPages: function(){
+      return this.$store.state.consumeRecord.totalPages;
+    },
+    tableData: function(){
+      return this.$store.state.consumeRecord.consumeRecords;
+    }
+  },
+  methods: {
+    searchConsumeCardRecord(type) {
+      this.loading = true;
+      if(type === 'search'){
+        this.consumeRecordCardSearch.oldContent = this.consumeRecordCardSearch.content;
+      }
+      this.consumeRecordCardSearch.type = type;
+      this.$store.dispatch("loadConsumeRecord", this.consumeRecordCardSearch).then( res => {
+        this.loading = false;
+        this.$message.success('查询成功');
+      }).catch( err => {
+        console.log(err);
+      });
+    },
+    chagePage(val){
+      this.consumeRecordCardSearch.pageNum = val;
+      this.searchConsumeCardRecord('page');
+    },
+    handleRemark(row, column){
+      if(!row.remark || row.remark === ''){
+        return '暂无备注';
+      }else{
+        return row.remark;
+      }
+    },
+    handleEdit(index, row){
+      // this.$router.push({ path: '/appointment-detail/' + row.id});
+    },
+    handleCardGiftDetail(index, row){// 显示卡礼物详情
+      this.cardGiftContentDetail = [];
+      let consumeRecord = this.$store.getters.getConsumeRecordById(row.id);
+      for(let content of consumeRecord.consumeRecordGiftUnion){
+        if(content.productId){
+          this.cardGiftContentDetail.push({
+            'type': '产品',
+            'name': content.productName,
+            'amount': content.productAmount,
+          })
+        }else if(content.projectId){
+          this.cardGiftContentDetail.push({
+            'type': '项目',
+            'name': content.projectName,
+            'amount': content.projectAmount,
+          })
+        }else{
+          this.cardGiftContentDetail.push({
+            'type': '代金券',
+            'name': content.couponMoney,
+            'amount': content.couponAmount,
+          })
+        }
+      }
+      this.cardGiftContentVisible = true;
+    },
+    onClose(formName){
+      this.cardGiftContentVisible = false;
+      this.cardGiftContentDetail = [];
+    }
+  },
+  beforeMount: function () {
+    this.searchConsumeCardRecord('search');
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+
+</style>

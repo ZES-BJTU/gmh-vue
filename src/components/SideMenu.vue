@@ -45,9 +45,9 @@
 								<span>消费记录</span>
 							</template>
 
-							<router-link to="/consume-record">
+							<router-link to="/consume-record-card">
 								<el-menu-item index="7-1">
-									<span slot="title">消费记录</span>
+									<span slot="title">办卡消费记录</span>
 								</el-menu-item>
 							</router-link>
 
@@ -206,11 +206,11 @@ export default {
       } else if (route.match("appointment")) {
         // 店长|前台-预约
         return "6";
-      } else if (route.match("consume-change")) {
+      } else if (route.match("consume-record-change")) {
 				// 店长|前台-消费记录变动
         return "7-2"; //调整顺序是为了优先匹配consume-change
-      } else if (route.match("consume")) {
-        // 店长|前台-消费记录
+      } else if (route.match("consume-record-card")) {
+        // 店长|前台-办卡消费记录
         return "7-1";
       } else if (route.match("customer-card-change")) {
         // 店长|前台-客户会员卡信息变动

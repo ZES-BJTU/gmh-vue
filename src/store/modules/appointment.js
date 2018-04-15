@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   appointments: [],
+  appointmentsOperator: []
 }
 
 // getters
@@ -38,6 +39,21 @@ const actions = {
       })
     });
   },
+  loadAppointmentOperator({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/appointment/operatorTimeTableList' , {
+        'operatorId': info.operatorId,
+      }).then( res => {
+        commit('loadAppointmentOperator', {
+          appointmentsOperator: res.data
+        });
+        resolve(res);
+      })
+      .catch( err => {
+        reject(err);
+      })
+    });
+  },
   addAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/appointment/create', info).then( res => {
@@ -58,7 +74,7 @@ const actions = {
   },
   finishAppointment({commit}, info) {
     return new Promise((resolve, reject) => {
-      httpServer.put('/appointment/finish/' + info.appointmentId,info).then( res => {
+      httpServer.put('/appointment/finish/' + info,info).then( res => {
         resolve(res);
       }).catch( error => {
         reject(error);
@@ -93,6 +109,9 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.appointments = payload.appointments;
+  },
+  loadAppointmentOperator(state, payload){
+    state.appointmentsOperator = payload.appointmentsOperator;
   },
 }
 

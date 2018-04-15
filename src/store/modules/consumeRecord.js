@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   consumeRecords: [],
+  consumeRecordPrint: ''
 }
 
 // getters
@@ -36,6 +37,18 @@ const actions = {
       })
       .catch( err => {
         reject(err);
+      })
+    });
+  },
+  printConsumeRecord({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/consume/print', info).then( res => {
+        commit('printConsumeRecord', {
+          consumeRecordPrint: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
       })
     });
   },
@@ -76,6 +89,9 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.consumeRecords = payload.consumeRecords;
+  },
+  printConsumeRecord(state, payload){
+    state.consumeRecordPrint = payload.consumeRecordPrint;
   },
 }
 

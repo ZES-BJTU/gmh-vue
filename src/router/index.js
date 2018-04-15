@@ -66,14 +66,21 @@ import Appointment from '@/components/content/Appointment/Appointment'
 import AppointmentNew from '@/components/content/Appointment/AppointmentNew'
 import AppointmentDetail from '@/components/content/Appointment/AppointmentDetail'
 import AppointmentFinish from '@/components/content/Appointment/AppointmentFinish'
-import ConsumeRecord from '@/components/content/ConsumeRecord/ConsumeRecord'
 import ConsumeRecordCard from '@/components/content/ConsumeRecord/ConsumeRecordCard'
 import ConsumeRecordNewCard from '@/components/content/ConsumeRecord/ConsumeRecordNewCard'
+import ConsumeRecordProduct from '@/components/content/ConsumeRecord/ConsumeRecordProduct'
 import ConsumeRecordNewProduct from '@/components/content/ConsumeRecord/ConsumeRecordNewProduct'
+import ConsumeRecordProject from '@/components/content/ConsumeRecord/ConsumeRecordProject'
 import ConsumeRecordNewProject from '@/components/content/ConsumeRecord/ConsumeRecordNewProject'
+import ConsumeRecordActivity from '@/components/content/ConsumeRecord/ConsumeRecordActivity'
 import ConsumeRecordNewActivity from '@/components/content/ConsumeRecord/ConsumeRecordNewActivity'
 import Schedule from '@/components/Schedule'
+import PrintCardRecord from '@/components/PrintCardRecord'
+import PrintProductRecord from '@/components/PrintProductRecord'
+import PrintProjectRecord from '@/components/PrintProjectRecord'
+import PrintActivityRecord from '@/components/PrintActivityRecord'
 import ModPWD from '@/components/content/ModPWD'
+import { print } from 'util';
 
 Vue.use(Router)
 
@@ -335,10 +342,6 @@ export default new Router({
           path: 'appointment-finish/:id',
           component: AppointmentFinish
         },
-        { // 消费记录
-          path: 'consume-record',
-          component: ConsumeRecord
-        },
         { // 消费记录办卡
           path: 'consume-record-card',
           component: ConsumeRecordCard
@@ -347,13 +350,25 @@ export default new Router({
           path: 'consume-record-card/new-card',
           component: ConsumeRecordNewCard
         },
+        { // 消费记录产品
+          path: 'consume-record-product',
+          component: ConsumeRecordProduct
+        },
         { // 买产品
           path: 'consume-record-product/new-product',
           component: ConsumeRecordNewProduct
         },
+        { // 消费记录项目
+          path: 'consume-record-project',
+          component: ConsumeRecordProject
+        },
         { // 买项目
-          path: 'consume-record-projetct/new-project',
+          path: 'consume-record-project/new-project',
           component: ConsumeRecordNewProject
+        },
+        { // 消费记活动
+          path: 'consume-record-activity',
+          component: ConsumeRecordActivity
         },
         { // 买活动
           path: 'consume-record-activity/new-activity',
@@ -381,6 +396,22 @@ export default new Router({
       name: 'Schedule',
       component: Schedule,
       meta: { requiresSignin: true }
+    },
+    { // 办卡记录打印
+      path: '/print-card-record',
+      component: PrintCardRecord
+    },
+    { // 买产品记录打印
+      path: '/print-product-record',
+      component: PrintProductRecord
+    },
+    { // 做项目记录打印
+      path: '/print-project-record',
+      component: PrintProjectRecord
+    },
+    { // 参加活动记录打印
+      path: '/print-activity-record',
+      component: PrintActivityRecord
     },
   ]
 })

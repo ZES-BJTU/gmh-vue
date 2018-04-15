@@ -1,7 +1,7 @@
 <template>
   <div class="ConsumeRecordNewProject">
     <el-row class="page-title-row">
-      <router-link to="/consume-record" class="page-title-back">
+      <router-link to="/consume-record-project" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
       <span class="page-title">做项目</span>
     </el-row>
@@ -283,7 +283,7 @@ export default {
                   this.$message.success("添加成功");
                   setTimeout(() => {
                     this.loading = false;
-                    this.$router.push({ path: "/consume-record" });
+                    this.$router.push({ path: "/consume-record-project" });
                   }, 1000);
                 }
               })

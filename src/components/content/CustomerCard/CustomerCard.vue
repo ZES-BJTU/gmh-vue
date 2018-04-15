@@ -193,7 +193,7 @@ export default {
     handleCardContentDetail(index, row){// 显示客户会员卡详情
       let card = this.$store.getters.getCustomerCardById(row.id);
       for(let content of card.customerMemberCardContent){
-        if(content.relatedName != null){
+        if(content.relatedName){
           this.cardContentDetail.push({
             'type': '项目',
             'name': content.relatedName,

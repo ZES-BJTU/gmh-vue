@@ -1,19 +1,19 @@
 <template>
-  <div class="ConsumeRecordCard">
-    <el-form :inline="true" :model="consumeRecordCardSearch" ref="consumeRecordCardSearch" class="demo-form-inline search-form" 
-      @keyup.enter.native="searchConsumeCardRecord('search')">
+  <div class="ConsumeRecordProduct">
+    <el-form :inline="true" :model="consumeRecordProductSearch" ref="consumeRecordProductSearch" class="demo-form-inline search-form" 
+      @keyup.enter.native="searchConsumeProductRecord('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="consumeRecordCardSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="consumeRecordProductSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchConsumeCardRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchConsumeProductRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="operate-box">
-      <router-link to="/consume-record-card/new-card">
-        <el-button type="primary" icon="el-icon-plus">办卡</el-button>
+      <router-link to="/consume-record-product/new-product">
+        <el-button type="primary" icon="el-icon-plus">买产品</el-button>
       </router-link>
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
@@ -25,29 +25,21 @@
       <el-table-column prop="paymentWayName" label="支付方式"></el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column prop="cardName" label="卡名">
-        <template slot-scope="scope">
-            {{scope.row.consumeRecordDetailUnion[0].cardName}}
-        </template>
-      </el-table-column>
       <el-table-column label="操作" width="220px;" fixed="right">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleCardGiftDetail(scope.$index, scope.row)">详情</el-button>
+          <el-button size="mini" @click="handleProductDetail(scope.$index, scope.row)">详情</el-button>
           <!-- <el-button size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
-          <el-button size="mini"
-            @click="handlePrint(scope.$index, scope.row)">打印</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
-    <el-dialog title="办卡赠品详情" :visible.sync="cardGiftContentVisible" :show-close="false"
+    <el-dialog title="产品详情" :visible.sync="productContentVisible" :show-close="false"
       :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-table :data="cardGiftContentDetail" size="mini" v-loading="loading" style="width: 100%">
-        <el-table-column prop="type" label="类型"></el-table-column>
-        <el-table-column prop="name" label="内容/金额"></el-table-column>
+      <el-table :data="productContentDetail" size="mini" v-loading="loading" style="width: 100%">
+        <el-table-column prop="productName" label="产品名称"></el-table-column>
         <el-table-column prop="amount" label="个数"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
@@ -59,19 +51,19 @@
 
 <script>
 export default {
-  name: "ConsumeRecordCard",
+  name: "ConsumeRecordProduct",
   data() {
     return {
-      consumeRecordCardSearch: {
+      consumeRecordProductSearch: {
         content: "",
         oldContent: "",//储存最近一次搜索的内容
         pageNum: 1,
         pageSize: 10,
-        consumeType: 1,
+        consumeType: 2,
       },
       loading: false,
-      cardGiftContentDetail: [],
-      cardGiftContentVisible: false
+      productContentDetail: [],
+      productContentVisible: false
     };
   },
   computed: {
@@ -92,13 +84,13 @@ export default {
     }
   },
   methods: {
-    searchConsumeCardRecord(type) {
+    searchConsumeProductRecord(type) {
       this.loading = true;
       if(type === 'search'){
-        this.consumeRecordCardSearch.oldContent = this.consumeRecordCardSearch.content;
+        this.consumeRecordProductSearch.oldContent = this.consumeRecordProductSearch.content;
       }
-      this.consumeRecordCardSearch.type = type;
-      this.$store.dispatch("loadConsumeRecord", this.consumeRecordCardSearch).then( res => {
+      this.consumeRecordProductSearch.type = type;
+      this.$store.dispatch("loadConsumeRecord", this.consumeRecordProductSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -106,8 +98,8 @@ export default {
       });
     },
     chagePage(val){
-      this.consumeRecordCardSearch.pageNum = val;
-      this.searchConsumeCardRecord('page');
+      this.consumeRecordProductSearch.pageNum = val;
+      this.searchConsumeProductRecord('page');
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){
@@ -126,57 +118,24 @@ export default {
     handleEdit(index, row){
       // this.$router.push({ path: '/appointment-detail/' + row.id});
     },
-    handlePrint(index, row){
-      this.$message({
-        message: '打印数据加载中',
-        iconClass: 'el-icon-loading',
-        duration: 0
-      });
-
-      this.$store.dispatch("printConsumeRecord", {
-        'consumeRecordId': row.id
-      }).then( res => {
-        console.log(this.$store.state.consumeRecord.consumeRecordPrint);
-        this.$message.closeAll();
-        this.$router.push({ path: '/print-card-record'});
-      }).catch( err => {
-        console.log(err);
-      });
-
-    },
-    handleCardGiftDetail(index, row){// 显示卡礼物详情
-      this.cardGiftContentDetail = [];
+    handleProductDetail(index, row){// 显示产品详情
+      this.productContentDetail = [];
       let consumeRecord = this.$store.getters.getConsumeRecordById(row.id);
-      for(let content of consumeRecord.consumeRecordGiftUnion){
-        if(content.productId){
-          this.cardGiftContentDetail.push({
-            'type': '产品',
-            'name': content.productName,
-            'amount': content.productAmount,
-          })
-        }else if(content.projectId){
-          this.cardGiftContentDetail.push({
-            'type': '项目',
-            'name': content.projectName,
-            'amount': content.projectAmount,
-          })
-        }else{
-          this.cardGiftContentDetail.push({
-            'type': '代金券',
-            'name': content.couponMoney,
-            'amount': content.couponAmount,
-          })
-        }
+      for(let content of consumeRecord.consumeRecordDetailUnion){
+        this.productContentDetail.push({
+          'productName': content.productName,
+          'amount': content.amount,
+        })
       }
-      this.cardGiftContentVisible = true;
+      this.productContentVisible = true;
     },
     onClose(formName){
-      this.cardGiftContentVisible = false;
-      this.cardGiftContentDetail = [];
+      this.productContentVisible = false;
+      this.productContentDetail = [];
     }
   },
   beforeMount: function () {
-    this.searchConsumeCardRecord('search');
+    this.searchConsumeProductRecord('search');
   }
 };
 </script>

@@ -129,41 +129,7 @@ export default {
       return endTimes;
     },
     handleFinish(index, row){
-      const h = this.$createElement;
-      this.$msgbox({
-        title: '提示',
-        message: h('p', null, [
-          h('span', null, '是否完成预约？')
-        ]),
-        showCancelButton: true,
-        confirmButtonText: '是',
-        cancelButtonText: '否',
-        type: 'success',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true;
-            instance.confirmButtonText = '完成中...';
-            this.$store.dispatch("finishAppointment", {
-              'appointmentId': row.id
-            }).then( res => {
-              done();
-              instance.confirmButtonLoading = false;
-              this.searchAppointment('search');
-            }).catch( err => {
-              done();
-              instance.confirmButtonLoading = false;
-              console.log(err);
-            });
-          } else {
-            done();
-          }
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消操作'
-        });
-      });
+      this.$router.push({ path: '/appointment-finish/' + row.id});
     },
     handleEdit(index, row){
       this.$router.push({ path: '/appointment-detail/' + row.id});

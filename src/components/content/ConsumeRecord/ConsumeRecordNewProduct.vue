@@ -1,7 +1,7 @@
 <template>
   <div class="ConsumeRecordNewProduct">
     <el-row class="page-title-row">
-      <router-link to="/consume-record" class="page-title-back">
+      <router-link to="/consume-record-product" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
       <span class="page-title">买产品</span>
     </el-row>

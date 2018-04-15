@@ -124,15 +124,15 @@ export default {
       });
     },
     handleAddActivityContent(payload){
-      let type, name, project, customerCard, product;
+      let type, name, project, memberCard, product;
       if(payload.type === 1){
         type = '项目';
         project = this.$store.getters.getProjectFromAllById(payload.relatedId);
         name = project.name;
       }else if(payload.type === 2){
         type = '会员卡';
-        customerCard = this.$store.getters.getCustomerCardFromAllById(payload.relatedId);
-        name = customerCard.name;
+        memberCard = this.$store.getters.getMemberCardFromAllById(payload.relatedId);
+        name = memberCard.name;
       }else if(payload.type === 3){
         type = '产品';
         product = this.$store.getters.getProductFromAllById(payload.relatedId);

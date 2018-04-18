@@ -52,6 +52,7 @@ import MemberCardNew from '@/components/content/MemberCard/MemberCardNew'
 import MemberCardDetail from '@/components/content/MemberCard/MemberCardDetail'
 import CustomerCard from '@/components/content/CustomerCard/CustomerCard'
 import CustomerCardCharge from '@/components/content/CustomerCard/CustomerCardCharge'
+import CustomerCardChangeTime from '@/components/content/CustomerCard/CustomerCardChangeTime'
 import CustomerCardBuy from '@/components/content/CustomerCard/CustomerCardBuy'
 import CustomerCardReturn from '@/components/content/CustomerCard/CustomerCardReturn'
 import CustomerCardTurn from '@/components/content/CustomerCard/CustomerCardTurn'
@@ -289,6 +290,10 @@ export default new Router({
         { // 客户会员卡充值
           path: 'customer-card-charge/:id',
           component: CustomerCardCharge
+        },
+        { // 客户会员卡改期
+          path: 'customer-card-change-time/:id',
+          component: CustomerCardChangeTime
         },
         { // 客户会员卡换疗程
           path: 'customer-card-buy/:id',

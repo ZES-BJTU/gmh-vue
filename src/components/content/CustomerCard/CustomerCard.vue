@@ -16,21 +16,24 @@
       <el-table-column prop="memberCardName" label="卡名"></el-table-column>
       <el-table-column prop="remainingMoney" label="余额" :formatter="handleRemainMoney"></el-table-column>
       <el-table-column prop="isValid" label="是否有效"></el-table-column>
+      <el-table-column prop="validDate" label="有效期至" :formatter="handleValidDate"></el-table-column>
       <el-table-column prop="isReturned" label="是否退卡" :formatter="handleIsReturned"></el-table-column>
       <el-table-column prop="returnedReason" label="退卡原因" :formatter="handleReturnedReason"></el-table-column>
-      <el-table-column prop="returnedMoney" label="退卡金额" :formatter="handlReturnedMoney"></el-table-column>
-      <el-table-column prop="projectDiscount" label="项目折扣" :formatter="handlProjectDiscount"></el-table-column>
-      <el-table-column prop="productDiscount" label="产品折扣" :formatter="handlProductDiscount"></el-table-column>
-      <el-table-column prop="isTurned" label="是否换卡" :formatter="handlIsTurned"></el-table-column>
-      <el-table-column prop="turnedReason" label="换卡原因" :formatter="handlTurnedReason"></el-table-column>
-      <el-table-column prop="turnedMoney" label="补/退金额" :formatter="handlTurnedMoney"></el-table-column>
+      <el-table-column prop="returnedMoney" label="退卡金额" :formatter="handleReturnedMoney"></el-table-column>
+      <el-table-column prop="projectDiscount" label="项目折扣" :formatter="handleProjectDiscount"></el-table-column>
+      <el-table-column prop="productDiscount" label="产品折扣" :formatter="handleProductDiscount"></el-table-column>
+      <el-table-column prop="isTurned" label="是否换卡" :formatter="handleIsTurned"></el-table-column>
+      <el-table-column prop="turnedReason" label="换卡原因" :formatter="handleTurnedReason"></el-table-column>
+      <el-table-column prop="turnedMoney" label="补/退金额" :formatter="handleTurnedMoney"></el-table-column>
       <el-table-column prop="uniqueIdentifier"  width="150" label="流水号"></el-table-column>
-      <el-table-column label="操作"  width="450" fixed="right">
+      <el-table-column label="操作"  width="530" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini"
             @click="handleCardContentDetail(scope.$index, scope.row)">详情</el-button>
           <el-button size="mini" v-if="scope.row.isValid === '是'"
             @click="handleCharge(scope.$index, scope.row)">充值</el-button>
+          <el-button size="mini" v-if="scope.row.isValid === '是'"
+            @click="handleChangeTime(scope.$index, scope.row)">改期</el-button>
           <el-button size="mini" v-if="scope.row.isValid === '是'"
             @click="handleBuy(scope.$index, scope.row)">换疗程</el-button>
           <el-button size="mini" v-if="scope.row.isValid === '是'"
@@ -125,6 +128,9 @@ export default {
         return row.remainingTimes + '次';
       }
     },
+    handleValidDate(row,column){
+      return this.toDatetimeDay(row.validDate);
+    },
     handleIsReturned(row, column){
       if(!row.isReturned || row.isReturned === ''){
         return '否';
@@ -139,50 +145,45 @@ export default {
         return row.returnedReason;
       }
     },
-    handlReturnedMoney(row, column){
+    handleReturnedMoney(row, column){
       if(!row.returnedMoney || row.returnedMoney === ''){
         return '暂无';
       }else{
         return '￥' + row.returnedMoney;
       }
     },
-    handlProjectDiscount(row, column){
-      if(!row.projectDiscount || row.projectDiscount === ''){
-        return '暂无';
-      }else{
-        return row.projectDiscount;
-      }
-    },
-    handlProductDiscount(row, column){
-      if(!row.productDiscount || row.productDiscount === ''){
-        return '暂无';
-      }else{
-        return row.productDiscount;
-      }
-    },
-    handlIsTurned(row, column){
+    handleIsTurned(row, column){
       if(!row.isTurned || row.isTurned === ''){
         return '暂无';
       }else{
         return row.isTurned;
       }
     },
-    handlTurnedReason(row, column){
+    handleTurnedReason(row, column){
       if(!row.turnedReason || row.turnedReason === ''){
         return '暂无';
       }else{
         return row.turnedReason;
       }
     },
-    handlTurnedMoney(row, column){
+    handleTurnedMoney(row, column){
       if(!row.turnedMoney || row.turnedMoney === ''){
         return '暂无';
       }else{
         return '￥' + row.turnedMoney;
       }
     },
+    handleProjectDiscount(row, column){
+      return row.projectDiscount*100;
+    },
+    handleProductDiscount(row, column){
+      return row.productDiscount*100;
+    },
     handleCharge(index, row){
       this.$router.push({ path: '/customer-card-charge/' + row.id});
+    },
+    handleChangeTime(index, row){
+      this.$router.push({ path: '/customer-card-change-time/' + row.id});
     },
     handleBuy(index, row){
       this.$router.push({ path: '/customer-card-buy/' + row.id});

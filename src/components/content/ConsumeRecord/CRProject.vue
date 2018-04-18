@@ -5,7 +5,7 @@
         <el-form :model="projectParams" ref="projectParams" :rules="rules">
           <el-form-item prop="projectId">
             <el-select v-model.number="projectParams.projectId" filterable 
-              @change="handleProjectChange" placeholder="请输入项目">
+              placeholder="请输入项目">
               <el-option v-for="project in projects" :key="project.id" :label="project.code+'-'+project.name" :value="project.id">
               </el-option>
             </el-select>
@@ -65,7 +65,7 @@ export default {
       return this.$store.state.project.projectsAll;
     },
     employees: function(){
-      return this.$store.state.employee.employeesByTopType;
+      return this.$store.state.employee.employeesAll;
     }
   },
   methods: {
@@ -79,13 +79,6 @@ export default {
           return false;
         }
       });
-    },
-    handleProjectChange(val){
-      let project = this.$store.getters.getProjectFromAllById(val);
-
-      let topType = project.topTypeDesc;
-
-      console.log(topType);
     },
     onClose(formName){
       this.$emit('closeDialog', false);

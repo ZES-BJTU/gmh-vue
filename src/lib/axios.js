@@ -56,11 +56,11 @@ Axios.interceptors.response.use(
     // console.log(res);
     switch( res.status ){
       case 201:
-        Message({
-          showClose: true,
-          message: '新建成功',
-          type: "success"
-        });
+        // Message({
+        //   showClose: true,
+        //   message: '新建成功',
+        //   type: "success"
+        // });
         break;
       case 204:
         // Message({

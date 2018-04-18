@@ -24,8 +24,8 @@
       <el-table-column prop="projectName" label="美容项目名称" :formatter="handleProject"></el-table-column>
       <el-table-column prop="times" label="次数" :formatter="handleTimes"></el-table-column>
       <el-table-column prop="amount" label="储值" :formatter="handleAmount"></el-table-column>
-      <el-table-column prop="projectDiscount" label="项目折扣"></el-table-column>
-      <el-table-column prop="productDiscount" label="产品折扣"></el-table-column>
+      <el-table-column prop="projectDiscount" label="项目折扣" :formatter="handleProjectDiscount"></el-table-column>
+      <el-table-column prop="productDiscount" label="产品折扣" :formatter="handleProductDiscount"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
       <el-table-column label="操作"  width="250" fixed="right">
@@ -116,6 +116,12 @@ export default {
       }else{
         return '￥' + row.amount;
       }
+    },
+    handleProjectDiscount(row, column){
+      return row.projectDiscount*100;
+    },
+    handleProductDiscount(row, column){
+      return row.productDiscount*100;
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){

@@ -35,15 +35,15 @@
           <el-form-item label="备注">
             <el-input v-model.trim="newActivity.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
-          <el-form-item label="顾问">
-            <el-select v-model.number="newActivity.consultantId" placeholder="请输入顾问名称" filterable>
-              <el-option v-for="consultant in consultants" :key="consultant.id" :label="consultant.name" :value="consultant.id">
+          <el-form-item label="销售员">
+            <el-select v-model="newActivity.employeeIds" multiple  placeholder="请输入销售员名称" filterable>
+              <el-option v-for="employee in employees" :key="employee.id" :label="employee.name" :value="employee.id">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="销售员">
-            <el-select v-model.number="newActivity.salesManId" placeholder="请输入销售员名称" filterable>
-              <el-option v-for="salesMan in salesMans" :key="salesMan.id" :label="salesMan.name" :value="salesMan.id">
+          <el-form-item label="绩效">
+            <el-select v-model="newActivity.percents" multiple  placeholder="请输入绩效" filterable>
+              <el-option v-for="per in percentage" :key="per.value" :label="per.name" :value="per.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -68,8 +68,8 @@ export default {
         paymentWay: 3,// 现金
         activityId: '',
         remark: '',
-        consultantId: '',
-        salesManId: '',
+        employeeIds: [],
+        percents: [],
       },
       rules: {
         customerMobile: [
@@ -85,6 +85,88 @@ export default {
           { type: 'number', message: "活动必须是数字", trigger: "blur" }
         ],
       },
+      percentage: [
+        {
+          name: 5,
+          value: 5
+        },
+        {
+          name: 10,
+          value: 10
+        },
+        {
+          name: 15,
+          value: 15
+        },
+        {
+          name: 20,
+          value: 20
+        },
+        {
+          name: 25,
+          value: 25
+        },
+        {
+          name: 30,
+          value: 30
+        },
+        {
+          name: 35,
+          value: 35
+        },
+        {
+          name: 40,
+          value: 40
+        },
+        {
+          name: 45,
+          value: 45
+        },
+        {
+          name: 50,
+          value: 50
+        },
+        {
+          name: 55,
+          value: 55
+        },
+        {
+          name: 60,
+          value: 60
+        },
+        {
+          name: 65,
+          value: 65
+        },
+        {
+          name: 70,
+          value: 70
+        },
+        {
+          name: 75,
+          value: 75
+        },
+        {
+          name: 80,
+          value: 80
+        },
+        {
+          name: 85,
+          value: 85
+        },
+        {
+          name: 90,
+          value: 90
+        },
+        {
+          name: 95,
+          value: 95
+        },
+        {
+          name: 100,
+          value: 100
+        },
+      ],
       loading: false,
       enterFlag: true, //true代表允许回车，false代表不允许回车，避免重复提交
       activityContents: []
@@ -94,35 +176,36 @@ export default {
     activities: function(){
       return this.$store.state.activity.activitiesAll;
     },
-    consultants: function(){
-      return this.$store.state.employee.consultants;
-    },
-    salesMans: function(){
-      return this.$store.state.employee.salesMans;
+    employees: function(){
+      return this.$store.state.employee.employeesAll;
     },
   },
   methods: {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.loading = true;
-          this.enterFlag = false;
-          this.$store
-            .dispatch("addConsumeRecord", this.handleData(this.newActivity))
-            .then(res => {
-              if (res.code === 0) {
-                this.$message.success("添加成功");
-                setTimeout(() => {
-                  this.loading = false;
-                  this.$router.push({ path: "/consume-record-activity" });
-                }, 1000);
-              }
-            })
-            .catch(err => {
-              this.loading = false;
-              this.enterFlag = true;
-              console.log(err);
-            });
+          if(this.newActivity.employeeIds.length != this.newActivity.employeeIds.length){
+            this.$message.error('输入员工绩效比例有误');
+          }else{
+            this.loading = true;
+            this.enterFlag = false;
+            this.$store
+              .dispatch("addConsumeRecord", this.handleData(this.newActivity))
+              .then(res => {
+                if (res.code === 0) {
+                  this.$message.success("添加成功");
+                  setTimeout(() => {
+                    this.loading = false;
+                    this.$router.push({ path: "/consume-record-activity" });
+                  }, 1000);
+                }
+              })
+              .catch(err => {
+                this.loading = false;
+                this.enterFlag = true;
+                console.log(err);
+              });
+          }
         } else {
           return false;
         }
@@ -163,6 +246,8 @@ export default {
           paymentWay: '',
           remark: '',
         },
+        employeeIds: [],
+        percents: [],
       };
 
       dataChange.consumeRecordPo.customerMobile = data.customerMobile;
@@ -171,6 +256,9 @@ export default {
       dataChange.consumeRecordPo.activityId = data.activityId;
       dataChange.consumeRecordPo.paymentWay = data.paymentWay;
       dataChange.consumeRecordPo.remark = data.remark;
+
+      dataChange.employeeIds = data.employeeIds;
+      dataChange.percents = data.percents;
       
       return dataChange;
     },
@@ -181,15 +269,8 @@ export default {
         console.log(err);
       });
     },
-    loadConsultants(){
-      this.$store.dispatch("loadEmployeeByTopType",4).then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
-    loadSalesMans(){
-      this.$store.dispatch("loadEmployeeByWorkType",3).then( res => {
+    loadEmployeeAll(){
+      this.$store.dispatch("loadEmployeeAll").then( res => {
         this.loading = false;
       }).catch( err => {
         console.log(err);
@@ -198,8 +279,7 @@ export default {
   },
   beforeMount: function () {
     this.loadActivityAll();
-    this.loadConsultants();
-    this.loadSalesMans();
+    this.loadEmployeeAll();
   },
 };
 </script>

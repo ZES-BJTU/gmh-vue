@@ -104,6 +104,15 @@ const actions = {
       })
     });
   },
+  chargeTimeCustomerCard({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/customerMemberCard/changeValidDate', info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
   buyCustomerCard({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/customerMemberCard/buyProject', info).then( res => {

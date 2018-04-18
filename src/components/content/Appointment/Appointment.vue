@@ -22,7 +22,7 @@
       <el-table-column prop="customerMobile" label="手机"></el-table-column>
       <el-table-column prop="customerGender" label="性别"></el-table-column>
       <el-table-column prop="isLine" label="点排"></el-table-column>
-      <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
+      <el-table-column prop="remarks" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column prop="projects" label="项目">
         <template slot-scope="scope">
             <div v-for="appointmentProject in scope.row.appointmentProjects">
@@ -108,10 +108,10 @@ export default {
       this.searchAppointment('page');
     },
     handleRemark(row, column){
-      if(!row.remark || row.remark === ''){
+      if(!row.remarks || row.remarks === ''){
         return '暂无备注';
       }else{
-        return row.remark;
+        return row.remarks;
       }
     },
     handleBeginTime(row, column){

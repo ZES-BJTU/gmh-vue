@@ -65,7 +65,7 @@
           <el-form-item label="储值(￥)" v-if="card.id != ''">
             <el-input v-model="card.remainingMoney" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="项目折扣(0-100)" v-if="card.id != ''">
+          <el-form-item label="项目折扣(1-100)" v-if="card.id != ''">
             <el-input v-model="card.projectDiscount" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="卡流水号" v-if="card.id != ''">
@@ -106,15 +106,15 @@
               <el-table-column prop="number" label="个数"></el-table-column>
             </el-table>
           </el-form-item>
-          <el-form-item label="顾问">
-            <el-select v-model.number="newProject.consultantId" placeholder="请输入顾问名称" filterable>
-              <el-option v-for="consultant in consultants" :key="consultant.id" :label="consultant.name" :value="consultant.id">
+          <el-form-item label="销售员">
+            <el-select v-model="newProject.employeeIds" multiple  placeholder="请输入销售员名称" filterable>
+              <el-option v-for="employee in employees" :key="employee.id" :label="employee.name" :value="employee.id">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="销售员">
-            <el-select v-model.number="newProject.salesManId" placeholder="请输入销售员名称" filterable>
-              <el-option v-for="salesMan in salesMans" :key="salesMan.id" :label="salesMan.name" :value="salesMan.id">
+          <el-form-item label="绩效">
+            <el-select v-model="newProject.percents" multiple  placeholder="请输入绩效" filterable>
+              <el-option v-for="per in percentage" :key="per.value" :label="per.name" :value="per.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -165,8 +165,8 @@ export default {
         payWayContentId: '',
         couponAmount: 0,
         remark: '',
-        consultantId: '',
-        salesManId: '',
+        employeeIds: [],
+        percents: [],
         projects: []
       },
       rules: {
@@ -181,14 +181,6 @@ export default {
         paymentWay: [
           { required: true, message: "支付方式不能为空", trigger: "blur" },
           { type: 'number', message: "支付方式必须是数字", trigger: "blur" }
-        ],
-        consultantId: [
-          { required: true, message: "顾问不能为空", trigger: "blur" },
-          { type: 'number', message: "顾问必须是数字", trigger: "blur" }
-        ],
-        salesManId: [
-          { required: true, message: "销售员为空", trigger: "blur" },
-          { type: 'number', message: "销售员必须是数字", trigger: "blur" }
         ],
       },
       paymentWays: [
@@ -215,6 +207,88 @@ export default {
         {
           name: '赠送',
           value: 4
+        },
+      ],
+      percentage: [
+        {
+          name: 5,
+          value: 5
+        },
+        {
+          name: 10,
+          value: 10
+        },
+        {
+          name: 15,
+          value: 15
+        },
+        {
+          name: 20,
+          value: 20
+        },
+        {
+          name: 25,
+          value: 25
+        },
+        {
+          name: 30,
+          value: 30
+        },
+        {
+          name: 35,
+          value: 35
+        },
+        {
+          name: 40,
+          value: 40
+        },
+        {
+          name: 45,
+          value: 45
+        },
+        {
+          name: 50,
+          value: 50
+        },
+        {
+          name: 55,
+          value: 55
+        },
+        {
+          name: 60,
+          value: 60
+        },
+        {
+          name: 65,
+          value: 65
+        },
+        {
+          name: 70,
+          value: 70
+        },
+        {
+          name: 75,
+          value: 75
+        },
+        {
+          name: 80,
+          value: 80
+        },
+        {
+          name: 85,
+          value: 85
+        },
+        {
+          name: 90,
+          value: 90
+        },
+        {
+          name: 95,
+          value: 95
+        },
+        {
+          name: 100,
+          value: 100
         },
       ],
       loading: false,
@@ -248,24 +322,9 @@ export default {
     };
   },
   computed: {
-    consultants: function(){
-      return this.$store.state.employee.consultants;
+    employees: function(){
+      return this.$store.state.employee.employeesAll;
     },
-    salesMans: function(){
-      return this.$store.state.employee.salesMans;
-    },
-  },
-  watch: {
-    projectsCopy: function(newVal,oldVal){
-      if(this.newProject.paymentWay === 3){
-        this.newProject.consumeMoney = this.getPriceByProjects(newVal);
-      }
-      if(this.newProject.paymentWay === 31){
-        if(cardCoupon.id != '' && cardCoupon.projectDiscount != 0){
-
-        }
-      }
-    }
   },
   methods: {
     onSubmit(formName) {
@@ -274,24 +333,28 @@ export default {
           if(this.newProject.projects.length == 0){
             this.$message.error("请添加项目!");
           }else{
-            this.loading = true;
-            this.enterFlag = false;
-            this.$store
-              .dispatch("addConsumeRecord", this.handleData(this.newProject))
-              .then(res => {
-                if (res.code === 0) {
-                  this.$message.success("添加成功");
-                  setTimeout(() => {
-                    this.loading = false;
-                    this.$router.push({ path: "/consume-record-project" });
-                  }, 1000);
-                }
-              })
-              .catch(err => {
-                this.loading = false;
-                this.enterFlag = true;
-                console.log(err);
-              });
+            if(this.newProject.employeeIds.length != this.newProject.employeeIds.length){
+              this.$message.error('输入员工绩效比例有误');
+            }else{
+              this.loading = true;
+              this.enterFlag = false;
+              this.$store
+                .dispatch("addConsumeRecord", this.handleData(this.newProject))
+                .then(res => {
+                  if (res.code === 0) {
+                    this.$message.success("添加成功");
+                    setTimeout(() => {
+                      this.loading = false;
+                      this.$router.push({ path: "/consume-record-project" });
+                    }, 1000);
+                  }
+                })
+                .catch(err => {
+                  this.loading = false;
+                  this.enterFlag = true;
+                  console.log(err);
+                });
+            }
           }
         } else {
           return false;
@@ -403,14 +466,14 @@ export default {
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.card.id = card.id
       this.card.remainingMoney = card.remainingMoney;
-      this.card.projectDiscount = card.projectDiscount;
+      this.card.projectDiscount = card.projectDiscount*100;
       this.card.uniqueIdentifier = card.uniqueIdentifier;
       this.cardContentDetail = card.customerMemberCardContent;
     },
     handleCardCouponSelect(val){// 切换会员卡
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.cardCoupon.id = card.id;
-      this.cardCoupon.projectDiscount = card.projectDiscount;
+      this.cardCoupon.projectDiscount = card.projectDiscount*100;
       this.cardCoupon.uniqueIdentifier = card.uniqueIdentifier;
       this.cardCouponContentDetail = card.customerMemberCardContent;
       this.newProject.payWayContentId = '';
@@ -446,6 +509,8 @@ export default {
           couponAmount: '',
           remark: '',
         },
+        employeeIds: [],
+        percents: [],
         consumeRecordDetails: [],
       };
 
@@ -458,41 +523,21 @@ export default {
       dataChange.consumeRecordPo.couponAmount = data.couponAmount;
       dataChange.consumeRecordPo.remark = data.remark;
 
+      dataChange.employeeIds = data.employeeIds;
+      dataChange.percents = data.percents;
+
       for(let project of data.projects){
         dataChange.consumeRecordDetails.push({
           'projectId': project.projectId,
           'amount': project.amount,
           'operatorId': project.operatorId,
-          'consultantId': data.consultantId,
-          'salesManId': data.salesManId,
         });
       }
-      console.log(dataChange);
+
       return dataChange;
-    },
-    getPriceByProjects(data){
-      let money = 0;
-      for(let project of data){
-        money += project.amount * project.unitPrice;
-      }
-      return money;
     },
     loadEmployeeAll(){
       this.$store.dispatch("loadEmployeeAll").then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
-    loadConsultants(){
-      this.$store.dispatch("loadEmployeeByTopType",4).then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
-    loadSalesMans(){
-      this.$store.dispatch("loadEmployeeByWorkType",3).then( res => {
         this.loading = false;
       }).catch( err => {
         console.log(err);
@@ -525,8 +570,6 @@ export default {
   },
   beforeMount: function () {
     this.loadEmployeeAll();
-    this.loadConsultants();
-    this.loadSalesMans();
     this.loadProjectAll();
   },
   components: {CRProject}

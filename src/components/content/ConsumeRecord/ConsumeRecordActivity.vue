@@ -89,6 +89,13 @@ export default {
       this.consumeRecordActivitySearch.pageNum = val;
       this.searchConsumeActivityRecord('page');
     },
+    handleModified(row, column){
+      if(row.isModified === 0){
+        return '否';
+      }else{
+        return '是';
+      }
+    },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){
         return '暂无备注';

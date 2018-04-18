@@ -8,7 +8,7 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="12" :md="8">
-        <el-form class="new-form" :model="newMemberCardForm" ref="newMemberCardForm" label-width="120px" 
+        <el-form class="new-form" :model="newMemberCardForm" ref="newMemberCardForm" label-width="130px" 
           :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newMemberCardForm')" v-loading="loading">
           <el-form-item label="名称" prop="name">
             <el-input v-model.trim="newMemberCardForm.name" :autofocus="true" placeholder="请输入名称"></el-input>
@@ -37,10 +37,10 @@
           <el-form-item label="储值卡总额" prop="amount" v-if="newMemberCardForm.type === 2 || newMemberCardForm.type === 3">
             <el-input v-model.number="newMemberCardForm.amount" placeholder="请输入总额"></el-input>
           </el-form-item>
-          <el-form-item label="项目折扣(0-100)" prop="projectDiscount">
+          <el-form-item label="项目折扣(1-100)" prop="projectDiscount">
             <el-input v-model.number="newMemberCardForm.projectDiscount" placeholder="请输入项目折扣"></el-input>
           </el-form-item>
-          <el-form-item label="产品折扣(0-100)" prop="productDiscount">
+          <el-form-item label="产品折扣(1-100)" prop="productDiscount">
             <el-input v-model.number="newMemberCardForm.productDiscount" placeholder="请输入产品折扣"></el-input>
           </el-form-item>
           <el-form-item label="备注">
@@ -68,8 +68,8 @@ export default {
         projectId: '',
         times: '',
         amount: '',
-        projectDiscount: '',
-        productDiscount: '',
+        projectDiscount: 100,
+        productDiscount: 100,
         remark: '',
       },
       rules: {
@@ -86,6 +86,14 @@ export default {
         type: [
           { required: true, message: "类别不能为空", trigger: "blur" },
           { type: 'number', message: "类别必须是数字", trigger: "blur" }
+        ],
+        projectDiscount: [
+          { required: true, message: "项目折扣不能为空", trigger: "blur" },
+          { type: 'number',min: 1, max: 100, message: "折扣必须是1-100之间的数字", trigger: "blur" },
+        ],
+        productDiscount: [
+          { required: true, message: "产品折扣不能为空", trigger: "blur" },
+          { type: 'number',min: 1, max: 100, message: "折扣必须是1-100之间的数字", trigger: "blur" },
         ]
       },
       cardTypes: [

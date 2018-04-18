@@ -8,7 +8,7 @@
 
     <el-row type="flex" justify="start">
       <el-col :xs="24" :sm="18" :md="12">
-        <el-form class="new-form" :model="newCard" ref="newCard" label-width="120px" 
+        <el-form class="new-form" :model="newCard" ref="newCard" label-width="130px" 
           :rules="rules" @keyup.enter.native="enterFlag && onSubmit('newCard')" v-loading="loading">
           <el-form-item label="手机" prop="customerMobile">
             <el-input v-model.number="newCard.customerMobile" placeholder="请输入手机" :autofocus="true"></el-input>
@@ -26,17 +26,22 @@
           <el-form-item label="备注">
             <el-input v-model.trim="newCard.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>
           </el-form-item>
-          <el-form-item label="顾问">
-            <el-select v-model.number="newCard.consultantId" placeholder="请输入顾问名称" filterable>
-              <el-option v-for="consultant in consultants" :key="consultant.id" :label="consultant.name" :value="consultant.id">
+          <el-form-item label="销售员">
+            <el-select v-model="newCard.employeeIds" multiple  placeholder="请输入销售员名称" filterable>
+              <el-option v-for="employee in employees" :key="employee.id" :label="employee.name" :value="employee.id">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="销售员">
-            <el-select v-model.number="newCard.salesManId" placeholder="请输入销售员名称" filterable>
-              <el-option v-for="salesMan in salesMans" :key="salesMan.id" :label="salesMan.name" :value="salesMan.id">
+          <el-form-item label="绩效">
+            <el-select v-model="newCard.percents" multiple  placeholder="请输入绩效" filterable>
+              <el-option v-for="per in percentage" :key="per.value" :label="per.name" :value="per.value">
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="有效期" prop="validDate">
+            <el-date-picker v-model="newCard.validDate" align="center" 
+              type="date" :editable="false" placeholder="选择日期">
+            </el-date-picker>
           </el-form-item>
           <el-form-item label="类型" prop="type">
             <el-select v-model.number="newCard.type" placeholder="请选择类型" @change="handleChangeType" :disabled="true">
@@ -53,13 +58,13 @@
           <el-form-item label="次数" prop="times" v-if="newCard.type === 1 || newCard.type === 3">
             <el-input v-model.number="newCard.times" placeholder="请输入次数"></el-input>
           </el-form-item>
-          <el-form-item label="储值卡总额" prop="amount" v-if="newCard.type === 2 || newCard.type === 3">
-            <el-input v-model.number="newCard.amount" placeholder="请输入总额"></el-input>
+          <el-form-item label="储值卡总额" prop="cardAmount" v-if="newCard.type === 2 || newCard.type === 3">
+            <el-input v-model.number="newCard.cardAmount" placeholder="请输入总额"></el-input>
           </el-form-item>
-          <el-form-item label="项目折扣(0-100)" prop="projectDiscount">
+          <el-form-item label="项目折扣(1-100)" prop="projectDiscount">
             <el-input v-model.number="newCard.projectDiscount" placeholder="请输入项目折扣"></el-input>
           </el-form-item>
-          <el-form-item label="产品折扣(0-100)" prop="productDiscount">
+          <el-form-item label="产品折扣(1-100)" prop="productDiscount">
             <el-input v-model.number="newCard.productDiscount" placeholder="请输入产品折扣"></el-input>
           </el-form-item>
           <el-form-item label="备注">
@@ -104,14 +109,15 @@ export default {
         paymentWay: 3,// 现金
         remark: '',
         cardId: '',
-        amount: 1,
-        consultantId: '',
-        salesManId: '',
+        amount: 1,// 会员卡张数1
+        employeeIds: [],
+        percents: [],
+        validDate: '',
         id: '',
         type: '',
         projectId: '',
         times: '',
-        amount: '',
+        cardAmount: '',
         projectDiscount: '',
         productDiscount: '',
         cardRemark: '',
@@ -130,13 +136,16 @@ export default {
           { required: true, message: "会员卡不能为空", trigger: "blur" },
           { type: 'number', message: "会员卡必须是数字", trigger: "blur" }
         ],
-        consultantId: [
-          { required: true, message: "顾问不能为空", trigger: "blur" },
-          { type: 'number', message: "顾问必须是数字", trigger: "blur" }
+        projectDiscount: [
+          { required: true, message: "项目折扣不能为空", trigger: "blur" },
+          { type: 'number',min: 1, max: 100, message: "折扣必须是1-100之间的数字", trigger: "blur" },
         ],
-        salesManId: [
-          { required: true, message: "销售员为空", trigger: "blur" },
-          { type: 'number', message: "销售员必须是数字", trigger: "blur" }
+        productDiscount: [
+          { required: true, message: "产品折扣不能为空", trigger: "blur" },
+          { type: 'number',min: 1, max: 100, message: "折扣必须是1-100之间的数字", trigger: "blur" },
+        ],
+        validDate: [
+          { required: true, message: "有效期不能为空", trigger: "blur" }
         ],
       },
       cardTypes: [
@@ -153,6 +162,88 @@ export default {
           value: 3
         }
       ],
+      percentage: [
+        {
+          name: 5,
+          value: 5
+        },
+        {
+          name: 10,
+          value: 10
+        },
+        {
+          name: 15,
+          value: 15
+        },
+        {
+          name: 20,
+          value: 20
+        },
+        {
+          name: 25,
+          value: 25
+        },
+        {
+          name: 30,
+          value: 30
+        },
+        {
+          name: 35,
+          value: 35
+        },
+        {
+          name: 40,
+          value: 40
+        },
+        {
+          name: 45,
+          value: 45
+        },
+        {
+          name: 50,
+          value: 50
+        },
+        {
+          name: 55,
+          value: 55
+        },
+        {
+          name: 60,
+          value: 60
+        },
+        {
+          name: 65,
+          value: 65
+        },
+        {
+          name: 70,
+          value: 70
+        },
+        {
+          name: 75,
+          value: 75
+        },
+        {
+          name: 80,
+          value: 80
+        },
+        {
+          name: 85,
+          value: 85
+        },
+        {
+          name: 90,
+          value: 90
+        },
+        {
+          name: 95,
+          value: 95
+        },
+        {
+          name: 100,
+          value: 100
+        },
+      ],
       loading: false,
       enterFlag: true, //true代表允许回车，false代表不允许回车，避免重复提交
       cardGiftsDialog: false,
@@ -163,11 +254,8 @@ export default {
     memberCards: function(){
       return this.$store.state.memberCard.memberCardsAll;
     },
-    consultants: function(){
-      return this.$store.state.employee.consultants;
-    },
-    salesMans: function(){
-      return this.$store.state.employee.salesMans;
+    employees: function(){
+      return this.$store.state.employee.employeesAll;
     },
     projects: function(){
       return this.$store.state.project.projectsAll;
@@ -177,24 +265,28 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.loading = true;
-          this.enterFlag = false;
-          this.$store
-            .dispatch("addConsumeRecord", this.handleData(this.newCard))
-            .then(res => {
-              if (res.code === 0) {
-                this.$message.success("添加成功");
-                setTimeout(() => {
-                  this.loading = false;
-                  this.$router.push({ path: "/consume-record-card" });
-                }, 1000);
-              }
-            })
-            .catch(err => {
-              this.loading = false;
-              this.enterFlag = true;
-              console.log(err);
-            });
+          if(this.newCard.employeeIds.length != this.newCard.employeeIds.length){
+            this.$message.error('输入员工绩效比例有误');
+          }else{
+            this.loading = true;
+            this.enterFlag = false;
+            this.$store
+              .dispatch("addConsumeRecord", this.handleData(this.newCard))
+              .then(res => {
+                if (res.code === 0) {
+                  this.$message.success("添加成功");
+                  setTimeout(() => {
+                    this.loading = false;
+                    this.$router.push({ path: "/consume-record-card" });
+                  }, 1000);
+                }
+              })
+              .catch(err => {
+                this.loading = false;
+                this.enterFlag = true;
+                console.log(err);
+              });
+          }
         } else {
           return false;
         }
@@ -245,7 +337,7 @@ export default {
       this.newCard.type = '';
       this.newCard.projectId = '';
       this.newCard.times = '';
-      this.newCard.amount = '';
+      this.newCard.cardAmount = '';
       this.newCard.projectDiscount = '';
       this.newCard.productDiscount = '';
       this.newCard.cardRemark = '';
@@ -256,14 +348,14 @@ export default {
       this.newCard.type = card.type;
       this.newCard.projectId = card.projectId;
       this.newCard.times = card.times;
-      this.newCard.amount = card.amount;
-      this.newCard.projectDiscount = card.projectDiscount;
-      this.newCard.productDiscount = card.productDiscount;
+      this.newCard.cardAmount = card.amount;
+      this.newCard.projectDiscount = card.projectDiscount*100;
+      this.newCard.productDiscount = card.productDiscount*100;
       this.newCard.cardRemark = card.remark;
     },
     handleChangeType(value){
       if( value === 1){
-        this.newCard.amount = '';
+        this.newCard.cardAmount = '';
       }else if(value === 2){
         this.newCard.times = '';
         this.newCard.projectId = '';
@@ -278,7 +370,8 @@ export default {
           paymentWay: '',
           remark: '',
         },
-        consumeRecordDetails: [],
+        employeeIds: [],
+        percents: [],
         memberCardPo: {
           id: '',
           type: '',
@@ -289,7 +382,8 @@ export default {
           productDiscount: '',
           remark: '',
         },
-        gifts: []
+        gifts: [],
+        consumeRecordDetails: [],
       };
 
       dataChange.consumeRecordPo.customerMobile = data.customerMobile;
@@ -298,23 +392,24 @@ export default {
       dataChange.consumeRecordPo.paymentWay = data.paymentWay;
       dataChange.consumeRecordPo.remark = data.remark;
 
+      dataChange.employeeIds = data.employeeIds;
+      dataChange.percents = data.percents;
+
       dataChange.consumeRecordDetails.push({
         'cardId': data.cardId,
         'amount': data.amount,
-        'consultantId': data.consultantId,
-        'salesManId': data.salesManId,
+        'validDate': this.toTimeStamp(data.validDate)
       });
 
       dataChange.memberCardPo.id = data.id;
       dataChange.memberCardPo.type = data.type;
       dataChange.memberCardPo.projectId = data.projectId;
       dataChange.memberCardPo.times = data.times;
-      dataChange.memberCardPo.amount = data.amount;
+      dataChange.memberCardPo.amount = data.cardAmount;
       dataChange.memberCardPo.projectDiscount = data.projectDiscount;
       dataChange.memberCardPo.productDiscount = data.productDiscount;
       dataChange.memberCardPo.remark = data.cardRemark;
       dataChange.gifts = data.gifts;
-      console.log(dataChange);
       return dataChange;
     },
     loadMemberCardAll(){
@@ -338,27 +433,11 @@ export default {
         console.log(err);
       });
     },
-    loadConsultants(){
-      this.$store.dispatch("loadEmployeeByTopType",4).then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
-    loadSalesMans(){
-      this.$store.dispatch("loadEmployeeByWorkType",3).then( res => {
-        this.loading = false;
-      }).catch( err => {
-        console.log(err);
-      });
-    },
   },
   beforeMount: function () {
     this.loadMemberCardAll();
     this.loadEmployeeAll();
     this.loadProjectAll();
-    this.loadConsultants();
-    this.loadSalesMans();
   },
   components: {CardGift}
 };

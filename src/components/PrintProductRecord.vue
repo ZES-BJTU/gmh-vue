@@ -14,43 +14,43 @@
             <div class="print-name">{{customer.name}}</div>
             <div class="record-data">
               <div class="column">
-                <div class="record-data-item">流水号</div>
+                <div class="record-data-head">流水号</div>
                 <div class="record-data-item">{{tableData.tradeSerialNumber}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">消费金额</div>
+                <div class="record-data-head">消费金额</div>
                 <div class="record-data-item">{{tableData.consumeMoney}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">支付方式</div>
+                <div class="record-data-head">支付方式</div>
                 <div class="record-data-item">{{tableData.paymentWayName}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">是否修改</div>
+                <div class="record-data-head">消费时间</div>
+                <div class="record-data-item">{{tableData.consumeTime}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">是否修改</div>
                 <div class="record-data-item">{{tableData.isModified}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">备注</div>
+                <div class="record-data-head">备注</div>
                 <div class="record-data-item">{{tableData.remark}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">卡名</div>
+                <div class="record-data-head">卡名</div>
                 <div class="record-data-item">{{tableData.cardName}}</div>
               </div>
             </div>
-            <div></div>
+            <div class="second-part">产品详情</div>
             <div class="record-data">
               <div class="column">
-                <div class="record-data-item">类型</div>
-                <div class="record-data-item"  v-for="(gift,index) in giftData" :key="index">{{gift.type}}</div>
+                <div class="record-data-head">产品名称</div>
+                <div class="record-data-item"  v-for="(product,index) in productData" :key="index">{{product.name}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">内容/金额</div>
-                <div class="record-data-item"  v-for="(gift,index) in giftData" :key="index">{{gift.name}}</div>
-              </div>
-              <div class="column">
-                <div class="record-data-item">数量</div>
-                <div class="record-data-item"  v-for="(gift,index) in giftData" :key="index">{{gift.amount}}</div>
+                <div class="record-data-head">数量</div>
+                <div class="record-data-item"  v-for="(product,index) in productData" :key="index">{{product.amount}}</div>
               </div>
             </div>
             <div>
@@ -79,7 +79,7 @@ export default {
       customer: '',
       store: '',
       tableData: '',
-      giftData: []
+      productData: []
     };
   },
   methods: {
@@ -99,30 +99,15 @@ export default {
         'tradeSerialNumber': data.consumeRecordVo.tradeSerialNumber,
         'consumeMoney': data.consumeRecordVo.consumeMoney,
         'paymentWayName': data.consumeRecordVo.paymentWayName,
+        'consumeTime': this.toDatetimeMin( data.consumeRecordVo.consumeTime),
         'isModified': data.consumeRecordVo.isModified === 0 ? '否' : '是',
         'remark': data.consumeRecordVo.remark ? data.consumeRecordVo.remark : '暂无备注',
-        'cardName': data.consumeRecordVo.consumeRecordDetailUnion[0].cardName
       }
-      for(let content of data.consumeRecordVo.consumeRecordGiftUnion){
-        if(content.productId){
-          this.giftData.push({
-            'type': '产品',
-            'name': content.productName,
-            'amount': content.productAmount,
-          })
-        }else if(content.projectId){
-          this.giftData.push({
-            'type': '项目',
-            'name': content.projectName,
-            'amount': content.projectAmount,
-          })
-        }else{
-          this.giftData.push({
-            'type': '代金券',
-            'name': content.couponMoney,
-            'amount': content.couponAmount,
-          })
-        }
+      for(let content of data.consumeRecordVo.consumeRecordDetailUnion){
+        this.productData.push({
+          'name': content.productName,
+          'amount': content.amount,
+        })
       }
     },
   },
@@ -130,14 +115,20 @@ export default {
     let data = this.$store.state.consumeRecord.consumeRecordPrint;
     if(data){
       this.loadData(data);
-      window.print();
     }else{
       this.$message.error('请先查询消费记录！');
       setTimeout(() => {
-        this.$router.push({ path: '/consume-record-card'});
+        this.$router.push({ path: '/consume-record-product'});
       },2000)
     }
   },
+  mounted: function(){
+    if(this.$store.state.consumeRecord.consumeRecordPrint){
+      setTimeout(() => {
+          window.print();
+      },1000)
+    }
+  }
 };
 </script>
 
@@ -157,9 +148,15 @@ export default {
   flex-flow: column;
   justify-content: space-between;
 }
-.record-data-item {
+.record-data-head {
+ font-weight: bold;
+}
+.record-data-item, .record-data-head {
   flex-basis: 100%;
   margin-bottom: 20px;
+}
+.second-part {
+  margin-top: 30px;
 }
 
 .print-img {

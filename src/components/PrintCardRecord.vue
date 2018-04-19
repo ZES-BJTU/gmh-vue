@@ -14,42 +14,46 @@
             <div class="print-name">{{customer.name}}</div>
             <div class="record-data">
               <div class="column">
-                <div class="record-data-item">流水号</div>
+                <div class="record-data-head">流水号</div>
                 <div class="record-data-item">{{tableData.tradeSerialNumber}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">消费金额</div>
+                <div class="record-data-head">消费金额</div>
                 <div class="record-data-item">{{tableData.consumeMoney}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">支付方式</div>
+                <div class="record-data-head">支付方式</div>
                 <div class="record-data-item">{{tableData.paymentWayName}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">是否修改</div>
+                <div class="record-data-head">消费时间</div>
+                <div class="record-data-item">{{tableData.consumeTime}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">是否修改</div>
                 <div class="record-data-item">{{tableData.isModified}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">备注</div>
+                <div class="record-data-head">备注</div>
                 <div class="record-data-item">{{tableData.remark}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">卡名</div>
+                <div class="record-data-head">卡名</div>
                 <div class="record-data-item">{{tableData.cardName}}</div>
               </div>
             </div>
-            <div>赠品</div>
+            <div class="second-part">赠品</div>
             <div class="record-data">
               <div class="column">
-                <div class="record-data-item">类型</div>
+                <div class="record-data-head">类型</div>
                 <div class="record-data-item"  v-for="(gift,index) in giftData" :key="index">{{gift.type}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">内容/金额</div>
+                <div class="record-data-head">内容/金额</div>
                 <div class="record-data-item"  v-for="(gift,index) in giftData" :key="index">{{gift.name}}</div>
               </div>
               <div class="column">
-                <div class="record-data-item">数量</div>
+                <div class="record-data-head">数量</div>
                 <div class="record-data-item"  v-for="(gift,index) in giftData" :key="index">{{gift.amount}}</div>
               </div>
             </div>
@@ -100,6 +104,7 @@ export default {
         'consumeMoney': data.consumeRecordVo.consumeMoney,
         'paymentWayName': data.consumeRecordVo.paymentWayName,
         'isModified': data.consumeRecordVo.isModified === 0 ? '否' : '是',
+        'consumeTime': this.toDatetimeMin( data.consumeRecordVo.consumeTime),
         'remark': data.consumeRecordVo.remark ? data.consumeRecordVo.remark : '暂无备注',
         'cardName': data.consumeRecordVo.consumeRecordDetailUnion[0].cardName
       }
@@ -138,9 +143,11 @@ export default {
     }
   },
   mounted: function(){
-    setTimeout(() => {
-      window.print();
-    },1000)
+    if(this.$store.state.consumeRecord.consumeRecordPrint){
+      setTimeout(() => {
+          window.print();
+      },1000)
+    }
   }
 };
 </script>
@@ -161,9 +168,15 @@ export default {
   flex-flow: column;
   justify-content: space-between;
 }
-.record-data-item {
+.record-data-head {
+ font-weight: bold;
+}
+.record-data-item, .record-data-head {
   flex-basis: 100%;
   margin-bottom: 20px;
+}
+.second-part {
+  margin-top: 30px;
 }
 
 .print-img {

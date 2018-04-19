@@ -30,6 +30,8 @@
           <el-button size="mini" @click="handleProjectDetail(scope.$index, scope.row)">详情</el-button>
           <!-- <el-button size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button size="mini"
+            @click="handlePrint(scope.$index, scope.row)">打印</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -114,6 +116,23 @@ export default {
       }else{
         return '是';
       }
+    },
+    handlePrint(index, row){
+      this.$message({
+        message: '打印数据加载中',
+        iconClass: 'el-icon-loading',
+        duration: 0
+      });
+
+      this.$store.dispatch("printConsumeRecord", {
+        'consumeRecordId': row.id
+      }).then( res => {
+        console.log(this.$store.state.consumeRecord.consumeRecordPrint);
+        this.$message.closeAll();
+        this.$router.push({ path: '/print-project-record'});
+      }).catch( err => {
+        console.log(err);
+      });
     },
     handleEdit(index, row){
       // this.$router.push({ path: '/appointment-detail/' + row.id});

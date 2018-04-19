@@ -26,12 +26,14 @@
       <el-table-column prop="paymentWayName" label="支付方式"></el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>=
-      <!-- <el-table-column label="操作" width="220px;" fixed="right">
+      <el-table-column label="操作" width="220px;" fixed="right">
         <template slot-scope="scope">
+          <!-- <el-button size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
           <el-button size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            @click="handlePrint(scope.$index, scope.row)">打印</el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
@@ -88,6 +90,23 @@ export default {
     chagePage(val){
       this.consumeRecordActivitySearch.pageNum = val;
       this.searchConsumeActivityRecord('page');
+    },
+    handlePrint(index, row){
+      this.$message({
+        message: '打印数据加载中',
+        iconClass: 'el-icon-loading',
+        duration: 0
+      });
+
+      this.$store.dispatch("printConsumeRecord", {
+        'consumeRecordId': row.id
+      }).then( res => {
+        console.log(this.$store.state.consumeRecord.consumeRecordPrint);
+        this.$message.closeAll();
+        this.$router.push({ path: '/print-activity-record'});
+      }).catch( err => {
+        console.log(err);
+      });
     },
     handleModified(row, column){
       if(row.isModified === 0){

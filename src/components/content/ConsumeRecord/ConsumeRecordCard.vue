@@ -25,11 +25,7 @@
       <el-table-column prop="paymentWayName" label="支付方式"></el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column prop="cardName" label="卡名">
-        <template slot-scope="scope">
-            {{scope.row.consumeRecordDetailUnion[0].cardName}}
-        </template>
-      </el-table-column>
+      <el-table-column prop="cardName" label="卡名" :formatter="handleCardName"></el-table-column>
       <el-table-column label="操作" width="220px;" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleCardGiftDetail(scope.$index, scope.row)">详情</el-button>
@@ -123,6 +119,9 @@ export default {
         return '是';
       }
     },
+    handleCardName(row, column){
+      return row.consumeRecordDetailUnion.cardName;
+    },
     handleEdit(index, row){
       // this.$router.push({ path: '/appointment-detail/' + row.id});
     },
@@ -142,7 +141,6 @@ export default {
       }).catch( err => {
         console.log(err);
       });
-
     },
     handleCardGiftDetail(index, row){// 显示卡礼物详情
       this.cardGiftContentDetail = [];

@@ -1,9 +1,73 @@
 <template>
-  <div class="PrintCardRecord">
+  <div class="PrintActivityRecord">
     <el-container>
       <el-container class="home-container">
         <el-container>
           <el-main>
+            <div><img  class="print-img" src="css/images/logo-print.png" alt=""></div>
+            <div class="print-store-name">{{store.name}}</div>
+            <div class="print-address">{{store.address}}</div>
+            <div class="print-phone">{{store.phone}}</div>
+            <div class="print-time">{{customer.time}}</div>
+            <div class="print-type">消费类型：参加活动</div>
+            <div class="print-mobile">{{customer.mobile}}</div>
+            <div class="print-name">{{customer.name}}</div>
+            <div class="record-data">
+              <div class="column">
+                <div class="record-data-head">流水号</div>
+                <div class="record-data-item">{{tableData.tradeSerialNumber}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">活动名称</div>
+                <div class="record-data-item">{{tableData.activityName}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">消费金额</div>
+                <div class="record-data-item">{{tableData.consumeMoney}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">支付方式</div>
+                <div class="record-data-item">{{tableData.paymentWayName}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">消费时间</div>
+                <div class="record-data-item">{{tableData.consumeTime}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">是否修改</div>
+                <div class="record-data-item">{{tableData.isModified}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">备注</div>
+                <div class="record-data-item">{{tableData.remark}}</div>
+              </div>
+            </div>
+            <!-- <div class="second-part">项目详情</div>
+            <div class="record-data">
+              <div class="column">
+                <div class="record-data-head">项目名称</div>
+                <div class="record-data-item"  v-for="(project,index) in projectData" :key="index">{{project.name}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">数量</div>
+                <div class="record-data-item"  v-for="(project,index) in projectData" :key="index">{{project.amount}}</div>
+              </div>
+              <div class="column">
+                <div class="record-data-head">操作员</div>
+                <div class="record-data-item"  v-for="(project,index) in projectData" :key="index">{{project.operatorName}}</div>
+              </div>
+            </div> -->
+            <div>
+              <span class="print-wechat"><img class="print-wechat-img" src="../assets/images/wechat.jpg" alt=""></span>
+              <span class="print-wechat-2">
+                <span class="t1">Welcome to BRAND NEW</span>
+                <span class="t2">BRAND NEW LIFE</span>
+                <span class="t3">科技 美丽人生</span>
+                <span class="b">www.brandnew-gmh.com</span>
+              </span>
+            </div>
+            <div class="print-text">特别提示：＊请凭此消费凭证于当月内开具发票。＊产品售出，已开封不退不换，未开封可换货，请凭此消费凭证或发票(如已开具)办理换货。＊所有优惠卡及优惠活动，一经售出，不退不换 ＊成员卡一个月内可进行卡项升级＊最终解释权归本公司所有。</div>
+            <div class="print-text-en">Special tips: *Please get you invoice by this receipt within the same month. *Products sold, if the package has been opened, do not refund.If the packaging is complete, the product can be exchanged, please use this receipt or invoice (if issued) for replacement. *All discount cards and promotions,no refund, no change.*The final explanation is owned by the company.</div>
           </el-main>
         </el-container>
       </el-container>
@@ -13,55 +77,152 @@
 
 <script>
 export default {
-  name: "PrintCardRecord",
+  name: "PrintActivityRecord",
   data() {
     return {
-      recordData: ''
+      customer: '',
+      store: '',
+      tableData: '',
+      activityData: []
     };
   },
   methods: {
-    loadEmployeeAll(){
-      this.$store.dispatch("loadEmployeeAll").then( res => {
-        for(let employee of res.data){
-          this.employees.push(employee);
-        }
-      }).catch( err => {
-        console.log(err);
-      });
+    loadData(data){
+      this.customer = {
+        'name': '消费者姓名：' + data.consumeRecordVo.customerName,
+        'mobile': '消费者手机号：' + data.consumeRecordVo.customerMobile,
+        'time': '打印时间：' + this.toDatetimeMin(Date.parse(new Date()))
+      }
+      this.store = {
+        'name': '店名：'+ data.storeVo.name,
+        'address': '地址：'+ data.storeVo.address,
+        'phone': '电话：' + data.storeVo.phone,
+      }
+      this.tableData = {
+        'id': data.consumeRecordVo.id,
+        'tradeSerialNumber': data.consumeRecordVo.tradeSerialNumber,
+        'activityName': data.consumeRecordVo.activityName,
+        'consumeMoney': data.consumeRecordVo.consumeMoney,
+        'paymentWayName': data.consumeRecordVo.paymentWayName,
+        'consumeTime': this.toDatetimeMin( data.consumeRecordVo.consumeTime),
+        'isModified': data.consumeRecordVo.isModified === 0 ? '否' : '是',
+        'remark': data.consumeRecordVo.remark ? data.consumeRecordVo.remark : '暂无备注',
+      }
+      for(let content of data.consumeRecordVo.consumeRecordDetailUnion){
+        this.projectData.push({
+          'name': content.projectName,
+          'amount': content.amount,
+          'operatorName': content.operatorName,
+        })
+      }
     },
   },
   beforeMount: function(){
-    this.recordData = this.$store.state.consumeRecord.consumeRecordPrint
+    let data = this.$store.state.consumeRecord.consumeRecordPrint;
+    if(data){
+      this.loadData(data);
+    }else{
+      this.$message.error('请先查询消费记录！');
+      setTimeout(() => {
+        this.$router.push({ path: '/consume-record-activity'});
+      },2000)
+    }
   },
+  mounted: function(){
+    if(this.$store.state.consumeRecord.consumeRecordPrint){
+      setTimeout(() => {
+          window.print();
+      },1000)
+    }
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.account-item{
-  float: right;
-}
 .home-container {
   margin-top: 1px;
 }
-.appointment-box{
-  margin: 20px 0;
-}
-.box {
+.record-data {
   display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin-top:20px;
 }
-
-.column {
-  flex-basis: 100%;
+.record-data-column {
   display: flex;
+  flex-flow: column;
   justify-content: space-between;
 }
-.item{
-  margin: 10px 0;
+.record-data-head {
+ font-weight: bold;
 }
-.time-icon{
-  margin-right: 5px;
+.record-data-item, .record-data-head {
+  flex-basis: 100%;
+  margin-bottom: 20px;
+}
+.second-part {
+  margin-top: 30px;
+}
+
+.print-img {
+  height: 100px;
+  margin-bottom: 20px;
+}
+.print-mobile {
+  margin-top: 10px;
+}
+
+.print-text {
+  margin-top: 20px;
+}
+.print-text-en {
+  margin-top: 10px;
+}
+
+.print-wechat {
+  display: inline-block;
+  margin-top: 20px;
+}
+.print-wechat-img {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.print-wechat-2 {
+  display: inline-block;
+  margin-top: 20px;
+  height: 80px;
+  width: 200px;
+  margin-left: 15px;
+  vertical-align: top;
+  position: relative;
+}
+.print-wechat-2 .t1 {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  font-size: 10px;
+}
+.print-wechat-2 .t2 {
+  position: absolute;
+  width: 100%;
+  top: 15px;
+  left: 0px;
+  font-size: 10px;
+}
+.print-wechat-2 .t3 {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  left: 0px;
+  font-size: 10px;
+}
+.print-wechat-2 .b {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  font-size: 10px;
 }
 </style>

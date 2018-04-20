@@ -8,6 +8,11 @@
         <el-input v-model.trim="consumeRecordProjectSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="consumeRecordProjectSearch.projectId" placeholder="请选择" filterable>
+          <el-option v-for="project in projects" :key="project.id" :label="project.code+'-'+project.name" :value="project.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" @click="searchConsumeProjectRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
@@ -58,7 +63,9 @@ export default {
     return {
       consumeRecordProjectSearch: {
         content: "",
+        projectId: '',
         oldContent: "",//储存最近一次搜索的内容
+        oldProjectId: "",//储存最近一次搜索的内容
         pageNum: 1,
         pageSize: 10,
         consumeType: 3,
@@ -83,6 +90,9 @@ export default {
     },
     tableData: function(){
       return this.$store.state.consumeRecord.consumeRecords;
+    },
+    projects: function(){
+      return [{'id':'','name':'查询全部','code':'无'}].concat(this.$store.state.project.projectsAll);
     }
   },
   methods: {
@@ -90,6 +100,7 @@ export default {
       this.loading = true;
       if(type === 'search'){
         this.consumeRecordProjectSearch.oldContent = this.consumeRecordProjectSearch.content;
+        this.consumeRecordProjectSearch.oldProjectId = this.consumeRecordProjectSearch.projectId;
       }
       this.consumeRecordProjectSearch.type = type;
       this.$store.dispatch("loadConsumeRecord", this.consumeRecordProjectSearch).then( res => {
@@ -148,12 +159,16 @@ export default {
       }
       this.projectContentVisible = true;
     },
+    loadProjectAll(){
+      this.$store.dispatch("loadProjectAll");
+    },
     onClose(formName){
       this.projectContentVisible = false;
       this.projectContentDetail = [];
     }
   },
   beforeMount: function () {
+    this.loadProjectAll();
     this.searchConsumeProjectRecord('search');
   }
 };

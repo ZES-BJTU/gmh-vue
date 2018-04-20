@@ -23,6 +23,7 @@ const actions = {
       httpServer.put('/consume/list' , {
         'keyWords': (info.type === 'search' ? info.content : info.oldContent),
         'consumeType': info.consumeType,
+        'projectId': (info.consumeType === 3) ? info.projectId : '',
         'pageNum': info.pageNum,
         'pageSize': info.pageSize
       }).then( res => {

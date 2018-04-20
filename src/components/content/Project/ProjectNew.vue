@@ -25,11 +25,11 @@
           <el-form-item label="单价" prop="unitPrice">
             <el-input v-model.number="newProjectForm.unitPrice" placeholder="请输入单价"></el-input>
           </el-form-item>
-          <el-form-item label="积分" prop="integral">
-            <el-input v-model.number="newProjectForm.integral" placeholder="请输入积分"></el-input>
+          <el-form-item label="绩效" prop="integral">
+            <el-input v-model.number="newProjectForm.integral" placeholder="请输入绩效"></el-input>
           </el-form-item>
-          <el-form-item label="实习生积分" prop="internIntegral">
-            <el-input v-model.number="newProjectForm.internIntegral" placeholder="请输入实习生积分"></el-input>
+          <el-form-item label="实习生绩效" prop="internIntegral">
+            <el-input v-model.number="newProjectForm.internIntegral" placeholder="请输入实习生绩效"></el-input>
           </el-form-item>
           <el-form-item label="备注">
             <el-input v-model.trim="newProjectForm.remark" type="textarea" :rows="2" placeholder="请输入备注"></el-input>

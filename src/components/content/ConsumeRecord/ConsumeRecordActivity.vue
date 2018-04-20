@@ -28,8 +28,8 @@
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>=
       <el-table-column label="操作" width="220px;" fixed="right">
         <template slot-scope="scope">
-          <!-- <el-button size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini"
             @click="handlePrint(scope.$index, scope.row)">打印</el-button>
         </template>
@@ -123,7 +123,7 @@ export default {
       }
     },
     handleEdit(index, row){
-      // this.$router.push({ path: '/appointment-detail/' + row.id});
+      this.$router.push({ path: '/consume-record-activity/' + row.id});
     },
     onClose(formName){
       this.cardGiftContentVisible = false;

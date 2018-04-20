@@ -21,8 +21,8 @@
       <el-table-column prop="code" label="代码"></el-table-column>
       <el-table-column prop="projectTypeName" label="美容项目分类"></el-table-column>
       <el-table-column prop="unitPrice" label="单价"></el-table-column>
-      <el-table-column prop="integral" label="积分"></el-table-column>
-      <el-table-column prop="internIntegral" label="实习生积分"></el-table-column>
+      <el-table-column prop="integral" label="绩效"></el-table-column>
+      <el-table-column prop="internIntegral" label="实习生绩效"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column prop="projectStockVos" label="项目消耗品">
         <template slot-scope="scope">

@@ -14,7 +14,8 @@
       <router-link to="/employee/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
-      <el-button icon="el-icon-download" @click="exportPerformanceVisible = true">导出员工积分</el-button>
+      <el-button icon="el-icon-download" @click="exportPerformanceVisible = true">导出绩效</el-button>
+      <el-button icon="el-icon-download" @click="exportAchievenmentVisible = true">导出业绩</el-button>
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
@@ -39,9 +40,9 @@
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
-    <el-dialog title="导出员工积分" :visible.sync="exportPerformanceVisible" :show-close="false"
+    <el-dialog title="导出绩效" :visible.sync="exportPerformanceVisible" :show-close="false"
       :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-form :model="exportPerformanceForm" ref="exportPerformanceForm" v-loading="exportLoading">
+      <el-form :model="exportPerformanceForm" ref="exportPerformanceForm" v-loading="exportPerformanceLoading">
         <el-form-item prop="exportTime">
           <el-date-picker
             v-model="exportPerformanceForm.exportTime"
@@ -55,7 +56,26 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="onClose('exportPerformanceForm')">取 消</el-button>
-        <el-button type="primary" @click="onExport('exportPerformanceForm')">导 出</el-button>
+        <el-button type="primary" @click="onExportPerformence('exportPerformanceForm')">导 出</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="导出业绩" :visible.sync="exportAchievenmentVisible" :show-close="false"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-form :model="exportAchievementForm" ref="exportAchievementForm" v-loading="exportAchievenmentLoading">
+        <el-form-item prop="exportTime">
+          <el-date-picker
+            v-model="exportAchievementForm.exportTime"
+            type="daterange"
+            align="center"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onClose('exportAchievementForm')">取 消</el-button>
+        <el-button type="primary" @click="onExportAchievement('exportAchievementForm')">导 出</el-button>
       </span>
     </el-dialog>
   </div>
@@ -76,9 +96,14 @@ export default {
       exportPerformanceForm: {
         exportTime: '',
       },
+      exportAchievementForm: {
+        exportTime: '',
+      },
       loading: false,
       exportPerformanceVisible: false,
-      exportLoading: false,
+      exportPerformanceLoading: false,
+      exportAchievenmentVisible: false,
+      exportAchievenmentLoading: false,
     };
   },
   computed: {
@@ -175,10 +200,10 @@ export default {
       this.exportPerformanceVisible = false;
       this.$refs[formName].resetFields();
     },
-    onExport(formName){
+    onExportPerformence(formName){
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.exportLoading = true;
+          this.exportPerformanceLoading = true;
           let beginTime, endTime;
           if(this.exportPerformanceForm.exportTime != ''){
             beginTime = this.toTimeStamp(this.exportPerformanceForm.exportTime[0]);
@@ -189,7 +214,7 @@ export default {
           }
           if(beginTime != '' && endTime != '' && beginTime === endTime){
             this.$message.error('请选择不同的日期！');
-            this.exportLoading = false;
+            this.exportPerformanceLoading = false;
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
@@ -198,8 +223,41 @@ export default {
             window.location.href = href;
 
             setTimeout(() => {
-              this.exportLoading = false;
+              this.exportPerformanceLoading = false;
               this.exportPerformanceVisible = false;
+              this.$refs[formName].resetFields();
+            },2000)
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+    onExportAchievement(formName){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.exportAchievenmentLoading = true;
+          let beginTime, endTime;
+          if(this.exportAchievementForm.exportTime != ''){
+            beginTime = this.toTimeStamp(this.exportAchievementForm.exportTime[0]);
+            endTime = this.toTimeStamp(this.exportAchievementForm.exportTime[1]);
+          }else{
+            beginTime = '';
+            endTime = '';
+          }
+          if(beginTime != '' && endTime != '' && beginTime === endTime){
+            this.$message.error('请选择不同的日期！');
+            this.exportAchievenmentLoading = false;
+            this.$refs[formName].resetFields();
+          }else{
+            let token = sessionStorage.getItem('token');
+            var href = "http://localhost:8080/export/employeeSale";
+            href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
+            window.location.href = href;
+
+            setTimeout(() => {
+              this.exportAchievenmentLoading = false;
+              this.exportAchievenmentVisible = false;
               this.$refs[formName].resetFields();
             },2000)
           }

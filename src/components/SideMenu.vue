@@ -127,16 +127,16 @@
 						</el-submenu>
 						<el-submenu index="10" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
-								<span>美容项目</span>
+								<span>项目</span>
 							</template>
 							<router-link to="/project-type">
 								<el-menu-item index="10-1">
-									<span slot="title">美容项目分类管理</span>
+									<span slot="title">项目分类管理</span>
 								</el-menu-item>
 							</router-link>
 							<router-link to="/project">
 								<el-menu-item index="10-2">
-									<span slot="title">美容项目管理</span>
+									<span slot="title">项目管理</span>
 								</el-menu-item>
 							</router-link>
 						</el-submenu>

@@ -25,12 +25,12 @@
       <el-table-column prop="paymentWayName" label="支付方式"></el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column prop="cardName" label="卡名" :formatter="handleCardName"></el-table-column>
+      <el-table-column prop="consumeRecordDetailUnion" label="卡名" :formatter="handleCardName"></el-table-column>
       <el-table-column label="操作" width="220px;" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleCardGiftDetail(scope.$index, scope.row)">详情</el-button>
-          <!-- <el-button size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini"
             @click="handlePrint(scope.$index, scope.row)">打印</el-button>
         </template>
@@ -120,10 +120,14 @@ export default {
       }
     },
     handleCardName(row, column){
-      return row.consumeRecordDetailUnion.cardName;
+      if(!row.consumeRecordDetailUnion[0]){
+        return '充值';
+      }else{
+        return row.consumeRecordDetailUnion[0].cardName;
+      }
     },
     handleEdit(index, row){
-      // this.$router.push({ path: '/appointment-detail/' + row.id});
+      this.$router.push({ path: '/consume-record-card/' + row.id});
     },
     handlePrint(index, row){
       this.$message({

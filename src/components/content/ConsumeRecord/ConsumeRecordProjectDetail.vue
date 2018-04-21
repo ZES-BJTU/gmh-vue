@@ -117,7 +117,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="绩效">
-            <el-input v-model.trim="modProject.percents" placeholder="请输入数字,用中文句号分隔"></el-input>
+            <el-input v-model.trim="modProject.percents" placeholder="请输入数字,用英文逗号分隔"></el-input>
           </el-form-item>
           <el-form-item label="项目">
             <el-table :data="projectsCopy" size="mini" v-loading="loading" style="width: 100%">

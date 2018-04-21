@@ -42,7 +42,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="绩效">
-            <el-input v-model.trim="newActivity.percents" placeholder="请输入数字,用中文句号分隔"></el-input>
+            <el-input v-model.trim="newActivity.percents" placeholder="请输入数字,用英文逗号分隔"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('newActivity')">提交</el-button>

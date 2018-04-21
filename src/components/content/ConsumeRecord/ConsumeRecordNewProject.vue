@@ -391,7 +391,7 @@ export default {
       this.newProject.payWayId = '';
       this.newProject.payWayContentId = '';
       this.newProject.couponAmount = 0;
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       if(val === 1){ // 会员卡
         this.activity.id = '';
         this.cardCoupon.id = '';
@@ -470,7 +470,7 @@ export default {
       }
     },
     handleCardContentSelect(val){// 切换会员卡
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.card.id = card.id
       this.card.remainingMoney = card.remainingMoney;
@@ -479,7 +479,7 @@ export default {
       this.cardContentDetail = card.customerMemberCardContent;
     },
     handleCardCouponSelect(val){// 切换会员卡
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.cardCoupon.id = card.id;
       this.cardCoupon.projectDiscount = card.projectDiscount*100;
@@ -489,17 +489,17 @@ export default {
       this.newProject.couponAmount = 0;
     },
     handleCardCouponDetailSelect(val){// 切换优惠券
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       this.newProject.couponAmount = 0;
     },
     handleActivityContentSelect(val){// 切换活动
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       let activity = this.$store.getters.getCustomerActivityPayById(val);
       this.activity.id = activity.id;
       this.activityContentDetail= activity.customerActivityContents;
     },
     handleActivityCouponSelect(val){// 切换活动
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       let activity = this.$store.getters.getCustomerActivityPayById(val);
       this.activityCoupon.id = activity.id;
       this.activityCouponContentDetail = activity.customerActivityContents;
@@ -507,7 +507,7 @@ export default {
       this.newProject.couponAmount = 0;
     },
     handleActivityCouponDetailSelect(val){// 切换优惠券
-      this.newProduct.validStr = '';
+      this.newProject.validStr = '';
       this.newProject.couponAmount = 0;
     },
     handleData(data){

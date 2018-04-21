@@ -6,6 +6,7 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   consumeRecords: [],
+  consumeRecordsHistory: [],
   consumeRecordPrint: ''
 }
 
@@ -33,6 +34,29 @@ const actions = {
           totalCount: res.data.totalCount,
           totalPages: res.data.totalPages,
           consumeRecords: res.data.data
+        });
+        resolve(res);
+      })
+      .catch( err => {
+        reject(err);
+      })
+    });
+  },
+  loadConsumeRecordHistory({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/consume/changedList' , {
+        'keyWords': (info.type === 'search' ? info.content : info.oldContent),
+        'consumeType': info.consumeType,
+        'projectId': (info.consumeType === 3) ? info.projectId : '',
+        'pageNum': info.pageNum,
+        'pageSize': info.pageSize
+      }).then( res => {
+        commit('loadConsumeRecordHistory', {
+          pageNum: res.data.pageNum,
+          pageSize: res.data.pageSize,
+          totalCount: res.data.totalCount,
+          totalPages: res.data.totalPages,
+          consumeRecordsHistory: res.data.data
         });
         resolve(res);
       })
@@ -90,6 +114,13 @@ const mutations = {
     state.totalCount = payload.totalCount;
     state.totalPages = payload.totalPages;
     state.consumeRecords = payload.consumeRecords;
+  },
+  loadConsumeRecordHistory(state, payload){
+    state.pageNum = payload.pageNum;
+    state.pageSize = payload.pageSize;
+    state.totalCount = payload.totalCount;
+    state.totalPages = payload.totalPages;
+    state.consumeRecordsHistory = payload.consumeRecordsHistory;
   },
   printConsumeRecord(state, payload){
     state.consumeRecordPrint = payload.consumeRecordPrint;

@@ -28,6 +28,20 @@
       <el-table-column prop="customerMobile" label="手机"></el-table-column>
       <el-table-column prop="consumeMoney" label="消费金额"></el-table-column>
       <el-table-column prop="paymentWayName" label="支付方式"></el-table-column>
+      <el-table-column prop="employee" label="销售员">
+        <template slot-scope="scope">
+            <div v-for="(employee,index) in scope.row.consumeSaleEmployees" :key="index">
+              {{employee.employeeName}}
+            </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="percent" label="绩效">
+        <template slot-scope="scope">
+            <div v-for="(employee,index) in scope.row.consumeSaleEmployees" :key="index">
+              {{employee.percent}}
+            </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
       <el-table-column label="操作" width="220px;" fixed="right">

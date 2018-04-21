@@ -1,5 +1,5 @@
 <template>
-  <div class="ConsumeRecordProduct">
+  <div class="ConsumeRecordProductHistory">
     <el-form :inline="true" :model="consumeRecordProductSearch" ref="consumeRecordProductSearch" class="demo-form-inline search-form" 
       @keyup.enter.native="searchConsumeProductRecord('search')">
       <el-form-item>
@@ -11,11 +11,6 @@
         <el-button type="primary" @click="searchConsumeProductRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
-    <div class="operate-box">
-      <router-link to="/consume-record-product/new-product">
-        <el-button type="primary" icon="el-icon-plus">买产品</el-button>
-      </router-link>
-    </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="tradeSerialNumber" label="流水号"></el-table-column>
@@ -39,15 +34,6 @@
       </el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column label="操作" width="220px;" fixed="right">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleProductDetail(scope.$index, scope.row)">详情</el-button>
-          <el-button size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini"
-            @click="handlePrint(scope.$index, scope.row)">打印</el-button>
-        </template>
-      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
@@ -67,7 +53,7 @@
 
 <script>
 export default {
-  name: "ConsumeRecordProduct",
+  name: "ConsumeRecordProductHistory",
   data() {
     return {
       consumeRecordProductSearch: {
@@ -96,7 +82,7 @@ export default {
       return this.$store.state.consumeRecord.totalPages;
     },
     tableData: function(){
-      return this.$store.state.consumeRecord.consumeRecords;
+      return this.$store.state.consumeRecord.consumeRecordsHistory;
     }
   },
   methods: {
@@ -106,7 +92,7 @@ export default {
         this.consumeRecordProductSearch.oldContent = this.consumeRecordProductSearch.content;
       }
       this.consumeRecordProductSearch.type = type;
-      this.$store.dispatch("loadConsumeRecord", this.consumeRecordProductSearch).then( res => {
+      this.$store.dispatch("loadConsumeRecordHistory", this.consumeRecordProductSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {

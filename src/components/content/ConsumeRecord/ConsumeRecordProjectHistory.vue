@@ -1,21 +1,21 @@
 <template>
-  <div class="ConsumeRecordProduct">
-    <el-form :inline="true" :model="consumeRecordProductSearch" ref="consumeRecordProductSearch" class="demo-form-inline search-form" 
-      @keyup.enter.native="searchConsumeProductRecord('search')">
+  <div class="ConsumeRecordProjectHistory">
+    <el-form :inline="true" :model="consumeRecordProjectSearch" ref="consumeRecordProjectSearch" class="demo-form-inline search-form" 
+      @keyup.enter.native="searchConsumeProjectRecord('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="consumeRecordProductSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="consumeRecordProjectSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchConsumeProductRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-select v-model="consumeRecordProjectSearch.projectId" placeholder="请选择" filterable>
+          <el-option v-for="project in projects" :key="project.id" :label="project.code+'-'+project.name" :value="project.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="searchConsumeProjectRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
-    <div class="operate-box">
-      <router-link to="/consume-record-product/new-product">
-        <el-button type="primary" icon="el-icon-plus">买产品</el-button>
-      </router-link>
-    </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="tradeSerialNumber" label="流水号"></el-table-column>
@@ -39,23 +39,14 @@
       </el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column label="操作" width="220px;" fixed="right">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleProductDetail(scope.$index, scope.row)">详情</el-button>
-          <el-button size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini"
-            @click="handlePrint(scope.$index, scope.row)">打印</el-button>
-        </template>
-      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
-    <el-dialog title="产品详情" :visible.sync="productContentVisible" :show-close="false"
+    <el-dialog title="项目详情" :visible.sync="projectContentVisible" :show-close="false"
       :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-table :data="productContentDetail" size="mini" v-loading="loading" style="width: 100%">
-        <el-table-column prop="productName" label="产品名称"></el-table-column>
+      <el-table :data="projectContentDetail" size="mini" v-loading="loading" style="width: 100%">
+        <el-table-column prop="projectName" label="项目名称"></el-table-column>
         <el-table-column prop="amount" label="个数"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
@@ -67,19 +58,21 @@
 
 <script>
 export default {
-  name: "ConsumeRecordProduct",
+  name: "ConsumeRecordProjectHistory",
   data() {
     return {
-      consumeRecordProductSearch: {
+      consumeRecordProjectSearch: {
         content: "",
+        projectId: '',
         oldContent: "",//储存最近一次搜索的内容
+        oldProjectId: "",//储存最近一次搜索的内容
         pageNum: 1,
         pageSize: 10,
-        consumeType: 2,
+        consumeType: 3,
       },
       loading: false,
-      productContentDetail: [],
-      productContentVisible: false
+      projectContentDetail: [],
+      projectContentVisible: false
     };
   },
   computed: {
@@ -96,17 +89,21 @@ export default {
       return this.$store.state.consumeRecord.totalPages;
     },
     tableData: function(){
-      return this.$store.state.consumeRecord.consumeRecords;
+      return this.$store.state.consumeRecord.consumeRecordsHistory;
+    },
+    projects: function(){
+      return [{'id':'','name':'查询全部','code':'无'}].concat(this.$store.state.project.projectsAll);
     }
   },
   methods: {
-    searchConsumeProductRecord(type) {
+    searchConsumeProjectRecord(type) {
       this.loading = true;
       if(type === 'search'){
-        this.consumeRecordProductSearch.oldContent = this.consumeRecordProductSearch.content;
+        this.consumeRecordProjectSearch.oldContent = this.consumeRecordProjectSearch.content;
+        this.consumeRecordProjectSearch.oldProjectId = this.consumeRecordProjectSearch.projectId;
       }
-      this.consumeRecordProductSearch.type = type;
-      this.$store.dispatch("loadConsumeRecord", this.consumeRecordProductSearch).then( res => {
+      this.consumeRecordProjectSearch.type = type;
+      this.$store.dispatch("loadConsumeRecordHistory", this.consumeRecordProjectSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -114,8 +111,8 @@ export default {
       });
     },
     chagePage(val){
-      this.consumeRecordProductSearch.pageNum = val;
-      this.searchConsumeProductRecord('page');
+      this.consumeRecordProjectSearch.pageNum = val;
+      this.searchConsumeProjectRecord('page');
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){
@@ -131,9 +128,6 @@ export default {
         return '是';
       }
     },
-    handleEdit(index, row){
-      this.$router.push({ path: '/consume-record-product/' + row.id});
-    },
     handlePrint(index, row){
       this.$message({
         message: '打印数据加载中',
@@ -146,29 +140,36 @@ export default {
       }).then( res => {
         console.log(this.$store.state.consumeRecord.consumeRecordPrint);
         this.$message.closeAll();
-        this.$router.push({ path: '/print-product-record'});
+        this.$router.push({ path: '/print-project-record'});
       }).catch( err => {
         console.log(err);
       });
     },
-    handleProductDetail(index, row){// 显示产品详情
-      this.productContentDetail = [];
+    handleEdit(index, row){
+      this.$router.push({ path: '/consume-record-project/' + row.id});
+    },
+    handleProjectDetail(index, row){// 显示产品详情
+      this.projectContentDetail = [];
       let consumeRecord = this.$store.getters.getConsumeRecordById(row.id);
       for(let content of consumeRecord.consumeRecordDetailUnion){
-        this.productContentDetail.push({
-          'productName': content.productName,
+        this.projectContentDetail.push({
+          'projectName': content.projectName,
           'amount': content.amount,
         })
       }
-      this.productContentVisible = true;
+      this.projectContentVisible = true;
+    },
+    loadProjectAll(){
+      this.$store.dispatch("loadProjectAll");
     },
     onClose(formName){
-      this.productContentVisible = false;
-      this.productContentDetail = [];
+      this.projectContentVisible = false;
+      this.projectContentDetail = [];
     }
   },
   beforeMount: function () {
-    this.searchConsumeProductRecord('search');
+    this.loadProjectAll();
+    this.searchConsumeProjectRecord('search');
   }
 };
 </script>

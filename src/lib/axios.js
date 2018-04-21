@@ -22,7 +22,7 @@ const Axios = axios.create({
 Axios.interceptors.request.use(
   config => {
     // 若是有做鉴权token , 就给头部带上token
-    if (config.url.match('login')) {
+    if (config.url.match('login') || config.url.match('applyAuthCode') || config.url.match('resetPassword')) {
       return config;
     } else {
       if (sessionStorage.getItem('token')) {

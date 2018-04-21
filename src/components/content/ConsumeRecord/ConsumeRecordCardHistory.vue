@@ -1,21 +1,16 @@
 <template>
-  <div class="ConsumeRecordProduct">
-    <el-form :inline="true" :model="consumeRecordProductSearch" ref="consumeRecordProductSearch" class="demo-form-inline search-form" 
-      @keyup.enter.native="searchConsumeProductRecord('search')">
+  <div class="ConsumeRecordCardHistory">
+    <el-form :inline="true" :model="consumeRecordCardSearch" ref="consumeRecordCardSearch" class="demo-form-inline search-form" 
+      @keyup.enter.native="searchConsumeCardRecord('search')">
       <el-form-item>
         <!-- 添加隐藏的input 阻止一个input时的默认回车事件 -->
         <el-input style="display:none;"></el-input>
-        <el-input v-model.trim="consumeRecordProductSearch.content" placeholder=""></el-input>
+        <el-input v-model.trim="consumeRecordCardSearch.content" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="searchConsumeProductRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
+        <el-button type="primary" @click="searchConsumeCardRecord('search')" icon="el-icon-search" class="search-btn">查询</el-button>
       </el-form-item>
     </el-form>
-    <div class="operate-box">
-      <router-link to="/consume-record-product/new-product">
-        <el-button type="primary" icon="el-icon-plus">买产品</el-button>
-      </router-link>
-    </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
       <el-table-column prop="tradeSerialNumber" label="流水号"></el-table-column>
@@ -39,23 +34,16 @@
       </el-table-column>
       <el-table-column prop="isModified" label="是否修改" :formatter="handleModified"></el-table-column>
       <el-table-column prop="remark" label="备注" :formatter="handleRemark"></el-table-column>
-      <el-table-column label="操作" width="220px;" fixed="right">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleProductDetail(scope.$index, scope.row)">详情</el-button>
-          <el-button size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini"
-            @click="handlePrint(scope.$index, scope.row)">打印</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column prop="consumeRecordDetailUnion" label="卡名" :formatter="handleCardName"></el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next" 
       :page-size="pageSize" :total="totalCount"
        @current-change="chagePage"></el-pagination>
-    <el-dialog title="产品详情" :visible.sync="productContentVisible" :show-close="false"
+    <el-dialog title="办卡赠品详情" :visible.sync="cardGiftContentVisible" :show-close="false"
       :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-table :data="productContentDetail" size="mini" v-loading="loading" style="width: 100%">
-        <el-table-column prop="productName" label="产品名称"></el-table-column>
+      <el-table :data="cardGiftContentDetail" size="mini" v-loading="loading" style="width: 100%">
+        <el-table-column prop="type" label="类型"></el-table-column>
+        <el-table-column prop="name" label="内容/金额"></el-table-column>
         <el-table-column prop="amount" label="个数"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
@@ -67,19 +55,19 @@
 
 <script>
 export default {
-  name: "ConsumeRecordProduct",
+  name: "ConsumeRecordCardHistory",
   data() {
     return {
-      consumeRecordProductSearch: {
+      consumeRecordCardSearch: {
         content: "",
         oldContent: "",//储存最近一次搜索的内容
         pageNum: 1,
         pageSize: 10,
-        consumeType: 2,
+        consumeType: 1,
       },
       loading: false,
-      productContentDetail: [],
-      productContentVisible: false
+      cardGiftContentDetail: [],
+      cardGiftContentVisible: false
     };
   },
   computed: {
@@ -96,17 +84,17 @@ export default {
       return this.$store.state.consumeRecord.totalPages;
     },
     tableData: function(){
-      return this.$store.state.consumeRecord.consumeRecords;
+      return this.$store.state.consumeRecord.consumeRecordsHistory;
     }
   },
   methods: {
-    searchConsumeProductRecord(type) {
+    searchConsumeCardRecord(type) {
       this.loading = true;
       if(type === 'search'){
-        this.consumeRecordProductSearch.oldContent = this.consumeRecordProductSearch.content;
+        this.consumeRecordCardSearch.oldContent = this.consumeRecordCardSearch.content;
       }
-      this.consumeRecordProductSearch.type = type;
-      this.$store.dispatch("loadConsumeRecord", this.consumeRecordProductSearch).then( res => {
+      this.consumeRecordCardSearch.type = type;
+      this.$store.dispatch("loadConsumeRecordHistory", this.consumeRecordCardSearch).then( res => {
         this.loading = false;
         this.$message.success('查询成功');
       }).catch( err => {
@@ -114,8 +102,8 @@ export default {
       });
     },
     chagePage(val){
-      this.consumeRecordProductSearch.pageNum = val;
-      this.searchConsumeProductRecord('page');
+      this.consumeRecordCardSearch.pageNum = val;
+      this.searchConsumeCardRecord('page');
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){
@@ -131,8 +119,15 @@ export default {
         return '是';
       }
     },
+    handleCardName(row, column){
+      if(!row.consumeRecordDetailUnion[0]){
+        return '充值';
+      }else{
+        return row.consumeRecordDetailUnion[0].cardName;
+      }
+    },
     handleEdit(index, row){
-      this.$router.push({ path: '/consume-record-product/' + row.id});
+      this.$router.push({ path: '/consume-record-card/' + row.id});
     },
     handlePrint(index, row){
       this.$message({
@@ -146,29 +141,44 @@ export default {
       }).then( res => {
         console.log(this.$store.state.consumeRecord.consumeRecordPrint);
         this.$message.closeAll();
-        this.$router.push({ path: '/print-product-record'});
+        this.$router.push({ path: '/print-card-record'});
       }).catch( err => {
         console.log(err);
       });
     },
-    handleProductDetail(index, row){// 显示产品详情
-      this.productContentDetail = [];
+    handleCardGiftDetail(index, row){// 显示卡礼物详情
+      this.cardGiftContentDetail = [];
       let consumeRecord = this.$store.getters.getConsumeRecordById(row.id);
-      for(let content of consumeRecord.consumeRecordDetailUnion){
-        this.productContentDetail.push({
-          'productName': content.productName,
-          'amount': content.amount,
-        })
+      for(let content of consumeRecord.consumeRecordGiftUnion){
+        if(content.productId){
+          this.cardGiftContentDetail.push({
+            'type': '产品',
+            'name': content.productName,
+            'amount': content.productAmount,
+          })
+        }else if(content.projectId){
+          this.cardGiftContentDetail.push({
+            'type': '项目',
+            'name': content.projectName,
+            'amount': content.projectAmount,
+          })
+        }else{
+          this.cardGiftContentDetail.push({
+            'type': '代金券',
+            'name': content.couponMoney,
+            'amount': content.couponAmount,
+          })
+        }
       }
-      this.productContentVisible = true;
+      this.cardGiftContentVisible = true;
     },
     onClose(formName){
-      this.productContentVisible = false;
-      this.productContentDetail = [];
+      this.cardGiftContentVisible = false;
+      this.cardGiftContentDetail = [];
     }
   },
   beforeMount: function () {
-    this.searchConsumeProductRecord('search');
+    this.searchConsumeCardRecord('search');
   }
 };
 </script>

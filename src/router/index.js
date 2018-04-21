@@ -73,15 +73,19 @@ import AppointmentFinish from '@/components/content/Appointment/AppointmentFinis
 import ConsumeRecordCard from '@/components/content/ConsumeRecord/ConsumeRecordCard'
 import ConsumeRecordNewCard from '@/components/content/ConsumeRecord/ConsumeRecordNewCard'
 import ConsumeRecordCardDetail from '@/components/content/ConsumeRecord/ConsumeRecordCardDetail'
+import ConsumeRecordCardHistory from '@/components/content/ConsumeRecord/ConsumeRecordCardHistory'
 import ConsumeRecordProduct from '@/components/content/ConsumeRecord/ConsumeRecordProduct'
 import ConsumeRecordNewProduct from '@/components/content/ConsumeRecord/ConsumeRecordNewProduct'
 import ConsumeRecordProductDetail from '@/components/content/ConsumeRecord/ConsumeRecordProductDetail'
+import ConsumeRecordProductHistory from '@/components/content/ConsumeRecord/ConsumeRecordProductHistory'
 import ConsumeRecordProject from '@/components/content/ConsumeRecord/ConsumeRecordProject'
 import ConsumeRecordNewProject from '@/components/content/ConsumeRecord/ConsumeRecordNewProject'
 import ConsumeRecordProjectDetail from '@/components/content/ConsumeRecord/ConsumeRecordProjectDetail'
+import ConsumeRecordProjectHistory from '@/components/content/ConsumeRecord/ConsumeRecordProjectHistory'
 import ConsumeRecordActivity from '@/components/content/ConsumeRecord/ConsumeRecordActivity'
 import ConsumeRecordNewActivity from '@/components/content/ConsumeRecord/ConsumeRecordNewActivity'
 import ConsumeRecordActivityDetail from '@/components/content/ConsumeRecord/ConsumeRecordActivityDetail'
+import ConsumeRecordActivityHistory from '@/components/content/ConsumeRecord/ConsumeRecordActivityHistory'
 import Schedule from '@/components/Schedule'
 import PrintCardRecord from '@/components/PrintCardRecord'
 import PrintProductRecord from '@/components/PrintProductRecord'
@@ -378,6 +382,10 @@ export default new Router({
           path: 'consume-record-card/:id',
           component: ConsumeRecordCardDetail
         },
+        { // 办卡修改记录
+          path: 'consume-record-card-history',
+          component: ConsumeRecordCardHistory
+        },
         { // 消费记录产品
           path: 'consume-record-product',
           component: ConsumeRecordProduct
@@ -389,6 +397,10 @@ export default new Router({
         { // 修改买产品消费记录
           path: 'consume-record-product/:id',
           component: ConsumeRecordProductDetail
+        },
+        { // 买产品修改记录
+          path: 'consume-record-product-history',
+          component: ConsumeRecordProductHistory
         },
         { // 消费记录项目
           path: 'consume-record-project',
@@ -402,6 +414,10 @@ export default new Router({
           path: 'consume-record-project/:id',
           component: ConsumeRecordProjectDetail
         },
+        { // 做项目修改记录
+          path: 'consume-record-project-history',
+          component: ConsumeRecordProjectHistory
+        },
         { // 消费记活动
           path: 'consume-record-activity',
           component: ConsumeRecordActivity
@@ -413,6 +429,10 @@ export default new Router({
         { // 修改买活动消费记录
           path: 'consume-record-activity/:id',
           component: ConsumeRecordActivityDetail
+        },
+        { // 买活动修改记录
+          path: 'consume-record-activity-history',
+          component: ConsumeRecordActivityHistory
         },
         { // 修改密码
           path: 'modpwd',

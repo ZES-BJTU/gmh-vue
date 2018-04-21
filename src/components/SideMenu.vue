@@ -69,11 +69,29 @@
 								</el-menu-item>
 							</router-link>
 
-							<!-- <router-link to="/consume-record-change">
+							<router-link to="/consume-record-card-history">
 								<el-menu-item index="7-5">
-									<span slot="title">消费记录变动</span>
+									<span slot="title">办卡修改记录</span>
 								</el-menu-item>
-							</router-link> -->
+							</router-link>
+
+							<router-link to="/consume-record-product-history">
+								<el-menu-item index="7-6">
+									<span slot="title">买产品修改记录</span>
+								</el-menu-item>
+							</router-link>
+
+							<router-link to="/consume-record-project-history">
+								<el-menu-item index="7-7">
+									<span slot="title">做项目修改记录</span>
+								</el-menu-item>
+							</router-link>
+
+							<router-link to="/consume-record-activity-history">
+								<el-menu-item index="7-8">
+									<span slot="title">参加活动修改记录</span>
+								</el-menu-item>
+							</router-link>
 						</el-submenu>
 
 						<el-submenu index="8" v-if="role==='店长' || role==='前台'">
@@ -180,12 +198,6 @@
 							</el-menu-item>
 						</router-link>
 
-						<!-- <router-link to="/employee" v-if="role==='店长' || role==='前台'">
-							<el-menu-item index="14">
-								<span slot="title">员工绩效</span>
-							</el-menu-item>
-						</router-link> -->
-
 					</el-menu>
 				</el-col>
 			</el-row>
@@ -224,9 +236,18 @@ export default {
       } else if (route.match("appointment")) {
         // 店长|前台-预约
         return "6";
-      } else if (route.match("consume-record-change")) {
-				// 店长|前台-消费记录变动
-        return "7-5"; //调整顺序是为了优先匹配consume-change
+      } else if (route.match("consume-record-activity-history")) {
+				// 店长|前台-参加活动修改记录
+        return "7-8"; //调整顺序是为了优先匹配consume-record-activity-history
+      } else if (route.match("consume-record-project-history")) {
+				// 店长|前台-做项目修改记录
+        return "7-7"; //调整顺序是为了优先匹配consume-record-project-history
+      } else if (route.match("consume-record-product-history")) {
+				// 店长|前台-买活动修改记录
+        return "7-6"; //调整顺序是为了优先匹配consume-record-product-history
+      } else if (route.match("consume-record-card-history")) {
+				// 店长|前台-办卡修改记录
+        return "7-5"; //调整顺序是为了优先匹配consume-record-card-history
       } else if (route.match("consume-record-card")) {
         // 店长|前台-办卡消费记录
         return "7-1";

@@ -85,6 +85,11 @@
             <el-input-number v-model="modProduct.couponAmount" controls-position="right" :min="0"></el-input-number>
           </el-form-item>
 
+          <!-- 验证码 -->
+          <el-form-item label="验证码" v-if="modProduct.couponAmount > 1">
+            <el-input v-model="modProduct.validStr" placeholder="请出入验证码"></el-input>
+          </el-form-item>
+
           <!-- 客户活动优惠劵 -->
           <el-form-item label="活动优惠券" v-if="activityCoupon.id != ''">
             <el-select v-model.number="modProduct.payWayContentId" placeholder="请选择优惠券"
@@ -113,10 +118,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="绩效">
-            <el-select v-model="modProduct.percents" multiple  placeholder="请输入绩效" filterable>
-              <el-option v-for="per in percentage" :key="per.value" :label="per.name" :value="per.value">
-              </el-option>
-            </el-select>
+            <el-input v-model.trim="modProduct.percents" placeholder="请输入数字,用中文句号分隔"></el-input>
           </el-form-item>
           <el-form-item label="产品">
             <el-table :data="productsCopy" size="mini" v-loading="loading" style="width: 100%">
@@ -167,8 +169,9 @@ export default {
         couponAmount: 0,
         remark: '',
         employeeIds: [],
-        percents: [],
-        products: []
+        percents: '',
+        products: [],
+        validStr: ''
       },
       rules: {
         customerMobile: [
@@ -334,28 +337,24 @@ export default {
           if(this.modProduct.products.length == 0){
             this.$message.error("请添加产品!");
           }else{
-            if(this.modProduct.employeeIds.length != this.modProduct.employeeIds.length){
-              this.$message.error('输入员工绩效比例有误');
-            }else{
-              this.loading = true;
-              this.enterFlag = false;
-              this.$store
-                .dispatch("modConsumeRecord", this.handleData(this.modProduct))
-                .then(res => {
-                  if (res.code === 0) {
-                    this.$message.success("修改成功");
-                    setTimeout(() => {
-                      this.loading = false;
-                      this.$router.push({ path: "/consume-record-product" });
-                    }, 1000);
-                  }
-                })
-                .catch(err => {
-                  this.loading = false;
-                  this.enterFlag = true;
-                  console.log(err);
-                });
-            }
+            this.loading = true;
+            this.enterFlag = false;
+            this.$store
+              .dispatch("modConsumeRecord", this.handleData(this.modProduct))
+              .then(res => {
+                if (res.code === 0) {
+                  this.$message.success("修改成功");
+                  setTimeout(() => {
+                    this.loading = false;
+                    this.$router.push({ path: "/consume-record-product" });
+                  }, 1000);
+                }
+              })
+              .catch(err => {
+                this.loading = false;
+                this.enterFlag = true;
+                console.log(err);
+              });
           }
         } else {
           return false;
@@ -384,6 +383,7 @@ export default {
       this.modProduct.payWayId = '';
       this.modProduct.payWayContentId = '';
       this.modProduct.couponAmount = 0;
+      this.modProduct.validStr = '';
       if(val === 1){ // 会员卡
         this.activity.id = '';
         this.cardCoupon.id = '';
@@ -462,6 +462,7 @@ export default {
       }
     },
     handleCardContentSelect(val){// 切换会员卡
+      this.modProduct.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.card.id = card.id
       this.card.remainingMoney = card.remainingMoney;
@@ -470,6 +471,7 @@ export default {
       this.cardContentDetail = card.customerMemberCardContent;
     },
     handleCardCouponSelect(val){// 切换会员卡
+      this.modProduct.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.cardCoupon.id = card.id;
       this.cardCoupon.productDiscount = card.productDiscount*100;
@@ -479,14 +481,17 @@ export default {
       this.modProduct.couponAmount = 0;
     },
     handleCardCouponDetailSelect(val){// 切换优惠券
+      this.modProduct.validStr = '';
       this.modProduct.couponAmount = 0;
     },
     handleActivityContentSelect(val){// 切换活动
+      this.modProduct.validStr = '';
       let activity = this.$store.getters.getCustomerActivityPayById(val);
       this.activity.id = activity.id;
       this.activityContentDetail= activity.customerActivityContents;
     },
     handleActivityCouponSelect(val){// 切换活动
+      this.modProduct.validStr = '';
       let activity = this.$store.getters.getCustomerActivityPayById(val);
       this.activityCoupon.id = activity.id;
       this.activityCouponContentDetail = activity.customerActivityContents;
@@ -494,6 +499,7 @@ export default {
       this.modProduct.couponAmount = 0;
     },
     handleActivityCouponDetailSelect(val){// 切换优惠券
+      this.modProduct.validStr = '';
       this.modProduct.couponAmount = 0;
     },
     handleData(data){
@@ -510,8 +516,9 @@ export default {
           remark: '',
         },
         employeeIds: [],
-        percents: [],
+        percents: '',
         consumeRecordDetails: [],
+        validStr: ''
       };
 
       dataChange.consumeRecordPo.id = data.consumeId;
@@ -526,6 +533,8 @@ export default {
 
       dataChange.employeeIds = data.employeeIds;
       dataChange.percents = data.percents;
+
+      dataChange.validStr = data.validStr;
 
       for(let product of data.products){
         dataChange.consumeRecordDetails.push({

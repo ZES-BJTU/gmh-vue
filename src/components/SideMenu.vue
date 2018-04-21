@@ -159,7 +159,7 @@
 							</router-link>
 						</el-submenu>
 
-						<router-link to="/member-card" v-if="role==='店长' || role==='前台'">
+						<router-link to="/member-card" v-if="role==='店长'">
 							<el-menu-item index="11">
 								<span slot="title">会员卡</span>
 							</el-menu-item>
@@ -186,7 +186,7 @@
 							</router-link>
 						</el-submenu>
 
-						<router-link to="/activity" v-if="role==='店长' || role==='前台'">
+						<router-link to="/activity" v-if="role==='店长'">
 								<el-menu-item index="13">
 										<span slot="title">活动</span>
 								</el-menu-item>

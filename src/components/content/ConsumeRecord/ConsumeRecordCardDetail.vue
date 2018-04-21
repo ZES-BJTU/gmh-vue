@@ -33,10 +33,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="绩效">
-            <el-select v-model="modCard.percents" multiple  placeholder="请输入绩效" filterable>
-              <el-option v-for="per in percentage" :key="per.value" :label="per.name" :value="per.value">
-              </el-option>
-            </el-select>
+            <el-input v-model.number="modCard.percents" placeholder="请输入数字,用中文句号分隔"></el-input>
           </el-form-item>
           <el-form-item label="有效期" prop="validDate">
             <el-date-picker v-model="modCard.validDate" align="center" 
@@ -112,7 +109,7 @@ export default {
         cardId: '',
         amount: 1,// 会员卡张数1
         employeeIds: [],
-        percents: [],
+        percents: '',
         validDate: '',
         id: '',
         type: '',
@@ -266,28 +263,24 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(this.modCard.employeeIds.length != this.modCard.employeeIds.length){
-            this.$message.error('输入员工绩效比例有误');
-          }else{
-            this.loading = true;
-            this.enterFlag = false;
-            this.$store
-              .dispatch("modConsumeRecord", this.handleData(this.modCard))
-              .then(res => {
-                if (res.code === 0) {
-                  this.$message.success("添加成功");
-                  setTimeout(() => {
-                    this.loading = false;
-                    this.$router.push({ path: "/consume-record-card" });
-                  }, 1000);
-                }
-              })
-              .catch(err => {
-                this.loading = false;
-                this.enterFlag = true;
-                console.log(err);
-              });
-          }
+          this.loading = true;
+          this.enterFlag = false;
+          this.$store
+            .dispatch("modConsumeRecord", this.handleData(this.modCard))
+            .then(res => {
+              if (res.code === 0) {
+                this.$message.success("添加成功");
+                setTimeout(() => {
+                  this.loading = false;
+                  this.$router.push({ path: "/consume-record-card" });
+                }, 1000);
+              }
+            })
+            .catch(err => {
+              this.loading = false;
+              this.enterFlag = true;
+              console.log(err);
+            });
         } else {
           return false;
         }
@@ -373,7 +366,7 @@ export default {
           remark: '',
         },
         employeeIds: [],
-        percents: [],
+        percents: '',
         memberCardPo: {
           id: '',
           type: '',

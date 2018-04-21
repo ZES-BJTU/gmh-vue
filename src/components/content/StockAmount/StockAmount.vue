@@ -21,13 +21,13 @@
       <el-table-column prop="stockTypeName" label="库存分类"></el-table-column>
       <el-table-column prop="amount" label="数量"></el-table-column>
       <el-table-column prop="unitName" label="计量单位"></el-table-column>
-      <el-table-column label="操作"  width="150" fixed="right">
+      <el-table-column label="操作"  width="220" fixed="right">
         <template slot-scope="scope">
-          <el-button
-            type="primary" size="mini"
+          <el-button type="primary" size="mini"
             @click="handleSupply(scope.$index, scope.row)">补货</el-button>
-          <el-button
-            size="mini"
+          <el-button size="mini"
+            @click="handleConvert(scope.$index, scope.row)">转店</el-button>
+          <el-button  size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
         </template>
       </el-table-column>
@@ -115,6 +115,9 @@ export default {
     handleSupply(index, row){
       console.log(row.stockAmountId);
       this.$router.push({ path: '/stock-amount-supply/' + row.stockAmountId});
+    },
+    handleConvert(index, row){
+      this.$router.push({ path: '/stock-amount-convert/' + row.stockAmountId});
     },
     handleEdit(index, row){
       this.$router.push({ path: '/stock-amount-detail/' + row.stockAmountId});

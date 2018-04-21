@@ -50,6 +50,15 @@ const actions = {
       })
     });
   },
+  convertStockAmount({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.patch('/stocks/amount/convert/' + info.stockId,info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
   modStockAmount({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/stocks/amount/' + info.id,info).then( res => {

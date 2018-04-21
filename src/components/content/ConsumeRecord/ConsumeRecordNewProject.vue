@@ -98,6 +98,11 @@
             <el-input-number v-model="newProject.couponAmount" controls-position="right" :min="0"></el-input-number>
           </el-form-item>
 
+          <!-- 验证码 -->
+          <el-form-item label="验证码" v-if="newProject.couponAmount > 1">
+            <el-input v-model="newProject.validStr" placeholder="请出入验证码"></el-input>
+          </el-form-item>
+
           <!-- 客户活动 -->
           <el-form-item label="活动内容" v-if="activity.id != ''">
             <el-table :data="activityContentDetail" size="mini" v-loading="loading" style="width: 100%">
@@ -167,7 +172,8 @@ export default {
         remark: '',
         employeeIds: [],
         percents: [],
-        projects: []
+        projects: [],
+        validStr: ''
       },
       rules: {
         customerMobile: [
@@ -385,6 +391,7 @@ export default {
       this.newProject.payWayId = '';
       this.newProject.payWayContentId = '';
       this.newProject.couponAmount = 0;
+      this.newProduct.validStr = '';
       if(val === 1){ // 会员卡
         this.activity.id = '';
         this.cardCoupon.id = '';
@@ -463,6 +470,7 @@ export default {
       }
     },
     handleCardContentSelect(val){// 切换会员卡
+      this.newProduct.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.card.id = card.id
       this.card.remainingMoney = card.remainingMoney;
@@ -471,6 +479,7 @@ export default {
       this.cardContentDetail = card.customerMemberCardContent;
     },
     handleCardCouponSelect(val){// 切换会员卡
+      this.newProduct.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.cardCoupon.id = card.id;
       this.cardCoupon.projectDiscount = card.projectDiscount*100;
@@ -480,14 +489,17 @@ export default {
       this.newProject.couponAmount = 0;
     },
     handleCardCouponDetailSelect(val){// 切换优惠券
+      this.newProduct.validStr = '';
       this.newProject.couponAmount = 0;
     },
     handleActivityContentSelect(val){// 切换活动
+      this.newProduct.validStr = '';
       let activity = this.$store.getters.getCustomerActivityPayById(val);
       this.activity.id = activity.id;
       this.activityContentDetail= activity.customerActivityContents;
     },
     handleActivityCouponSelect(val){// 切换活动
+      this.newProduct.validStr = '';
       let activity = this.$store.getters.getCustomerActivityPayById(val);
       this.activityCoupon.id = activity.id;
       this.activityCouponContentDetail = activity.customerActivityContents;
@@ -495,6 +507,7 @@ export default {
       this.newProject.couponAmount = 0;
     },
     handleActivityCouponDetailSelect(val){// 切换优惠券
+      this.newProduct.validStr = '';
       this.newProject.couponAmount = 0;
     },
     handleData(data){
@@ -512,6 +525,7 @@ export default {
         employeeIds: [],
         percents: [],
         consumeRecordDetails: [],
+        validStr: ''
       };
 
       dataChange.consumeRecordPo.customerMobile = data.customerMobile;
@@ -525,6 +539,8 @@ export default {
 
       dataChange.employeeIds = data.employeeIds;
       dataChange.percents = data.percents;
+
+      dataChange.validStr = data.validStr;
 
       for(let project of data.projects){
         dataChange.consumeRecordDetails.push({

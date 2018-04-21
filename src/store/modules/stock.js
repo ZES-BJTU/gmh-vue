@@ -6,7 +6,8 @@ const state = {
   totalCount: 0,
   totalPages: 0,
   stocks: [],
-  stocksAll: []
+  stocksAll: [],
+  stocksStoreAll: [],
 }
 
 // getters
@@ -50,6 +51,18 @@ const actions = {
       httpServer.get('/stocks/all').then( res => {
         commit('loadStockAll', {
           stocksAll: res.data
+        });
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
+  loadStockStoreAll({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.get('/stocks/store/all').then( res => {
+        commit('loadStockStoreAll', {
+          stocksStoreAll: res.data
         });
         resolve(res);
       }).catch( error => {
@@ -106,6 +119,9 @@ const mutations = {
   },
   loadStockAll(state, payload){
     state.stocksAll = payload.stocksAll;
+  },
+  loadStockStoreAll(state, payload){
+    state.stocksStoreAll = payload.stocksStoreAll;
   },
 }
 

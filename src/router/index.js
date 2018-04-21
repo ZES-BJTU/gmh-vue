@@ -24,6 +24,7 @@ import StockDetail from '@/components/content/Stock/StockDetail'
 import StockNewAmount from '@/components/content/Stock/StockNewAmount'
 import StockAmount from '@/components/content/StockAmount/StockAmount'
 import StockAmountSupply from '@/components/content/StockAmount/StockAmountSupply'
+import StockAmountConvert from '@/components/content/StockAmount/StockAmountConvert'
 import StockAmountDetail from '@/components/content/StockAmount/StockAmountDetail'
 import ProductType from '@/components/content/ProductType/ProductType'
 import ProductTypeNew from '@/components/content/ProductType/ProductTypeNew'
@@ -34,6 +35,8 @@ import ProductDetail from '@/components/content/Product/ProductDetail'
 import ProductNewAmount from '@/components/content/Product/ProductNewAmount'
 import ProductAmount from '@/components/content/ProductAmount/ProductAmount'
 import ProductAmountSupply from '@/components/content/ProductAmount/ProductAmountSupply'
+import ProductAmountConvert from '@/components/content/ProductAmount/ProductAmountConvert'
+import ProductAmountConvertEach from '@/components/content/ProductAmount/ProductAmountConvertEach'
 import ProductAmountDetail from '@/components/content/ProductAmount/ProductAmountDetail'
 import Customer from '@/components/content/Customer/Customer'
 import CustomerNew from '@/components/content/Customer/CustomerNew'
@@ -183,6 +186,10 @@ export default new Router({
           path: 'stock-amount-supply/:id',
           component: StockAmountSupply
         },
+        { // 库存数量转店
+          path: 'stock-amount-convert/:id',
+          component: StockAmountConvert
+        },
         { // 修改库存数量
           path: 'stock-amount-detail/:id',
           component: StockAmountDetail
@@ -222,6 +229,14 @@ export default new Router({
         { // 补充产品数量
           path: 'product-amount-supply/:id',
           component: ProductAmountSupply
+        },
+        { // 产品数量转店
+          path: 'product-amount-convert/:id',
+          component: ProductAmountConvert
+        },
+        { // 产品库存转化
+          path: 'product-amount-convert-each',
+          component: ProductAmountConvertEach
         },
         { // 修改产品数量
           path: 'product-amount-detail/:id',

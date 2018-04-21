@@ -50,6 +50,24 @@ const actions = {
       })
     });
   },
+  convertProductAmount({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.patch('/products/amount/convert/' + info.productId,info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
+  convertEach({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.post('/products/stocks/flows',info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
   modProductAmount({commit}, info) {
     return new Promise((resolve, reject) => {
       httpServer.put('/products/amount/' + info.id,info).then( res => {

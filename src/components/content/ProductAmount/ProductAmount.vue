@@ -11,24 +11,29 @@
       </el-form-item>
     </el-form>
     <div class="operate-box">
+      <router-link to="/product-amount-convert-each">
+        <el-button type="primary" icon="el-icon-plus">转化</el-button>
+      </router-link>
       <el-button icon="el-icon-download" @click="exportProductsVisible = true">导出产品流水</el-button>
+      <el-button icon="el-icon-download" @click="exportConvertVisible = true">导出库存产品转化流水</el-button>
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>
-      <el-table-column prop="productAmountId" label="SroductAmountId" v-if="false"></el-table-column>
+      <el-table-column prop="productAmountId" label="productAmountId" v-if="false"></el-table-column>
       <el-table-column prop="code" label="编码"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="productTypeName" label="产品分类"></el-table-column>
       <el-table-column prop="amount" label="数量"></el-table-column>
       <el-table-column prop="unitName" label="计量单位"></el-table-column>
       <el-table-column prop="unitPrice" label="单价"></el-table-column>
-      <el-table-column label="操作"  width="150" fixed="right">
+      <el-table-column label="操作"  width="220" fixed="right">
         <template slot-scope="scope">
           <el-button
             type="primary" size="mini"
             @click="handleSupply(scope.$index, scope.row)">补货</el-button>
-          <el-button
-            size="mini"
+          <el-button size="mini"
+            @click="handleConvert(scope.$index, scope.row)">转店</el-button>
+          <el-button size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
         </template>
       </el-table-column>
@@ -38,7 +43,7 @@
        @current-change="chagePage"></el-pagination>
     <el-dialog title="导出产品流水" :visible.sync="exportProductsVisible" :show-close="false"
       :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-form :model="exportProductsForm" ref="exportProductsForm" v-loading="exportLoading">
+      <el-form :model="exportProductsForm" ref="exportProductsForm" v-loading="exportProductsLoading">
         <el-form-item prop="exportTime">
           <el-date-picker
             v-model="exportProductsForm.exportTime"
@@ -52,7 +57,26 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="onClose('exportProductsForm')">取 消</el-button>
-        <el-button type="primary" @click="onExport('exportProductsForm')">导 出</el-button>
+        <el-button type="primary" @click="onExportProducts('exportProductsForm')">导 出</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="导出库存产品转化流水" :visible.sync="exportConvertVisible" :show-close="false"
+      :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-form :model="exportConvertForm" ref="exportConvertForm" v-loading="exportConvertLoading">
+        <el-form-item prop="exportTime">
+          <el-date-picker
+            v-model="exportConvertForm.exportTime"
+            type="daterange"
+            align="center"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onClose('exportConvertForm')">取 消</el-button>
+        <el-button type="primary" @click="onExportConvert('exportConvertForm')">导 出</el-button>
       </span>
     </el-dialog>
   </div>
@@ -73,9 +97,14 @@ export default {
       exportProductsForm: {
         exportTime: '',
       },
+      exportConvertForm: {
+        exportTime: '',
+      },
       loading: false,
       exportProductsVisible: false,
-      exportLoading: false,
+      exportProductsLoading: false,
+      exportConvertVisible: false,
+      exportConvertLoading: false,
     };
   },
   computed: {
@@ -116,17 +145,21 @@ export default {
     handleSupply(index, row){
       this.$router.push({ path: '/product-amount-supply/' + row.productAmountId});
     },
+    handleConvert(index, row){
+      this.$router.push({ path: '/product-amount-convert/' + row.productAmountId});
+    },
     handleEdit(index, row){
       this.$router.push({ path: '/product-amount-detail/' + row.productAmountId});
     },
     onClose(formName){
       this.exportProductsVisible = false;
+      this.exportConvertVisible = false;
       this.$refs[formName].resetFields();
     },
-    onExport(formName){
+    onExportProducts(formName){
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.exportLoading = true;
+          this.exportProductsLoading = true;
 
           let beginTime, endTime;
           if(this.exportProductsForm.exportTime != ''){
@@ -138,7 +171,7 @@ export default {
           }
           if(beginTime != '' && endTime != '' && beginTime === endTime){
             this.$message.error('请选择不同的日期！');
-            this.exportLoading = false;
+            this.exportProductsLoading = false;
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
@@ -147,8 +180,42 @@ export default {
             window.location.href = href;
 
             setTimeout(() => {
-              this.exportLoading = false;
+              this.exportProductsLoading = false;
               this.exportProductsVisible = false;
+              this.$refs[formName].resetFields();
+            },2000)
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+    onExportConvert(formName){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.exportConvertLoading = true;
+
+          let beginTime, endTime;
+          if(this.exportConvertForm.exportTime != ''){
+            beginTime = this.toTimeStamp(this.exportConvertForm.exportTime[0]);
+            endTime = this.toTimeStamp(this.exportConvertForm.exportTime[1]);
+          }else{
+            beginTime = '';
+            endTime = '';
+          }
+          if(beginTime != '' && endTime != '' && beginTime === endTime){
+            this.$message.error('请选择不同的日期！');
+            this.exportConvertLoading = false;
+            this.$refs[formName].resetFields();
+          }else{
+            let token = sessionStorage.getItem('token');
+            var href = "http://localhost:8080/export/products/stocks";
+            href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
+            window.location.href = href;
+
+            setTimeout(() => {
+              this.exportConvertLoading = false;
+              this.exportConvertVisible = false;
               this.$refs[formName].resetFields();
             },2000)
           }

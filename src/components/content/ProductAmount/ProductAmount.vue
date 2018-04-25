@@ -175,7 +175,8 @@ export default {
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
-            var href = this.$store.state.baseUrl+"/export/products";
+            // var href = this.$store.state.baseUrl+"/export/products";
+            var href = "http://39.106.234.57:8080/export/products";
             href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
             window.location.href = href;
 
@@ -209,7 +210,8 @@ export default {
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
-            var href = this.$store.state.baseUrl+"/export/products/stocks";
+            // var href = this.$store.state.baseUrl+"/export/products/stocks";
+            var href = "http://39.106.234.57:8080/export/products/stocks";
             href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
             window.location.href = href;
 

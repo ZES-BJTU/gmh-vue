@@ -88,10 +88,10 @@ export default {
       let websocket = null;
       if ('WebSocket' in window) {
         console.log('客户端支持websocket');
-        websocket = new WebSocket("ws://localhost:8080/appointment/remind/" + this.getTokenSession());
+        // websocket = new WebSocket("ws://localhost:8080/appointment/remind/" + this.getTokenSession());
         // websocket = new WebSocket("ws://123.56.26.101:8080/appointment/remind/" + this.getTokenSession());
         // websocket = new WebSocket("ws://47.95.4.170:8080/appointment/remind/" + this.getTokenSession());
-        // websocket = new WebSocket("ws://39.106.234.57:8080/appointment/remind/" + this.getTokenSession());
+        websocket = new WebSocket("ws://39.106.234.57:8080/appointment/remind/" + this.getTokenSession());
       } else {
         this.$message.error('当前浏览器不支持websocket');
       }

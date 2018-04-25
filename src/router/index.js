@@ -97,8 +97,8 @@ import { print } from 'util';
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
-  // base: '/gmh/',
+  // mode: 'history',
+  base: '/gmh/',
   routes: [{
       path: '/',
       name: 'Home',

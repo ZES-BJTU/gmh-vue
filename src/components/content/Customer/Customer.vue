@@ -200,7 +200,7 @@ export default {
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
-            var href = "http://localhost:8080/export/customer";
+            var href = this.$store.state.baseUrl+"/export/customer";
             href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
             window.location.href = href;
   

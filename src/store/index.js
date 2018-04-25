@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 import account from './modules/account'
 import user from './modules/user'
 import store from './modules/store'
@@ -23,12 +22,15 @@ import consumeRecord from './modules/consumeRecord'
 import * as actions from './actions'
 import mutations from './mutations'
 
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = 'http://localhost:8080';
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  states: {
+    baseUrl: 'http://localhost:8080',
+    // baseUrl: 'http://123.56.26.101:8080',
+    // baseUrl: 'http://47.95.4.170:8080',
+    // baseUrl: 'http://39.106.234.57:8080',
+  },
   actions: actions,
   mutations: mutations,
   modules: {

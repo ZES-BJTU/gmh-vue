@@ -98,6 +98,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  // base: '/gmh/',
   routes: [{
       path: '/',
       name: 'Home',

@@ -8,7 +8,10 @@ var CancelToken = axios.CancelToken;
 var source = CancelToken.source();
 
 const Axios = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://localhost:8080/",
+  // baseURL: "http://123.56.26.101:8080/",
+  // baseURL: "http://47.95.4.170:8080/",
+  // baseURL: "http://39.106.234.57:8080/",
   timeout: 5000,
   responseType: "json",
   cancelToken: source.token,
@@ -53,24 +56,25 @@ Axios.interceptors.request.use(
 //返回状态判断(添加响应拦截器)
 Axios.interceptors.response.use(
   res => {
-    // console.log(res);
+    console.log(res);
     switch( res.status ){
       case 201:
-        // Message({
-        //   showClose: true,
-        //   message: '新建成功',
-        //   type: "success"
-        // });
+        Message({
+          showClose: true,
+          message: '新建成功',
+          type: "success"
+        });
         break;
       case 204:
-        // Message({
-        //   showClose: true,
-        //   message: '删除成功',
-        //   type: "success"
-        // });
+        Message({
+          showClose: true,
+          message: '删除成功',
+          type: "success"
+        });
         break;
       default:
         if (res.data.code != 0) {
+          console.log(res.data.code);
           Message({
             //  饿了么的消息弹窗组件,类似toast
             showClose: true,

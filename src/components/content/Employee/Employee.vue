@@ -218,7 +218,7 @@ export default {
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
-            var href = "http://localhost:8080/export/employeePerformance";
+            var href = this.$store.state.baseUrl+"/export/employeePerformance";
             href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
             window.location.href = href;
 
@@ -251,7 +251,7 @@ export default {
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
-            var href = "http://localhost:8080/export/employeeSale";
+            var href = this.$store.state.baseUrl+"/export/employeeSale";
             href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
             window.location.href = href;
 

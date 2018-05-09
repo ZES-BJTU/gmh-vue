@@ -43,7 +43,7 @@ export default {
           { required: true, message: "验证码不能为空", trigger: "blur" },
         ]
       },
-      count: 10,
+      count: 60,
       conutText: '发送验证码',
       conutText1: '请',
       conutText2: 's后重新发送',

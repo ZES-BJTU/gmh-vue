@@ -4,6 +4,7 @@ body{
     margin: 0;
     padding: 0;
     font-size: 12px;
+    font-family: 'Microsoft Yahei'
 }
 a{
     text-decoration: none;
@@ -11,6 +12,29 @@ a{
         color:#606266;
     }
 }
+
+.el-menu-item{
+    font-size: 12px;
+}
+
+.el-submenu__title {
+    font-size: 12px;
+}
+
+.el-menu-item.is-active {
+    color: $theme-color;
+}
+
+.el-button--primary, .el-button--primary:focus {
+    background-color: #7bcad9;
+    border-color: #7bcad9;
+}
+
+.el-button--primary:hover {
+    background-color: $theme-color;
+    border-color: $theme-color;
+}
+
 .signin-input{
     .el-input__inner{
         border:1px;

@@ -3,16 +3,16 @@
         <el-menu class="el-menu-demo" mode="horizontal">
           <el-menu-item index="1">
             <img class="header-logo" src="../assets/images/logo-blue-2.png" alt="">
-            <router-link to="/">光美焕</router-link>
+            <router-link to="/"><span style="font-size:14px;">光美焕</span></router-link>
           </el-menu-item>
           <el-submenu index="2" class="account-item">
-              <template slot="title">{{name}}</template>
+              <template slot="title"><span style="font-size:14px;">{{name}}</span></template>
               <router-link to="/modpwd">
 								<el-menu-item index="2-1">
-                  修改密码
+                  <span style="font-size:14px;">修改密码</span>
                 </el-menu-item>
 							</router-link>
-              <el-menu-item index="2-3" @click="signout">退出登录</el-menu-item>
+              <el-menu-item index="2-3" @click="signout"><span style="font-size:14px;">退出登录</span></el-menu-item>
           </el-submenu>
         </el-menu>
     </div>

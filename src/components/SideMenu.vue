@@ -8,36 +8,50 @@
 							<el-menu-item index="1">
 								<span slot="title">店铺</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
 
 						<router-link to="/principal" v-if="role==='管理员'">
 							<el-menu-item index="2">
 								<span slot="title">店铺负责人</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
+
 
 						<!-- <router-link to="/chart" v-if="role==='店长'">
 							<el-menu-item index="3">
 								<span slot="title">首页</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link> -->
 
 						<router-link to="/reception" v-if="role==='店长'">
 							<el-menu-item index="4">
 								<span slot="title">前台</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
+
 
 						<router-link to="/operator" v-if="role==='店长'">
 							<el-menu-item index="5">
 								<span slot="title">操作员</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
 
 						<router-link to="/appointment" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="6">
 								<span slot="title">预约</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
 
 						<el-submenu index="7" v-if="role==='店长' || role==='前台'">
@@ -46,45 +60,62 @@
 							</template>
 
 							<router-link to="/consume-record-card">
+								<div class="hr"></div>
+
 								<el-menu-item index="7-1">
 									<span slot="title">办卡消费记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
+
 							
 							<router-link to="/consume-record-product">
 								<el-menu-item index="7-2">
 									<span slot="title">买产品消费记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 							
 							<router-link to="/consume-record-project">
 								<el-menu-item index="7-3">
 									<span slot="title">做项目消费记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 							
 							<router-link to="/consume-record-activity">
 								<el-menu-item index="7-4">
 									<span slot="title">参加活动消费记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/consume-record-card-history">
 								<el-menu-item index="7-5">
 									<span slot="title">办卡修改记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/consume-record-product-history">
 								<el-menu-item index="7-6">
 									<span slot="title">买产品修改记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/consume-record-project-history">
 								<el-menu-item index="7-7">
 									<span slot="title">做项目修改记录</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/consume-record-activity-history">
@@ -92,28 +123,40 @@
 									<span slot="title">参加活动修改记录</span>
 								</el-menu-item>
 							</router-link>
+
 						</el-submenu>
+
+						<div class="hr"></div>
 
 						<el-submenu index="8" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
 								<span>客户</span>
 							</template>
+
 							<router-link to="/customer">
+								<div class="hr"></div>
+
 								<el-menu-item index="8-1">
 									<span slot="title">客户</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/customer-card">
 								<el-menu-item index="8-2">
 									<span slot="title">客户会员卡</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/customer-activity">
 								<el-menu-item index="8-3">
 									<span slot="title">客户活动</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
 
 							<router-link to="/customer-card-change-record">
@@ -123,35 +166,56 @@
 							</router-link>
 						</el-submenu>
 
+						<div class="hr"></div>
+
 						<el-submenu index="9" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
 								<span>库存</span>
 							</template>
+
 							<router-link to="/stock-type">
+								<div class="hr"></div>
+
 								<el-menu-item index="9-1">
 									<span slot="title">库存分类管理</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
+
 							<router-link to="/stock">
 								<el-menu-item index="9-2">
 									<span slot="title">库存管理</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
+							
 							<router-link to="/stock-amount">
 								<el-menu-item index="9-3">
 									<span slot="title">本店库存</span>
 								</el-menu-item>
 							</router-link>
+
 						</el-submenu>
+						
+						<div class="hr"></div>
+
 						<el-submenu index="10" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
 								<span>项目</span>
 							</template>
+
 							<router-link to="/project-type">
+								<div class="hr"></div>
+
 								<el-menu-item index="10-1">
 									<span slot="title">项目分类管理</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
+							
 							<router-link to="/project">
 								<el-menu-item index="10-2">
 									<span slot="title">项目管理</span>
@@ -159,26 +223,39 @@
 							</router-link>
 						</el-submenu>
 
+						<div class="hr"></div>
+
 						<router-link to="/member-card" v-if="role==='店长'">
 							<el-menu-item index="11">
 								<span slot="title">会员卡</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
 
 						<el-submenu index="12" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
 								<span>产品</span>
 							</template>
+
 							<router-link to="/product-type">
+								<div class="hr"></div>
+
 								<el-menu-item index="12-1">
 									<span slot="title">产品分类管理</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
+
 							<router-link to="/product">
 								<el-menu-item index="12-2">
 									<span slot="title">产品管理</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 							</router-link>
+
 							<router-link to="/product-amount">
 								<el-menu-item index="12-3">
 									<span slot="title">本店产品</span>
@@ -186,16 +263,22 @@
 							</router-link>
 						</el-submenu>
 
+						<div class="hr"></div>
+
 						<router-link to="/activity" v-if="role==='店长'">
 								<el-menu-item index="13">
 										<span slot="title">活动</span>
 								</el-menu-item>
+
+								<div class="hr"></div>
 						</router-link>
 
 						<router-link to="/employee" v-if="role==='店长' || role==='前台'">
 							<el-menu-item index="14">
 								<span slot="title">员工</span>
 							</el-menu-item>
+
+							<div class="hr"></div>
 						</router-link>
 
 					</el-menu>
@@ -319,4 +402,5 @@ export default {
 .SideMenu {
   position: fixed;
 }
+.hr{ height:1px;border:none;border-top:1px solid #e6e6e6;margin: 0 20px;}
 </style>

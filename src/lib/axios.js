@@ -8,10 +8,8 @@ var CancelToken = axios.CancelToken;
 var source = CancelToken.source();
 
 const Axios = axios.create({
-  baseURL: "http://localhost:8080",
-  // baseURL: "http://123.56.26.101:8080",
-  // baseURL: "http://47.95.4.170:8080",
-  // baseURL: "http://39.106.234.57:8080",
+  // baseURL: "http://localhost:8080",
+  baseURL: "http://39.106.234.57:8080",
   timeout: 5000,
   responseType: "json",
   cancelToken: source.token,

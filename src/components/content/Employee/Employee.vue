@@ -218,8 +218,8 @@ export default {
             this.$refs[formName].resetFields();
           }else{
             let token = sessionStorage.getItem('token');
-            var href = this.$store.state.baseUrl+"/export/employeePerformance";
-            // var href = "http://39.106.234.57:8080/export/employeePerformance";
+            // var href = this.$store.state.baseUrl+"/export/employeePerformance";
+            var href = "http://39.106.234.57:8080/export/employeePerformance";
             href = href +'?beginTime='+ beginTime + '&endTime=' + endTime + '&token=' + token;
             window.location.href = href;
 

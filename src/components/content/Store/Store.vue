@@ -13,6 +13,9 @@
       <router-link to="/store/new">
         <el-button type="primary" icon="el-icon-plus">新建</el-button>
       </router-link>
+      <router-link to="/questionnaire">
+        <el-button icon="el-icon-edit-outline">设置问卷</el-button>
+      </router-link>
     </div>
     <el-table :data="tableData" size="mini" v-loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" v-if="false"></el-table-column>

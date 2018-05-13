@@ -2,8 +2,7 @@
     <div class="HomeHeader">
         <el-menu class="el-menu-demo" mode="horizontal">
           <el-menu-item index="1">
-            <img class="header-logo" src="../assets/images/logo-blue-2.png" alt="">
-            <router-link to="/"><span style="font-size:14px;">光美焕</span></router-link>
+            <img class="header-logo" src="../assets/images/logo.png" alt="">
           </el-menu-item>
           <el-submenu index="2" class="account-item">
               <template slot="title"><span style="font-size:14px;">{{name}}</span></template>
@@ -52,7 +51,7 @@ export default {
   z-index: 999;
   width: calc(100% - 40px);
   .header-logo{
-    width: 60px;
+    width: 280px;
     margin-left: -20px;
   }
 }

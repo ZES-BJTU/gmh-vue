@@ -3,7 +3,7 @@
 		<el-aside class="home-aside" width="200px">
 			<el-row>
 				<el-col :span="24">
-					<el-menu :default-active="activeMenu" :unique-opened="true">
+					<el-menu id="sidemenu" :default-active="activeMenu" :unique-opened="true">
 						<router-link to="/store" v-if="role==='管理员'">
 							<el-menu-item index="1">
 								<span slot="title">店铺</span>
@@ -126,7 +126,7 @@
 
 						</el-submenu>
 
-						<div class="hr"></div>
+						<div class="hr" v-if="role==='店长' || role==='前台'"></div>
 
 						<el-submenu index="8" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
@@ -166,7 +166,7 @@
 							</router-link>
 						</el-submenu>
 
-						<div class="hr"></div>
+						<div class="hr" v-if="role==='店长' || role==='前台'"></div>
 
 						<el-submenu index="9" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
@@ -199,7 +199,7 @@
 
 						</el-submenu>
 						
-						<div class="hr"></div>
+						<div class="hr" v-if="role==='店长' || role==='前台'"></div>
 
 						<el-submenu index="10" v-if="role==='店长' || role==='前台'">
 							<template slot="title">
@@ -223,7 +223,7 @@
 							</router-link>
 						</el-submenu>
 
-						<div class="hr"></div>
+						<div class="hr" v-if="role==='店长' || role==='前台'"></div>
 
 						<router-link to="/member-card" v-if="role==='店长'">
 							<el-menu-item index="11">
@@ -263,7 +263,7 @@
 							</router-link>
 						</el-submenu>
 
-						<div class="hr"></div>
+						<div class="hr" v-if="role==='店长' || role==='前台'"></div>
 
 						<router-link to="/activity" v-if="role==='店长'">
 								<el-menu-item index="13">
@@ -403,4 +403,7 @@ export default {
   position: fixed;
 }
 .hr{ height:1px;border:none;border-top:1px solid #e6e6e6;margin: 0 20px;}
+#sidemenu{
+	height: calc(100vh - 60px);
+}
 </style>

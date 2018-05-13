@@ -78,6 +78,15 @@ const actions = {
       })
     });
   },
+  setQuestionnaire({commit}, info) {
+    return new Promise((resolve, reject) => {
+      httpServer.put('/judgement/update',info).then( res => {
+        resolve(res);
+      }).catch( error => {
+        reject(error);
+      })
+    });
+  },
 }
 
 // mutations

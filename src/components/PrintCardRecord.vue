@@ -65,6 +65,10 @@
                 <span class="t3">科技 美丽人生</span>
                 <span class="b">www.brandnew-gmh.com</span>
               </span>
+              <qriously class="questionnaire" v-if="url != ''" :value="url" :size="90" />
+              <span class="print-wechat-2" v-if="url != ''">
+                <span class="t1">请扫码填写调查问卷</span>
+              </span>
             </div>
             <div class="print-text">特别提示：＊请凭此消费凭证于当月内开具发票。＊产品售出，已开封不退不换，未开封可换货，请凭此消费凭证或发票(如已开具)办理换货。＊所有优惠卡及优惠活动，一经售出，不退不换 ＊成员卡一个月内可进行卡项升级＊最终解释权归本公司所有。</div>
             <div class="print-text-en">Special tips: *Please get you invoice by this receipt within the same month. *Products sold, if the package has been opened, do not refund.If the packaging is complete, the product can be exchanged, please use this receipt or invoice (if issued) for replacement. *All discount cards and promotions,no refund, no change.*The final explanation is owned by the company.</div>
@@ -83,7 +87,8 @@ export default {
       customer: '',
       store: '',
       tableData: '',
-      giftData: []
+      giftData: [],
+      url: ''
     };
   },
   methods: {
@@ -127,6 +132,11 @@ export default {
             'name': content.couponMoney,
             'amount': content.couponAmount,
           })
+        }
+      }
+      if(data.url){
+        if(data.url != ''){
+          this.url = data.url
         }
       }
     },
@@ -196,8 +206,10 @@ export default {
 
 .print-wechat {
   display: inline-block;
+  vertical-align: top;
   margin-top: 20px;
 }
+
 .print-wechat-img {
   display: inline-block;
   width: 80px;
@@ -205,11 +217,11 @@ export default {
 }
 .print-wechat-2 {
   display: inline-block;
+  vertical-align: top;
   margin-top: 20px;
   height: 80px;
   width: 200px;
   margin-left: 15px;
-  vertical-align: top;
   position: relative;
 }
 .print-wechat-2 .t1 {
@@ -238,5 +250,11 @@ export default {
   width: 100%;
   bottom: 0px;
   font-size: 10px;
+}
+
+.questionnaire{
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 15px;
 }
 </style>

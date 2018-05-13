@@ -92,6 +92,7 @@ import PrintProductRecord from '@/components/PrintProductRecord'
 import PrintProjectRecord from '@/components/PrintProjectRecord'
 import PrintActivityRecord from '@/components/PrintActivityRecord'
 import ModPWD from '@/components/content/ModPWD'
+import QuestionnaireNew from '@/components/content/store/QuestionnaireNew'
 import { print } from 'util';
 
 Vue.use(Router)
@@ -439,6 +440,10 @@ export default new Router({
           path: 'modpwd',
           component: ModPWD
         },
+        {
+          path: 'questionnaire',
+          component:QuestionnaireNew
+        }
       ],
       meta: { requiresSignin: true }
     }, 

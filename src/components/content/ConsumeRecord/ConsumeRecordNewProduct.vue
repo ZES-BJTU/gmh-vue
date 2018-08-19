@@ -465,7 +465,7 @@ export default {
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.card.id = card.id
       this.card.remainingMoney = card.remainingMoney;
-      this.card.productDiscount = card.productDiscount*100;
+      this.card.productDiscount = Number.parseInt(card.productDiscount*100);
       this.card.uniqueIdentifier = card.uniqueIdentifier;
       this.cardContentDetail = card.customerMemberCardContent;
     },
@@ -473,7 +473,7 @@ export default {
       this.newProduct.validStr = '';
       let card = this.$store.getters.getCustomerCardPayById(val);
       this.cardCoupon.id = card.id;
-      this.cardCoupon.productDiscount = card.productDiscount*100;
+      this.cardCoupon.productDiscount = Number.parseInt(card.productDiscount*100);
       this.cardCoupon.uniqueIdentifier = card.uniqueIdentifier;
       this.cardCouponContentDetail = card.customerMemberCardContent;
       this.newProduct.payWayContentId = '';

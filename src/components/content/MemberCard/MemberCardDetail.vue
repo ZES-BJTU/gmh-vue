@@ -178,8 +178,8 @@ export default {
       this.modMemberCardForm.projectId = memberCard.projectId;
       this.modMemberCardForm.times = memberCard.times;
       this.modMemberCardForm.amount = memberCard.amount;
-      this.modMemberCardForm.projectDiscount = memberCard.projectDiscount*100;
-      this.modMemberCardForm.productDiscount = memberCard.productDiscount*100;
+      this.modMemberCardForm.projectDiscount = Number.parseInt(memberCard.projectDiscount*100);
+      this.modMemberCardForm.productDiscount = Number.parseInt(memberCard.productDiscount*100);
       this.modMemberCardForm.remark = memberCard.remark;
     }
   }

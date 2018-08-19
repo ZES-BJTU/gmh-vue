@@ -97,10 +97,10 @@ export default {
       this.searchMemberCard('page');
     },
     handleProject(row, column){
-      if(!row.project || row.project === ''){
+      if(!row.projectName || row.projectName === ''){
         return '暂无项目';
       }else{
-        return row.project;
+        return row.projectName;
       }
     },
     handleTimes(row, column){
@@ -118,10 +118,10 @@ export default {
       }
     },
     handleProjectDiscount(row, column){
-      return row.projectDiscount*100;
+      return Number.parseInt(row.projectDiscount*100);
     },
     handleProductDiscount(row, column){
-      return row.productDiscount*100;
+      return Number.parseInt(row.productDiscount*100);
     },
     handleRemark(row, column){
       if(!row.remark || row.remark === ''){

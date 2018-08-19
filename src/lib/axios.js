@@ -54,7 +54,7 @@ Axios.interceptors.request.use(
 //返回状态判断(添加响应拦截器)
 Axios.interceptors.response.use(
   res => {
-    console.log(res);
+    // console.log(res);
     switch( res.status ){
       case 201:
         Message({
@@ -72,7 +72,7 @@ Axios.interceptors.response.use(
         break;
       default:
         if (res.data.code != 0) {
-          console.log(res.data.code);
+          // console.log(res.data.code);
           Message({
             //  饿了么的消息弹窗组件,类似toast
             showClose: true,
@@ -125,7 +125,7 @@ Axios.interceptors.response.use(
       router.push({
         path: "/signin"
       });
-      console.log('未登录');
+      // console.log('未登录');
     }
     // 返回错误信息
     let errorInfo = error.message;

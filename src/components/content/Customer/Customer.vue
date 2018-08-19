@@ -117,7 +117,7 @@ export default {
     },
     chagePage(val){
       this.customerSearch.pageNum = val;
-      this.searchStock('page');
+      this.searchCustomer('page');
     },
     toDate(row, column){
       if(!row.birthday || row.birthday === ''){

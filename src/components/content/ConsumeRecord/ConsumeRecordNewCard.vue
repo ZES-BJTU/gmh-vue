@@ -342,8 +342,8 @@ export default {
       this.newCard.projectId = card.projectId;
       this.newCard.times = card.times;
       this.newCard.cardAmount = card.amount;
-      this.newCard.projectDiscount = card.projectDiscount*100;
-      this.newCard.productDiscount = card.productDiscount*100;
+      this.newCard.projectDiscount = Number.parseInt(card.projectDiscount*100);
+      this.newCard.productDiscount = Number.parseInt(card.productDiscount*100);
       this.newCard.cardRemark = card.remark;
     },
     handleChangeType(value){

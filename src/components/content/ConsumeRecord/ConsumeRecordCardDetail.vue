@@ -343,8 +343,8 @@ export default {
       this.modCard.projectId = card.projectId;
       this.modCard.times = card.times;
       this.modCard.cardAmount = card.amount;
-      this.modCard.projectDiscount = card.projectDiscount*100;
-      this.modCard.productDiscount = card.productDiscount*100;
+      this.modCard.projectDiscount = Number.parseInt(card.projectDiscount*100);
+      this.modCard.productDiscount = Number.parseInt(card.productDiscount*100);
       this.modCard.cardRemark = card.remark;
     },
     handleChangeType(value){

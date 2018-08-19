@@ -3,7 +3,7 @@
     <el-row class="page-title-row">
       <router-link to="/project-type" class="page-title-back">
         <i class="el-icon-back"></i> 返回</router-link>
-      <span class="page-title">编辑库存</span>
+      <span class="page-title">编辑项目分类</span>
     </el-row>
 
     <el-row type="flex" justify="start">

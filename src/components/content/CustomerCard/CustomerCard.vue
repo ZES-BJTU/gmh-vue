@@ -174,10 +174,10 @@ export default {
       }
     },
     handleProjectDiscount(row, column){
-      return row.projectDiscount*100;
+      return Number.parseInt(row.projectDiscount*100);
     },
     handleProductDiscount(row, column){
-      return row.productDiscount*100;
+      return Number.parseInt(row.productDiscount*100);
     },
     handleCharge(index, row){
       this.$router.push({ path: '/customer-card-charge/' + row.id});

@@ -4,7 +4,7 @@
       <el-container class="home-container">
         <el-container>
           <el-main>
-            <div><img  class="print-img" src="css/images/logo-print.png" alt=""></div>
+            <div><img  class="print-img" src="../assets/images/logo-print.png" alt=""></div>
             <div class="print-store-name">{{store.name}}</div>
             <div class="print-address">{{store.address}}</div>
             <div class="print-phone">{{store.phone}}</div>
